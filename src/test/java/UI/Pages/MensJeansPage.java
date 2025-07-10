@@ -16,7 +16,7 @@ public class MensJeansPage extends BasePage{
     @FindBy(xpath = "//h1[contains(@class, 'qa-non-link-label') and text()=\"Men's Jeans\"]")
     private WebElement pagesSubtitle;
     @FindBy (xpath = "//span[@data-test-accordion='size']")
-    private WebElement sizeFiletButton;
+    private WebElement sizeFilterButton;
     @FindBy (id = "side-size-filter")
     private WebElement sizeMenuArea;
     @FindBy (xpath = "//label[@data-test-accordion='28 X 30']")
@@ -31,8 +31,14 @@ public class MensJeansPage extends BasePage{
     private WebElement onlineExclusivesRadio;
     @FindBy (xpath = "//label[normalize-space()='Online Exclusives']")
     private WebElement radioOnlineExclusivesLabel;
-    @FindBy (xpath = "//div[@data-test-product-tile-image-container]//img[@data-test='product-image' and contains(@data-track-args, '\"interaction_desc\":\"0116_6848_001\"')]")
-    private WebElement slimStraightJeansItem;
+    @FindBy (xpath = "(//div[@class='results-list qa-results-list']//div[contains (@class, 'product-tile')])[2]")
+    private WebElement secondJeansItem;
+    @FindBy (xpath = "//label[contains(@data-test-accordion, 'Price: Low to High')]")
+    private  WebElement SortFromLowToHighRadio;
+    @FindBy (xpath = "((//div[@class='results-list qa-results-list']//div[contains(@class, 'product-tile')])[2]//a[contains(@href, '/us/en/p/')])[1]")
+    private WebElement urlOfSecondJeansItem;
+    @FindBy (xpath = "((//div[@class='results-list qa-results-list']//div[contains(@class, 'product-tile')])[1]//a[contains(@href, '/us/en/p/')])[1]")
+    private WebElement urlOfFirstCheapestJeansItem;
 
     //methods
     public MensJeansPage(WebDriver driver) {
@@ -48,7 +54,7 @@ public class MensJeansPage extends BasePage{
     @Step("scroll to 'Size' button and click on it")
     public void scrollAndClickSize(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(sizeFiletButton).moveToElement(sizeFiletButton)
+        actions.scrollToElement(sizeFilterButton).moveToElement(sizeFilterButton)
                 .pause(Duration.ofSeconds(2)).click().perform();
     }
 
@@ -93,7 +99,7 @@ public class MensJeansPage extends BasePage{
     @Step("scroll to 'Size' filter are and check that filter '28x30' disappeared")
     public boolean isFilterDisappeared(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(sizeFiletButton).moveToElement(sizeFiletButton)
+        actions.scrollToElement(sizeFilterButton).moveToElement(sizeFilterButton)
                 .pause(Duration.ofSeconds(2)).perform();
         return driver.findElements(By.xpath("//button[@data-test-toggle-filter='28 X 30']")).isEmpty();
     }
@@ -119,8 +125,8 @@ public class MensJeansPage extends BasePage{
     @Step("scroll to 'Online Exclusive' radio")
     public void scrollToOnlineExclusiveRadio(){
         new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.xpath("//label[@data-test-accordion='Online Exclusives']")));
-
+                .until(ExpectedConditions.presenceOfElementLocated
+                        (By.xpath("//label[@data-test-accordion='Online Exclusives']")));
         WebElement onlineExclusive = driver.findElement(By.xpath("//label[@data-test-accordion='Online Exclusives']"));
 
         try {
@@ -138,10 +144,53 @@ public class MensJeansPage extends BasePage{
         radioOnlineExclusivesLabel.click();
     }
 
-    @Step("scroll to 'Slim Straight Jeans' item, move cursor to it and click")
-    public void scrollAndMoveToSSJ(){
+    @Step("scroll to second item, move cursor to it and click")
+    public void scrollAndClickToSecondItemJeans(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(slimStraightJeansItem)
-                .moveToElement(slimStraightJeansItem).pause(Duration.ofSeconds(2)).click().perform();
+        actions.scrollToElement(secondJeansItem)
+                .moveToElement(secondJeansItem).pause(Duration.ofSeconds(2)).click().perform();
+    }
+
+    @Step("scroll to first item from cheapest, move cursor to it and click")
+    public void scrollAndClickToFirstCheapestItemJeans(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated
+                (By.xpath("(//div[@class='results-list qa-results-list']//div[contains (@class, 'product-tile')])[1]")));
+        WebElement firstCheapestJeansItem = driver.findElement
+                (By.xpath("(//div[@class='results-list qa-results-list']//div[contains (@class, 'product-tile')])[1]"));
+
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(firstCheapestJeansItem)
+                .moveToElement(firstCheapestJeansItem).pause(Duration.ofSeconds(2)).click().perform();
+    }
+
+    @Step("scroll to 'Low to High' radio an click")
+    public void scrollAndClickLowToHigh(){
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(SortFromLowToHighRadio).moveToElement(SortFromLowToHighRadio).click().perform();
+    }
+
+    @Step ("get text of second item from 'Men's Jeans' page")
+    public String getSecondsItemsUrl(){
+        String href = urlOfSecondJeansItem.getDomAttribute("href");
+        if (!href.startsWith("http")) {
+            href = "https://www.ae.com" + href;
+        }
+        return href.split("\\?")[0];
+    }
+
+    @Step ("get text of first cheapest item from 'Men's Jeans' page after sorting")
+    public String getFirstCheapestItemsUrl(){
+        String href = urlOfFirstCheapestJeansItem.getDomAttribute("href");
+        if (!href.startsWith("http")) {
+            href = "https://www.ae.com" + href;
+        }
+        return href.split("\\?")[0];
+    }
+
+    @Step("wait for second item's url")
+    public void waitForItemsUrl(String itemsUrl){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.urlContains(itemsUrl));
     }
 }

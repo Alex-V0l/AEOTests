@@ -1,19 +1,22 @@
 package UI.Tests;
 
+import Steps.UISteps;
+import UI.Models.CartInfo;
+import UI.Models.ItemData;
+import UI.Models.ParsedToDoublePricesCheckoutInfo;
+import UI.Models.PricesCheckoutInfo;
 import UI.Pages.CartAndCheckoutPage;
-import UI.Pages.HomePage;
-import UI.Pages.MensJeansPage;
-import UI.Pages.SlimStraightJeansItemsPage;
+import UI.Pages.HomeSearchSectionPage;
+import UI.Pages.JeansItemsPage;
 import Utils.Utils;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import Utils.AllureExtension;
 
-import static Utils.Constants.CART_URL;
-import static Utils.Constants.CHECKOUT_URL;
-import static Utils.Constants.SLIM_STRAIGHT_JEANS_ITEMS_URL;
-import static Utils.Constants.VALUES_HAVE_TO_BE_EQUAL;
+import java.util.Locale;
+
+import static Utils.Constants.*;
 import static org.assertj.core.api.Assertions.offset;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -21,19 +24,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class CartAndCheckoutTests extends BaseTest{
 
-    private HomePage hPage;
+    private HomeSearchSectionPage hssPage;
     private Utils utils;
     private CartAndCheckoutPage cPage;
-    private MensJeansPage mJPage;
-    private SlimStraightJeansItemsPage sSJIPage;
+    private JeansItemsPage jIPage;
+    private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hPage = new HomePage(driver);
+        hssPage = new HomeSearchSectionPage(driver);
         utils = new Utils(driver);
         cPage = new CartAndCheckoutPage(driver);
-        mJPage = new MensJeansPage(driver);
-        sSJIPage = new SlimStraightJeansItemsPage(driver);
+        jIPage = new JeansItemsPage(driver);
+        uiSteps = new UISteps(driver);
         cPage.openHomePage();
     }
 
@@ -43,14 +46,13 @@ public class CartAndCheckoutTests extends BaseTest{
     void goToBagCheckHeaderAndUrl(){
         String expectedHeadersText = "Shopping Bag";
 
-        hPage.clickOnBagButton();
+        hssPage.clickOnBagButton();
         cPage.waitForUrl(CART_URL);
-        String actualHeadersText = cPage.getPageHeadersText();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(cPage.getCurrentURL())
                 .as("Transition to the bag page should have been executed").isEqualTo(CART_URL);
-        softly.assertThat(actualHeadersText).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
+        softly.assertThat(cPage.getPageHeadersText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
         softly.assertAll();
     }
 
@@ -61,100 +63,67 @@ public class CartAndCheckoutTests extends BaseTest{
     @Test
     void addItemUsingSearchAndCheckItemAndShipping(){
         String searchQuery = "Raincoat";
-        String expectedUrlAfterSearch = "https://www.ae.com/us/en/s/Raincoat";
+        String expectedUrlAfterSearch = BASE_URL_UI + "s/" + searchQuery;
         String expectedQuickShopTitleText = "Quick Shop";
         String expectedShippingProgressBarStatus = "full";
         String expectedShippingProgressMessage = "Free shipping unlocked — make the most of it!";
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(searchQuery);
-        hPage.clickLoupeSubmit();
-        hPage.closeModalAdverts();
-        hPage.waitForUrl(expectedUrlAfterSearch);
-        cPage.scrollToItemForBag();
-        String itemsName = cPage.getNameFroItemForBag();
-        String itemsSalePrice = cPage.getSalePriceForItemForBag();
-        String itemsRegularPrice = cPage.getRegularPriceForItemForBag();
+        uiSteps.searchActionsPath(searchQuery, expectedUrlAfterSearch);
+        uiSteps.sortByHighToLowPriceAndPickFirstItem();
+        ItemData itemInfoFromQuickShop  = uiSteps.getItemDataFromQuickShop();
         cPage.moveWaitAndClickOnQuickShopButton();
-        boolean isQuickShopModalVisible = cPage.isQuickShopVisible();
-        String quickShopTitlesText = cPage.getModalsTitleText();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(isQuickShopModalVisible).as("'Quick Shop' modal should be visible").isTrue();
-        softly.assertThat(quickShopTitlesText).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedQuickShopTitleText);
+        softly.assertThat(cPage.isQuickShopVisible()).as("'Quick Shop' modal should be visible").isTrue();
+        softly.assertThat(cPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedQuickShopTitleText);
         softly.assertAll();
 
-        cPage.scrollToSizeAndClick();
-        cPage.clickLSize();
-        cPage.clickOnAddToBag();
-        cPage.isAddedToBagModalVisible();
-        cPage.clickViewBagButton();
-        cPage.waitForUrl(CART_URL);
-        String addedToBagItemsName = cPage.getAddedItemsName();
-        String addedToBagSalePrice = cPage.getAddedItemsSalePrice();
-        String addedToBagRegularPrice = cPage.getAddedItemsRegularPrice();
-        String shippingMessageText = cPage.getTextOfShippingMessage();
-        String shippingProgressBarStatus = cPage.getShippingProgressStatus();
-        String subTotal = cPage.getSubTotalText();
+        uiSteps.pickSizeAddItemInQuickShopAndGoToCart();
+        ItemData itemInfoFromCartShorten = uiSteps.getItemDataFromCartShorten();
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(addedToBagItemsName).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemsName);
-        softlyAgain.assertThat(addedToBagSalePrice).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemsSalePrice);
-        softlyAgain.assertThat(addedToBagRegularPrice).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemsRegularPrice);
-        softlyAgain.assertThat(shippingMessageText).as(VALUES_HAVE_TO_BE_EQUAL)
+        softlyAgain.assertThat(itemInfoFromCartShorten).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemInfoFromQuickShop);
+        softlyAgain.assertThat(cPage.getTextOfShippingMessage()).as(VALUES_HAVE_TO_BE_EQUAL)
                 .isEqualTo(expectedShippingProgressMessage);
-        softlyAgain.assertThat(shippingProgressBarStatus).as("Shipping progress bar have to be full")
+        softlyAgain.assertThat(cPage.getShippingProgressStatus()).as("Shipping progress bar have to be full")
                 .isEqualTo(expectedShippingProgressBarStatus);
-        softlyAgain.assertThat(subTotal)
+        softlyAgain.assertThat(cPage.getSubTotalText())
                 .as("Price of the item should be equal to sub total value because shipping is free")
-                .isEqualTo(itemsSalePrice);
+                .isEqualTo(itemInfoFromCartShorten.getSalePrice());
         softlyAgain.assertAll();
     }
 
-    @DisplayName("Add item to the bag from section of items and current item's page, which price is less than 75$," +
+    @DisplayName("Add item to the bag from section of items in current item's page, which price is less than 75$," +
             " check that items name and price from section page and bag are identical" +
             " and check status and value of shipping progress bar")
     @Tags({@Tag("P1"), @Tag("extended")})
     @Test
     void addItemFromPageAddToBagCheckItemAndShipping(){
-        String expectedShippingMessage = "Spend $37.54 more to unlock free shipping!";
         String expectedShippingProgressStatus = "not-full";
-        String expectedShippingPrice = "$7.95";
 
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        String itemNameText = sSJIPage.getItemsNameText();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
-        String shippingMessage = cPage.getTextOfShippingMessage();
-        String shippingProgressValue = cPage.getShippingProgressValue();
-        String shippingProgressStatus = cPage.getShippingProgressStatus();
-        cPage.scrollToAddedItemsInfoSection();
-        String addedItemsName = cPage.getAddedItemsName();
-        String addedItemsSalePrice = cPage.getAddedItemsSalePrice();
-        String shippingSubtotal = cPage.getSubTotalText();
-        String shippingPrice = cPage.getShippingPrice();
-        double parsedShippingPrice = utils.parseToDouble(shippingPrice);
-        double parsedItemsFinalPrice = utils.parseToDouble(addedItemsSalePrice);
-        double parsedShippingSubtotal = utils.parseToDouble(shippingSubtotal);
-        double parsedShippingProgressValue = utils.parseToDouble(shippingProgressValue);
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickFirstCheapestJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.moveToSizeAndPickFirstAndAddToBag();
+        String itemNameText = jIPage.getItemsNameText();
+        uiSteps.viewBagAndWaitForCart();
+        CartInfo infoFromCart = uiSteps.getInfoFromCart();
+        double parsedShippingPrice = utils.parseToDouble(infoFromCart.getShippingPrice());
+        double parsedItemsFinalPrice = utils.parseToDouble(infoFromCart.getAddedItemsSalePrice());
+        double parsedShippingSubtotal = utils.parseToDouble(infoFromCart.getSubTotal());
+        double parsedShippingProgressValue = utils.parseToDouble(infoFromCart.getShippingProgressValue());
+        double parsedMaxShippingCostForFree = utils.parseToDouble(infoFromCart.getMaxShippingCostBeforeFree());
+        String expectedShippingMessage =
+                String.format(Locale.US, "Spend $%.2f more to unlock free shipping!", parsedMaxShippingCostForFree - parsedItemsFinalPrice);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(addedItemsName).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemNameText);
-        softly.assertThat(shippingMessage).as("Messages supposed to be the same").isEqualTo(expectedShippingMessage);
-        softly.assertThat(shippingProgressStatus).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedShippingProgressStatus);
+        softly.assertThat(infoFromCart.getAddedItemsName()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemNameText);
+        softly.assertThat(infoFromCart.getShippingMessage()).as("Messages supposed to be the same")
+                .isEqualTo(expectedShippingMessage);
+        softly.assertThat(infoFromCart.getShippingProgressStatus()).as(VALUES_HAVE_TO_BE_EQUAL)
+                .isEqualTo(expectedShippingProgressStatus);
         softly.assertThat(parsedShippingProgressValue)
                 .as("Values of shipping progress should be equal to sale price of the item if it costs less that 75$")
                 .isEqualTo(parsedItemsFinalPrice);
-        softly.assertThat(shippingPrice).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedShippingPrice);
         softly.assertThat(parsedShippingSubtotal)
                 .as("Sub total must be equal to summa of item's price and shipping cost")
                 .isEqualTo(parsedItemsFinalPrice + parsedShippingPrice, offset(0.01));
@@ -167,41 +136,30 @@ public class CartAndCheckoutTests extends BaseTest{
     void addItemChangeQuantityAndCheckIt(){
         String expectedModalTitleText = "Edit Item";
 
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
-        cPage.scrollToAddedItemsInfoSection();
-        String addedItemsQuantity = cPage.getAddedItemsQuantity();
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.pickSizeAddItemAndGoToCart();
+        CartInfo itemFromCartInfo = uiSteps.getInfoFromCart();
         cPage.scrollAndClickEditButton();
-        boolean isEditItemModalVisible = cPage.isEditItemModalIsVisible();
-        String ModalsTitleText = cPage.getModalsTitleText();
 
         SoftAssertions softly =  new SoftAssertions();
-        softly.assertThat(isEditItemModalVisible).as("'Edit Item' modal should be visible").isTrue();
-        softly.assertThat(ModalsTitleText).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedModalTitleText);
+        softly.assertThat(cPage.isEditItemModalIsVisible()).as("'Edit Item' modal should be visible").isTrue();
+        softly.assertThat(cPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedModalTitleText);
         softly.assertAll();
 
-        utils.scrollWithButton();
-        cPage.clickIncreaseAmountButton();
-        String changedAmountOfItems = cPage.getAmountOfItems();
-        cPage.clickUpdateBagButton();
-        cPage.waitForQuantity();
-        String newAmountOfItems = cPage.getAddedItemsQuantity();
-        int parsedFirstAmount = utils.parseToInt(addedItemsQuantity);
-        int parsedNewAmount = utils.parseToInt(newAmountOfItems);
-        int parsedChangedAmount = utils.parseToInt(changedAmountOfItems);
+        String quantityFromEditItem = uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges();
+        ItemData updatedItemInfo = uiSteps.getItemDataFromCartPage();
+        double parsedFirstSalePrice = utils.parseToDouble(itemFromCartInfo.getAddedItemsSalePrice());
+        int parsedFirstAmount = utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity());
+        int parsedEditedAmount = utils.parseToInt(quantityFromEditItem);
+        int parsedChangedAmount = utils.parseToInt(updatedItemInfo.getQuantity());
+        double parsedChangedSalePrice = utils.parseToDouble(updatedItemInfo.getSalePrice());
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(parsedFirstAmount).as("Quantity should have increased").isLessThan(parsedNewAmount);
-        softlyAgain.assertThat(parsedNewAmount).as("Changes of quantity should have been applied")
+        softlyAgain.assertThat(parsedFirstAmount).as("Quantity should have increased").isLessThan(parsedChangedAmount);
+        softlyAgain.assertThat(parsedEditedAmount).as("Changes of quantity should have been applied")
                 .isEqualTo(parsedChangedAmount);
+        softlyAgain.assertThat(parsedChangedSalePrice).as("Price should have doubled").isEqualTo(parsedFirstSalePrice*2);
         softlyAgain.assertAll();
     }
 
@@ -211,16 +169,9 @@ public class CartAndCheckoutTests extends BaseTest{
     void addItemRemoveItAndCheck(){
         String expectedMessage = "Your bag is empty. Find something you love!";
 
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.pickSizeAddItemAndGoToCart();
         cPage.scrollAndClickOnRemove();
         cPage.waitForEmptyBag();
         String messageForEmptyBag = cPage.getEmptyBagText();
@@ -234,24 +185,15 @@ public class CartAndCheckoutTests extends BaseTest{
     void addItemAndGoToCheckOut(){
         String expectedTitleText = "Checkout";
 
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
-        cPage.scrollAndClickOnCheckOut();
-        cPage.waitForUrl(CHECKOUT_URL);
-        String actualTitlesText = cPage.getCheckoutsTitleText();
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.pickSizeAddItemAndGoToCart();
+        uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(cPage.getCurrentURL())
                 .as("Transitions to 'Checkout' page should nave been executed").isEqualTo(CHECKOUT_URL);
-        softly.assertThat(actualTitlesText).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedTitleText);
+        softly.assertThat(cPage.getCheckoutsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedTitleText);
         softly.assertAll();
     }
 
@@ -260,30 +202,21 @@ public class CartAndCheckoutTests extends BaseTest{
     @Tags({@Tag("P0"), @Tag("extended")})
     @Test
     void addItemCheckPriceInBagAndCheckout(){
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.pickSizeAddItemAndGoToCart();
         String priceInBag = cPage.getSubTotalText();
-        cPage.scrollAndClickOnCheckOut();
-        cPage.waitForUrl(CHECKOUT_URL);
+        uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
         cPage.scrollToOrderTotalAndClick();
-        String priceInCheckout = cPage.getTotalPriceText();
 
-        assertThat(priceInCheckout)
+        assertThat(cPage.getTotalPriceText())
                 .as("Price should not have changed before address and shipping method wouldn't have been chosen")
                 .isEqualTo(priceInBag);
     }
 
     @DisplayName("Add item to the bag, to go checkout page," +
             " fill all necessary fields," +
-            " pick different shipping method and check that 'Order Total' has changed on new shipping method price")
+            " pick different shipping method and check that 'Order Total' section has changed on new shipping method price")
     @Tags({@Tag("P0"), @Tag("extended")})
     @Test
     void addItemCheckOutChangeShippingAndCheckPrice() {
@@ -293,63 +226,39 @@ public class CartAndCheckoutTests extends BaseTest{
         String city = "West Chicago";
         String zipCode = "60185";
 
-        hPage.moveToMens();
-        hPage.clickOnJeansInsideMens();
-        hPage.closeModalAdverts();
-        mJPage.scrollAndMoveToSSJ();
-        mJPage.waitForUrl(SLIM_STRAIGHT_JEANS_ITEMS_URL);
-        sSJIPage.moveToSizeButtonAndClick();
-        sSJIPage.scrollTo28X34SizeAndPick();
-        sSJIPage.clickAddToBag();
-        sSJIPage.clickViewBagButton();
-        sSJIPage.waitForUrl(CART_URL);
-        cPage.scrollAndClickOnCheckOut();
-        cPage.waitForUrl(CHECKOUT_URL);
-        cPage.scrollToOrderTotalAndClick();
-        cPage.scrollToFirstName();
-        cPage.typeIntoFirstNameField(firstName);
-        cPage.typeIntoLastNameField(lastName);
-        cPage.typeIntoStreetAddressField(streetAddress);
-        cPage.typeIntoCityField(city);
-        cPage.scrollAndClickOnState();
-        cPage.pickIllinois();
-        cPage.typeIntoZipCodeField(zipCode);
+        uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
+        uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
+        uiSteps.pickSizeAddItemAndGoToCart();
+        uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
+        uiSteps.goToOrderTotalAndFillInCheckOutForm(firstName, lastName, streetAddress, city, zipCode);
         boolean isStandardRadioSelected = cPage.isStandardRadioSelected();
-        String standardShippingPriceText = cPage.getStandardPriceText();
-        String currentShippingCost = cPage.getShippingPrice();
-        String currentOrderTotal = cPage.getTotalPriceText();
-        String twoDayShippingCost = cPage.getTwoDayPriceText();
-        String currentTaxValue = cPage.getTaxValeText();
+        PricesCheckoutInfo pricesCheckoutInfo = uiSteps.getPricesInCheckout();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(isStandardRadioSelected).as("'Standard' radio should be selected by default").isTrue();
-        softly.assertThat(currentShippingCost).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(standardShippingPriceText);
+        softly.assertThat(pricesCheckoutInfo.getCurrentShippingCost()).as(VALUES_HAVE_TO_BE_EQUAL)
+                .isEqualTo(pricesCheckoutInfo.getStandardShippingPriceText());
         softly.assertAll();
 
-        cPage.scrollToOrderTotalAndClick();
-        cPage.waitForSpinnerToDisappear();
-        cPage.scrollToTwoDayAndClick();
-        cPage.waitForSpinnerToDisappear();
-        String newShippingCost = cPage.getShippingPrice();
-        String newOrderTotal = cPage.getTotalPriceText();
-        String newTaxValue = cPage.getTaxValeText();
-        double parsedCurrentOrderTotal = utils.parseToDouble(currentOrderTotal);
-        double parsedCurrentShippingCost = utils.parseToDouble(currentShippingCost);
-        double parsedCurrentTaxValue = utils.parseToDouble(currentTaxValue);
-        double parsedNewShippingCost = utils.parseToDouble(newShippingCost);
-        double parsedNewOrderTotal = utils.parseToDouble(newOrderTotal);
-        double parsedNewTaxValue = utils.parseToDouble(newTaxValue);
+        uiSteps.changeFor2DayAndWaitForChanges();
+        PricesCheckoutInfo pricesCheckoutInfoAfterChangingShipping = uiSteps.getPricesInCheckout();
+        ParsedToDoublePricesCheckoutInfo pricesWithStandardShippingAsDouble =
+                uiSteps.getAsDoubleValuesOfPrices(pricesCheckoutInfo);
+        ParsedToDoublePricesCheckoutInfo pricesWith2DayShippingAsDouble =
+                uiSteps.getAsDoubleValuesOfPrices(pricesCheckoutInfoAfterChangingShipping);
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(twoDayShippingCost).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(newShippingCost);
-        softlyAgain.assertThat(parsedNewShippingCost)
+        softlyAgain.assertThat(pricesCheckoutInfo.getTwoDayShippingCost()).as(VALUES_HAVE_TO_BE_EQUAL)
+                .isEqualTo(pricesCheckoutInfoAfterChangingShipping.getCurrentShippingCost());
+        softlyAgain.assertThat(pricesWith2DayShippingAsDouble.getCurrentShippingCost())
                 .as("After adding info about address and changing shipping method shipping cost should have increased")
-                .isGreaterThan(parsedCurrentShippingCost);
-        softlyAgain.assertThat(parsedNewTaxValue).as("After shipping cost increased tax value increased too")
-                .isGreaterThan(parsedCurrentTaxValue);
-        softlyAgain.assertThat(parsedNewOrderTotal)
+                .isGreaterThan(pricesWithStandardShippingAsDouble.getCurrentShippingCost());
+        softlyAgain.assertThat(pricesWith2DayShippingAsDouble.getCurrentTaxValue())
+                .as("After shipping cost increased tax value increased too")
+                .isGreaterThan(pricesWithStandardShippingAsDouble.getCurrentTaxValue());
+        softlyAgain.assertThat(pricesWith2DayShippingAsDouble.getCurrentOrderTotal())
                 .as("After shipping cost and tax values increased order total has increased too")
-                .isGreaterThan(parsedCurrentOrderTotal);
+                .isGreaterThan(pricesWithStandardShippingAsDouble.getCurrentOrderTotal());
         softlyAgain.assertAll();
     }
 }

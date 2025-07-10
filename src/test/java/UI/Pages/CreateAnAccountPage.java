@@ -21,7 +21,7 @@ public class CreateAnAccountPage extends BasePage {
     @FindBy(xpath = "//a[@data-test='register-button']")
     private WebElement createAnAccountButton;
     @FindBy(xpath = "//h1[@class='page-header qa-page-header _page-header_190u4w']")
-    private WebElement pageHeader;
+    private WebElement pagesHeader;
     @FindBy(xpath = "//input[@placeholder='Email' and @type='email']")
     private WebElement emailField;
     @FindBy(name = "firstname")
@@ -35,7 +35,7 @@ public class CreateAnAccountPage extends BasePage {
     @FindBy(name = "postalCode")
     private WebElement postalCodeField;
     @FindBy(name = "month")
-    private WebElement mothSelectorButton;
+    private WebElement monthSelectorButton;
     @FindBy(xpath = "//option[@value='11' and text()='November']")
     private WebElement novemberOptionFromMonthSelector;
     @FindBy(name = "day")
@@ -45,7 +45,7 @@ public class CreateAnAccountPage extends BasePage {
     @FindBy(xpath = "//button[@data-test-btn='submit']")
     private WebElement createAccountButton;
     @FindBy(xpath = "//div[@class='alert-content']//h6")
-    private WebElement alertText;
+    private WebElement successfulCreationText;
     @FindBy(xpath = "//div[normalize-space(@class) = 'text-bold qa-list-menu-header']")
     private WebElement menuHeaderAfterCreating;
     @FindBy(xpath = "//div[contains (@data-test-form-error, 'error.account.password.invalid')]")
@@ -61,7 +61,7 @@ public class CreateAnAccountPage extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @Step("click on account button")
+    @Step("click on 'Account' button")
     public void clickAccount() {
         accountButton.click();
     }
@@ -79,46 +79,62 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("get text of the page's header")
     public String getPagesHeaderText() {
-        return pageHeader.getText();
+        return pagesHeader.getText();
     }
 
-    @Step("type into 'Email' field")
-    public void typeIntoEmailField(String email) {
+    @Step("scroll and type into 'Email' field")
+    public void scrollAndTypeIntoEmailField(String email) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", emailField);
         emailField.sendKeys(email);
     }
 
-    @Step("type into 'First name' field")
-    public void typeIntoFirstNameField(String firstName) {
+    @Step("scroll and type into 'First name' field")
+    public void scrollAndTypeIntoFirstNameField(String firstName) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", firstNameField);
         firstNameField.sendKeys(firstName);
     }
 
-    @Step("type into 'Last name' field")
-    public void typeIntoLastNameField(String lastName) {
+    @Step("scroll and type into 'Last name' field")
+    public void scrollAndTypeIntoLastNameField(String lastName) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", lastNameField);
         lastNameField.sendKeys(lastName);
     }
 
-    @Step("type into 'Password' field")
-    public void typeIntoPasswordField(String password) {
+    @Step("scroll and type into 'Password' field")
+    public void scrollAndTypeIntoPasswordField(String password) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", passwordField);
         passwordField.sendKeys(password);
     }
 
-    @Step("type into 'Confirm password' field")
-    public void typeIntoConfirmPasswordField(String password) {
+    @Step("scroll and type into 'Confirm password' field")
+    public void scrollAndTypeIntoConfirmPasswordField(String password) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", confirmPasswordField);
         confirmPasswordField.sendKeys(password);
     }
 
-    @Step("type into 'Postal code' field")
-    public void typeIntoPostalCodeField(String code) {
+    @Step("scroll and type into 'Postal code' field")
+    public void scrollAndTypeIntoPostalCodeField(String code) {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", postalCodeField);
         postalCodeField.sendKeys(code);
     }
 
     @Step("click on 'Month' selector button")
-    public void clickOnMonthSelector() {
-        mothSelectorButton.click();
+    public void scrollAndClickOnMonthSelector() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", monthSelectorButton);
+        monthSelectorButton.click();
     }
 
     @Step("click on 'November' from month selector")
-    public void clickOnNovember() {
+    public void scrollAndClickOnNovember() {
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", novemberOptionFromMonthSelector);
         novemberOptionFromMonthSelector.click();
     }
 
@@ -128,21 +144,25 @@ public class CreateAnAccountPage extends BasePage {
         select.selectByValue(day);
     }
 
-    @Step("click on 'I accept' checkbox via JS")
-    public void clickIAcceptCheckbox() {
+    @Step("click on 'I accept' checkbox")
+    public void scrollAndClickIAcceptCheckbox() {
         JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", iAcceptCheckbox);
         js.executeScript("arguments[0].click();", iAcceptCheckbox);
     }
 
-    @Step("click on create account button")
-    public void clickOnCreateAccountButton() {
+    @Step("click on 'Create Account' button")
+    public void scrollAndClickOnCreateAccountButton() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(createAccountButton));
         Actions actions = new Actions(driver);
-        actions.moveToElement(createAccountButton).pause(Duration.ofSeconds(2)).click().perform();
+        actions.scrollToElement(createAccountButton).moveToElement(createAccountButton)
+                .pause(Duration.ofSeconds(2)).click().perform();
     }
 
-    @Step("get alert's text after creating a new account")
-    public String getAlertsAfterCreatingText() {
-        return alertText.getText();
+    @Step("get successful message's text after creating a new account")
+    public String getSuccessfulMessagesAfterCreatingText() {
+        return successfulCreationText.getText();
     }
 
     @Step("ge text of the header menu after creating a new account")
@@ -158,10 +178,10 @@ public class CreateAnAccountPage extends BasePage {
                 .until(driver -> createAccountButton.isEnabled());
     }
 
-    @Step("wait for alert's text to be visible")
-    public void waitForAlert() {
+    @Step("wait for successful message's text to be visible")
+    public void waitForSuccessfulMessage() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(alertText));
+        wait.until(ExpectedConditions.visibilityOf(successfulCreationText));
     }
 
     @Step("get error's text after using invalid password")

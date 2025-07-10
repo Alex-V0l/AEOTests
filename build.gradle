@@ -29,6 +29,7 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
     testImplementation 'org.aeonbits.owner:owner:1.0.12'
     implementation 'org.seleniumhq.selenium:selenium-java:4.28.1'
+    testImplementation 'net.datafaker:datafaker:2.0.2'
 }
 
 test {

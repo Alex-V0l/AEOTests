@@ -1,34 +1,40 @@
 package UI.Tests;
 
-import UI.Pages.HomePage;
+import Steps.UISteps;
+import UI.Pages.HomeSearchSectionPage;
 import Utils.AllureExtension;
+import Utils.Utils;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import static Utils.Constants.BASE_URL_UI;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Tag("UI tests")
 @ExtendWith(AllureExtension.class)
 public class HomePageSearchTests extends BaseTest{
 
-    private HomePage hPage;
+    private HomeSearchSectionPage hssPage;
+    private Utils utils;
+    private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hPage = new HomePage(driver);
-        hPage.openHomePage();
+        hssPage = new HomeSearchSectionPage(driver);
+        utils = new Utils(driver);
+        uiSteps = new UISteps(driver);
+        hssPage.openHomePage();
     }
 
     @DisplayName("Click on Loupe-like button and switch to a modal window with Search")
     @Tags({@Tag("P0"), @Tag("smoke")})
     @Test
     void clickSearchAndCheckModal(){
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        boolean expectedSearchModalState = hPage.isSearchModalVisible();
+        uiSteps.openSearch();
 
-        assertThat(expectedSearchModalState).as("Modal should be visible after click on Loupe-like button").isTrue();
+        assertThat(hssPage.isSearchModalVisible())
+                .as("Modal should be visible after click on Loupe-like button").isTrue();
     }
 
     @DisplayName("Type name of the item in the 'Search' field, click on Loupe-like button and check url and status code")
@@ -36,23 +42,22 @@ public class HomePageSearchTests extends BaseTest{
     @Test
     void searchItemsAndCheckUrlAndSubtitle() {
         String textToFind = "new york yankees";
-        String expectedUrl = "https://www.ae.com/us/en/s/new+york+yankees";
+        String formattedAsQueryText = utils.formatSearchQueryForUrl(textToFind);
+        String expectedUrl = BASE_URL_UI + "s/" + formattedAsQueryText;
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        boolean expectedSearchModalState = hPage.isSearchModalVisible();
+        uiSteps.openSearch();
 
-        assertThat(expectedSearchModalState).as("Modal should be visible after click on Loupe-like button").isTrue();
+        assertThat(hssPage.isSearchModalVisible())
+                .as("Modal should be visible after click on Loupe-like button").isTrue();
 
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(textToFind);
-        hPage.clickLoupeSubmit();
-        hPage.waitForUrl(expectedUrl);
+        hssPage.waitForSearchField();
+        hssPage.typeIntoSearchField(textToFind);
+        uiSteps.submitAndWait(expectedUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(hPage.getCurrentURL())
+        softly.assertThat(hssPage.getCurrentURL())
                 .as("Transition to the corresponding to query page should have been executed").isEqualTo(expectedUrl);
-        softly.assertThat(hPage.getSubtitleAfterSearchText())
+        softly.assertThat(hssPage.getSubtitleAfterSearchText())
                 .as("Subtitle text should contain query text").contains(textToFind);
         softly.assertAll();
     }
@@ -63,13 +68,9 @@ public class HomePageSearchTests extends BaseTest{
     void searchAndWaitSuggestions(){
         String textToFind = "new york";
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(textToFind);
-        boolean isSuggestionsVisible = hPage.isSuggestionsDropdownVisible();
+        uiSteps.openSearchAndType(textToFind);
 
-        assertThat(isSuggestionsVisible)
+        assertThat(hssPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
     }
 
@@ -79,24 +80,21 @@ public class HomePageSearchTests extends BaseTest{
     @Test
     void searchAndPickSuggestion() {
         String textToFind = "new york";
-        String expectedUrl = "https://www.ae.com/us/en/s/new+york+yankees";
+        String queryText = utils.formatSearchQueryForUrl(textToFind) + "+yankee";
+        String expectedUrl = BASE_URL_UI + "s/" + queryText;
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(textToFind);
-        boolean isSuggestionsVisible = hPage.isSuggestionsDropdownVisible();
+        uiSteps.openSearchAndType(textToFind);
 
-        assertThat(isSuggestionsVisible)
+        assertThat(hssPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
 
-        hPage.clickOnSuitableSuggestion();
-        hPage.waitForUrl(expectedUrl);
+        hssPage.clickOnSuitableSuggestion();
+        hssPage.waitForUrl(expectedUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(hPage.getCurrentURL())
+        softly.assertThat(hssPage.getCurrentURL())
                 .as("Transition to the corresponding to query page should have been executed").isEqualTo(expectedUrl);
-        softly.assertThat(hPage.getSubtitleAfterSearchText())
+        softly.assertThat(hssPage.getSubtitleAfterSearchText())
                 .as("Subtitle text should contain query text").contains(textToFind);
         softly.assertAll();
     }
@@ -109,19 +107,14 @@ public class HomePageSearchTests extends BaseTest{
         String textToFind = "rainciat";
         String expectedSuggestionText = "Raincoat";
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(textToFind);
-        boolean isSuggestionsVisible = hPage.isSuggestionsDropdownVisible();
+        uiSteps.openSearchAndType(textToFind);
 
-        assertThat(isSuggestionsVisible)
+        assertThat(hssPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
 
-        hPage.waitForRainciatSuggestion();
-        String suggestionText = hPage.getSuggestionRainciatText();
+        hssPage.waitForRainciatSuggestion();
 
-        assertThat(suggestionText)
+        assertThat(hssPage.getSuggestionRainciatText())
                 .as("System should recognize the mistake and make a right suggestion")
                 .isEqualTo(expectedSuggestionText);
     }
@@ -129,23 +122,18 @@ public class HomePageSearchTests extends BaseTest{
     @DisplayName("Type name of non-existing item in the 'Search' field and check message")
     @Tags({@Tag("P1"), @Tag("negative")})
     @Test
-    void searchForNonExistingItem() throws InterruptedException {
+    void searchForNonExistingItem() {
         String textToFind = "000000000000";
         String expectedErrorText = "Sorry! We couldn't find a match for " + textToFind + ".";
-        String expectedUrl = "https://www.ae.com/us/en/s/" + textToFind;
+        String expectedUrl = BASE_URL_UI + "s/" + textToFind;
 
-        hPage.clickSearch();
-        hPage.waitForSearchModal();
-        hPage.waitForSearchField();
-        hPage.typeIntoSearchField(textToFind);
-        hPage.clickLoupeSubmit();
-        hPage.waitForUrl(expectedUrl);
-
-        String errorMessageText = hPage.getTextOfErrorSearchMessage();
+        uiSteps.openSearchAndType(textToFind);
+        uiSteps.submitAndWait(expectedUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(errorMessageText).as("Error message should contain query").isEqualTo(expectedErrorText);
-        softly.assertThat(hPage.getCurrentURL()).as("url should contain query").isEqualTo(expectedUrl);
+        softly.assertThat(hssPage.getTextOfErrorSearchMessage()).as("Error message should contain query")
+                .isEqualTo(expectedErrorText);
+        softly.assertThat(hssPage.getCurrentURL()).as("url should contain query").isEqualTo(expectedUrl);
         softly.assertAll();
     }
 }

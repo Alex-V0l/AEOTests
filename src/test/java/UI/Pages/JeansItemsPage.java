@@ -5,26 +5,20 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.List;
 
-public class SlimStraightJeansItemsPage extends BasePage{
+public class JeansItemsPage extends BasePage{
 
     //locators
-    @FindBy(xpath = "(//div[@data-test-color-swatches]//div[@role='button'])[1]")
-    private WebElement firstColorRadioBrightBlue;
-    @FindBy(xpath = "(//div[@data-test-color-swatches]//div[@role='button'])[2]")
-    private WebElement secondColorRadioBlack;
     @FindBy (xpath = "//div[@aria-label='Size']")
     private WebElement sizeButton;
     @FindBy(xpath = "//ul[@role='menu']")
     private WebElement sizeDropdown;
-    @FindBy(xpath = "//li/a[text()='30 X 30']")
-    private WebElement optionSize30X30;
-    @FindBy(xpath = "//li/a[text()='28 X 34']")
-    private WebElement optionSize28X34;
+    @FindBy(xpath = "//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")
+    private WebElement firstSizeAvailableOption;
     @FindBy (className = "dropdown-text")
     private WebElement selectedSizeText;
     @FindBy(xpath = "//span[@data-test-value]")
@@ -39,11 +33,7 @@ public class SlimStraightJeansItemsPage extends BasePage{
     private WebElement modalsTitle;
     @FindBy (name = "viewBag")
     private WebElement viewBagButton;
-    @FindBy(xpath = "//div[@class='modal-body']//div[contains(@class, 'added-to-bag-product')]//div[contains(@class, '_title_')]")
-    private WebElement modalsSubtitlesText;
-    @FindBy(xpath = "//div[@class='modal-body']//div[contains(@class, 'added-to-bag-product')]")
-    private WebElement modalItemsInfoSection;
-    @FindBy(xpath = "//div[@class='modal-body']//div[contains(@class, 'added-to-bag-product')]//*[contains(text(),'Slim Straight Jean')]")
+    @FindBy(xpath = "//div[@class='modal-body']//div[contains(@class, 'added-to-bag-product')]//div[contains (@class, 'title')]")
     private WebElement itemsNameSection;
     @FindBy(xpath = "//div[@class='modal-body']//span[@data-test-sale-price]")
     private WebElement itemsSalePriceSection;
@@ -57,43 +47,14 @@ public class SlimStraightJeansItemsPage extends BasePage{
     private WebElement itemsQuantitySection;
 
     //methods
-    public SlimStraightJeansItemsPage(WebDriver driver) {
+    public JeansItemsPage(WebDriver driver) {
         super(driver);
         PageFactory.initElements(driver, this);
     }
 
-    @Step("chek if 'Bright Blue' radio is selected")
-    public boolean isBrightBlueSelected(){
-        return firstColorRadioBrightBlue.getDomAttribute("class").contains("swatch-active");
-    }
-
-    @Step("click on 'Bright Blue' radio")
-    public void clickBrightBlueRadio(){
-        firstColorRadioBrightBlue.click();
-    }
-
-    @Step("chek if 'Black' radio is selected")
-    public boolean isBlackSelected(){
-        return secondColorRadioBlack.getDomAttribute("class").contains("swatch-active");
-    }
-
-    @Step("click on 'Black' radio")
-    public void clickBlackRadio(){
-        secondColorRadioBlack.click();
-    }
-
-    @Step("check if photos of the chosen radio color have appeared")
-    public boolean isPhotoDisplayedForColor(String photoColor) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        try {
-            return wait.until(ExpectedConditions.refreshed(ExpectedConditions.attributeContains(
-                    By.xpath("(//div[@data-test-grid-item='0']//img)[1]"),
-                    "src",
-                    photoColor
-            )));
-        } catch (TimeoutException e) {
-            return false;
-        }
+    @Step("check if radio is selected")
+    public boolean isColorRadioSelected(WebElement radio){
+        return radio.getDomAttribute("class").contains("swatch-active");
     }
 
     @Step("scroll to 'Size' button and click")
@@ -108,17 +69,10 @@ public class SlimStraightJeansItemsPage extends BasePage{
        return sizeDropdown.isDisplayed();
     }
 
-    @Step("scroll to '30 X 30' size inside dropdown and pick it")
-    public void scrollTo30X30SizeAndPick(){
+    @Step("scroll to first size option inside dropdown and pick it")
+    public void scrollToFirstAvailableSizeAndPick(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(optionSize30X30).moveToElement(optionSize30X30)
-                .pause(Duration.ofSeconds(2)).click().perform();
-    }
-
-    @Step("scroll to '28 X 34' size inside dropdown and pick it")
-    public void scrollTo28X34SizeAndPick(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(optionSize28X34).moveToElement(optionSize28X34)
+        actions.scrollToElement(firstSizeAvailableOption).moveToElement(firstSizeAvailableOption)
                 .pause(Duration.ofSeconds(2)).click().perform();
     }
 
@@ -190,5 +144,27 @@ public class SlimStraightJeansItemsPage extends BasePage{
     @Step("get item's 'Quantity' from modal 'Added to bag' section")
             public String getItemsQuantityText(){
         return itemsQuantitySection.getText();
+    }
+
+    @Step("get title of selected by default radio color")
+    public WebElement getSelectedColorRadio() {
+        return driver.findElement(By.xpath("//div[@data-test-color-swatches]//div[contains(@class,'swatch-active')]"));
+    }
+
+    @Step("get all radios and click on first available")
+    public void clickOnFirstAvailableColorRadioAndWaitForChanges(WebElement previousSelected) {
+        List<WebElement> allRadios = driver.findElements
+                (By.xpath("//div[@data-test-color-swatches]//div[@role='button']"));
+        for (WebElement radio : allRadios) {
+            if (!radio.getDomAttribute("class").contains("swatch-active")) {
+                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", radio);
+                radio.click();
+                break;
+            }
+        }
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(driver -> {
+            String classAttr = previousSelected.getDomAttribute("class");
+            return classAttr == null || !classAttr.contains("swatch-active");
+        });
     }
 }

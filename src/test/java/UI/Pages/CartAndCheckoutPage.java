@@ -28,23 +28,25 @@ public class CartAndCheckoutPage extends BasePage{
     @FindBy (xpath = "//div[@data-test-cart-item-quantity]")
     private WebElement addedToCartItemsQuantity;
     @FindBy (xpath = "//h1[contains(@class, 'page-header')]")
-    private WebElement pageHeader;
-    @FindBy (xpath = "(//div[@data-product-id='2308_2255_212']//a[contains(@href, '/2308_2255_212')])[1]")
-    private WebElement itemToAddBySearch;
-    @FindBy (xpath = "//div[@data-product-id='2308_2255_212']//h3[@data-product-name]")
+    private WebElement pagesHeader;
+    @FindBy (xpath = "(//div[contains(@class, 'qa-search-results-list')]//div[contains (@class, 'product-tile')])[3]")
+    private WebElement firstItemAfterSearch;
+    @FindBy (xpath = "(//div[contains(@class, 'product-tile')])[3]//h3[contains(@class, 'product-name')]")
     private WebElement itemsNameToAddBySearch;
-    @FindBy (xpath = "//div[@data-product-id='2308_2255_212']//div[@data-testid='sale-price']")
+    @FindBy (xpath = "(//div[contains(@class, 'product-tile')])[3]//div[@data-testid='sale-price']")
     private WebElement itemsSalePriceToAddBySearch;
-    @FindBy (xpath = "//div[@data-product-id='2308_2255_212']//div[@data-testid='list-price']")
+    @FindBy (xpath = "(//div[contains(@class, 'product-tile')])[3]//div[@data-testid='list-price']")
     private WebElement itemsRegularPriceToAddBySearch;
     @FindBy (xpath = "//div[@data-id='modalSidetrayQuickview']")
     private WebElement quickShopModal;
     @FindBy (className ="modal-title")
     private WebElement modalsTitle;
-    @FindBy(xpath = "//a[@role='menuitem' and text()='L']")
-    private WebElement sizeLInsideDropdown;
-    @FindBy(xpath = "//button[@data-test-btn='add-to-bag']")
+    @FindBy(xpath = "//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")
+    private WebElement firstAvailableSizeInsideDropdown;
+    @FindBy(name = "addToBag")
     private WebElement addToBagButton;
+    @FindBy(name = "add-to-bag")
+    private WebElement addToBagButtonInQuickShop;
     @FindBy (name = "viewBag")
     private WebElement viewBagButton;
     @FindBy(xpath = "//div[@data-test-free-shipping-widget]//span[@data-test-shipping-message]")
@@ -101,6 +103,12 @@ public class CartAndCheckoutPage extends BasePage{
     private WebElement taxValue;
     @FindBy (xpath = "//select[@name='states']//option[@value='IL']")
     private WebElement illinoisOption;
+    @FindBy (xpath = "//label[@data-test-accordion='price: high to low']")
+    private WebElement highToLowRadio;
+    @FindBy (xpath = "//span[@data-test-accordion='sort']")
+    private WebElement sortFilter;
+    @FindBy (xpath = "//span[@data-test-threshold-max]")
+    private WebElement maxValueOfCostForFreeShipping;
 
     //methods
     public CartAndCheckoutPage(WebDriver driver) {
@@ -146,13 +154,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("get page header's text")
     public String getPageHeadersText(){
-        return pageHeader.getText();
+        return pagesHeader.getText();
     }
 
-    @Step("scroll to item for adding to bag that was found via search")
-    public void scrollToItemForBag(){
+    @Step("scroll to first that was found via search")
+    public void scrollToFirstItemForBag(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(itemToAddBySearch).moveToElement(itemToAddBySearch).pause(2).perform();
+        actions.scrollToElement(firstItemAfterSearch).moveToElement(firstItemAfterSearch).pause(2).perform();
     }
 
     @Step("get item's name that was found via search for adding to bag")
@@ -170,11 +178,11 @@ public class CartAndCheckoutPage extends BasePage{
         return itemsRegularPriceToAddBySearch.getText();
     }
 
-    @Step("move to quick shop button, wait for it and click")
+    @Step("move to 'Quick Shop' button, wait for it and click")
     public void moveWaitAndClickOnQuickShopButton(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement quickShopButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("//div[@data-product-id='2308_2255_212']//a[contains(@class, 'quickshop-product-btn')]")
+                By.xpath("(//div[contains(@class, 'product-tile')])[3]//a[contains(@class, 'quickshop-product-btn')]")
         ));
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", quickShopButton);
     }
@@ -191,21 +199,33 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollToSizeAndClick(){
-        WebElement size = driver.findElement(By.xpath
-                ("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]"));
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(size)
-                .moveToElement(size).pause(Duration.ofSeconds(2)).click().perform();
+        By sizeButtonLocator =
+                By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
+        WebElement refreshedSizeButton = new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(ExpectedConditions.refreshed(
+                        ExpectedConditions.elementToBeClickable(sizeButtonLocator)
+                ));
+        new Actions(driver)
+                .scrollToElement(refreshedSizeButton)
+                .moveToElement(refreshedSizeButton)
+                .pause(Duration.ofSeconds(1))
+                .click()
+                .perform();
     }
 
-    @Step("click on 'L' size inside 'Size' dropdown")
-    public void clickLSize(){
-        sizeLInsideDropdown.click();
+    @Step("click on first size option inside 'Size' dropdown")
+    public void clickFirstAvailableSize(){
+        firstAvailableSizeInsideDropdown.click();
     }
 
     @Step("click on 'Add to Bag' button")
     public void clickOnAddToBag(){
         addToBagButton.click();
+    }
+
+    @Step("click on 'Add to Bag' button inside 'Quick Shop' modal")
+    public void clickOnAddToBagInQuickShop(){
+        addToBagButtonInQuickShop.click();
     }
 
     @Step("click on 'View Bag' button")
@@ -255,8 +275,13 @@ public class CartAndCheckoutPage extends BasePage{
     }
 
     @Step("click on increase amount (+) button")
-    public void clickIncreaseAmountButton(){
-        increaseAmountButton.click();
+    public void scrollAndClickIncreaseAmountButton(){
+        WebElement increaseAmountButton = driver.findElement(By.xpath("//button[@aria-label='increase']"));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).
+                until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@aria-label='increase']")));
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(increaseAmountButton)
+                .moveToElement(increaseAmountButton).pause(Duration.ofSeconds(2)).click().perform();
     }
 
     @Step("click on 'Update Bag' button")
@@ -269,7 +294,7 @@ public class CartAndCheckoutPage extends BasePage{
         return amountOfItemsValue.getText();
     }
 
-    @Step("wait for quantity to bee visible after changes")
+    @Step("wait for quantity to be visible after changes")
     public void waitForQuantity(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         wait.until(ExpectedConditions.visibilityOf(addedToCartItemsQuantity));
@@ -281,12 +306,12 @@ public class CartAndCheckoutPage extends BasePage{
         actions.scrollToElement(removeButton).moveToElement(removeButton).pause(2).click().perform();
     }
 
-    @Step("get text from empty bag message")
+    @Step("get text from 'Empty Bag' message")
     public String getEmptyBagText() {
         return emptyBagMessage.getText();
     }
 
-    @Step("wait for Empty bag field to be visible")
+    @Step("wait for 'Empty Bag' field to be visible")
     public void waitForEmptyBag(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions
@@ -330,7 +355,7 @@ public class CartAndCheckoutPage extends BasePage{
         actions.scrollToElement(stateButton).moveToElement(stateButton).pause(2).click().perform();
     }
 
-    @Step("pick Illinois from 'States'")
+    @Step("pick Illinois option from 'States'")
     public void pickIllinois(){
         illinoisOption.click();
     }
@@ -345,7 +370,7 @@ public class CartAndCheckoutPage extends BasePage{
        return "true".equals(standardRadio.getDomAttribute("aria-checked"));
     }
 
-    @Step("scroll to '2 day' radio and click")
+    @Step("scroll to '2 Day' radio and click")
     public void scrollToTwoDayAndClick() {
         Actions actions = new Actions(driver);
         actions.scrollToElement(twoDayRadio).moveToElement(twoDayRadio).pause(Duration.ofSeconds(2)).click().perform();
@@ -385,8 +410,27 @@ public class CartAndCheckoutPage extends BasePage{
         actions.scrollToElement(firstnameField).moveToElement(firstnameField).pause(2).perform();
     }
 
-    @Step("get Tax value text")
+    @Step("get 'Tax' value text")
     public String getTaxValeText(){
         return taxValue.getText();
+    }
+
+    @Step("click on radio 'Price: High to Low' inside search result page")
+    public void scrollAndClickPriceHighToLow(){
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(highToLowRadio).moveToElement(highToLowRadio).pause(Duration.ofSeconds(2))
+                .click().perform();
+    }
+
+    @Step("click on filter 'Sort' inside search result page")
+    public void scrollAndClickSort(){
+        Actions actions = new Actions(driver);
+        actions.scrollToElement(sortFilter).moveToElement(sortFilter).pause(Duration.ofSeconds(2))
+                .click().perform();
+    }
+
+    @Step("get text of max value cost for free shipping")
+    public String getMaxCostOfShipping(){
+        return maxValueOfCostForFreeShipping.getText();
     }
 }

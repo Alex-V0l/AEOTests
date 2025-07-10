@@ -11,7 +11,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 
-public class HomePage extends BasePage{
+public class HomeSearchSectionPage extends BasePage{
 
     //locators
     @FindBy(xpath = "//button[@data-test-btn='search-cta']")
@@ -26,7 +26,7 @@ public class HomePage extends BasePage{
     private WebElement subtitleAfterSearch;
     @FindBy(xpath = "//ul[@data-test-suggestions]")
     private WebElement suggestionsDropdown;
-    @FindBy(xpath = "//button[contains (@aria-label, 'search for new york yankees instead')]")
+    @FindBy(xpath = "//button[contains (@aria-label, 'search for new york yankee instead')]")
     private WebElement suggestionAfterYankeesType;
     @FindBy(xpath = "//button[@aria-label='search for raincoat instead']")
     private WebElement theOnlySuggestionAfterRainciatType;
@@ -36,11 +36,9 @@ public class HomePage extends BasePage{
     private WebElement mensMenuAbove;
     @FindBy (xpath = "//a[contains(@class, 'bag-button')]")
     private WebElement bagButton;
-    @FindBy (xpath = "//button[@data-test-btn='signin']")
-    private  WebElement singInButton;
 
     //methods
-    public HomePage(WebDriver driver){
+    public HomeSearchSectionPage(WebDriver driver){
         super(driver);
         PageFactory.initElements(driver, this);
     }
@@ -120,7 +118,7 @@ public class HomePage extends BasePage{
         actions.moveToElement(mensMenuAbove).pause(Duration.ofSeconds(2)).perform();
     }
 
-    @Step("click on 'Jeans' inside 'Men's' section via JS with waiting for presence ofd element")
+    @Step("click on 'Jeans' inside 'Men's' section with waiting for presence ofd element")
     public void clickOnJeansInsideMens() {
         By jeansLinkLocator = By.xpath("//a[@href='/us/en/c/men/bottoms/jeans/cat6430041?pagetype=plp']");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));

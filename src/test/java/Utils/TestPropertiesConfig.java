@@ -14,12 +14,6 @@ public interface TestPropertiesConfig extends Config {
     @Config.DefaultValue(BASE_URL_UI)
     String getBaseURl();
 
-    @Config.Key("login")
-    String getLogin();
-
-    @Config.Key("password")
-    String getPassword();
-
     @Config.Key("remoteUrl")
     String remoteUrl();
 

@@ -92,7 +92,7 @@ public class SingInPage extends BasePage{
     }
 
     @Step("wait for 'Account' modal's header to contain user's name")
-    public void waitForUserNameInAccountHeader(String userName) {
+    public void waitForUserNameInAccountsHeader(String userName) {
         new WebDriverWait(driver, Duration.ofSeconds(7))
                 .until(ExpectedConditions.textToBePresentInElement(accountsHeader, userName));
     }

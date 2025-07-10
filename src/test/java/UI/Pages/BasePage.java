@@ -32,11 +32,6 @@ public class BasePage {
         driver.get(BASE_URL_UI);
     }
 
-    @Step("open page")
-    public void openPage(String Url){
-        driver.get(Url);
-    }
-
     @Step("wait for url")
     public void waitForUrl(String expectedUrl){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -46,7 +41,7 @@ public class BasePage {
     @Step("check if there is a modal layer with shadow root and close it")
     public void closeModalAdverts() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             WebElement shadowHost = wait.until(ExpectedConditions.presenceOfElementLocated(
                     By.cssSelector("div.bloomreach-weblayer")));
             SearchContext shadowRoot = shadowHost.getShadowRoot();
