@@ -1,16 +1,16 @@
-package API.Models.BasketModels;
+package API.Models.CartModels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemForPatch {
-    private String skuId;
-    private int quantity;
-    private String itemId;
+public class AddToCartResponse {
+    private String cartId;
+    private List<String> errors;
 }

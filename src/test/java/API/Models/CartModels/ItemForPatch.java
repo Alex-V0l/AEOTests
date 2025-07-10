@@ -1,4 +1,4 @@
-package API.Models.BasketModels;
+package API.Models.CartModels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OrderItem {
+public class ItemForPatch {
     private String skuId;
     private int quantity;
+    private String itemId;
 }

@@ -1,4 +1,4 @@
-package API.Models.BasketModels;
+package API.Models.CartModels;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
@@ -11,9 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ItemFromBasketResponse {
-    private String itemId;
-    private int quantity;
-    private double price;
-    private String sku;
+public class CartResponse {
+    private DataFromCartResponse data;
 }

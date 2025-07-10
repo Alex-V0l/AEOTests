@@ -1,14 +1,15 @@
 package API.Tests;
 
 import API.Controllers.AuthorizationController;
+import API.Controllers.CartController;
 import API.Controllers.SearchController;
 import API.Models.SearchModels.ItemAfterSearch;
+import Steps.APISteps;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static API.TestData.TestData.NEW_YORK_YANKEES_QUERY;
 import static Utils.Constants.SEARCH_QUERY_SHOULD_NOT_HAVE_BEEN_EXECUTED;
@@ -18,12 +19,18 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @Tag("API tests")
 public class SearchTests {
 
+    static AuthorizationController authController;
     static SearchController searchController;
+    static APISteps apiSteps;
+    static CartController cartController;
 
     @BeforeAll
     static void setup() {
-        AuthorizationController authController = new AuthorizationController();
-        searchController = new SearchController(authController.getAccessToken());
+        authController = new AuthorizationController();
+        String token = authController.getAccessToken();
+        searchController = new SearchController(token);
+        cartController = new CartController(token);
+        apiSteps = new APISteps(searchController, authController, cartController);
     }
 
     @DisplayName("Search all items by name and check status code")
@@ -32,9 +39,7 @@ public class SearchTests {
     void getItemsByName(){
         int expectedStatusCode = 200;
 
-        int actualStatusCode = searchController.getItemsByName(NEW_YORK_YANKEES_QUERY).statusCode();
-
-        assertThat(actualStatusCode)
+        assertThat(searchController.getItemsByName(NEW_YORK_YANKEES_QUERY).statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, "Search query should have been executed").isEqualTo(expectedStatusCode);
     }
 
@@ -49,22 +54,14 @@ public class SearchTests {
 
         assertThat(queryResponse.statusCode()).isEqualTo(expectedStatusCode);
 
-        List<ItemAfterSearch> items = queryResponse.jsonPath().getList("included", ItemAfterSearch.class);
-        List<ItemAfterSearch> yankeesItems = items.stream()
-                .filter(item -> item.getAttributes().getDisplayName().toLowerCase().contains(queryText))
-                .collect(Collectors.toList());
+        List <ItemAfterSearch> yankeesItems = apiSteps.getFilteredItemsByQueryText(queryResponse, queryText);
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(yankeesItems).isNotNull();
         softly.assertThat(yankeesItems.isEmpty()).isFalse();
-
-        for (ItemAfterSearch item : yankeesItems) {
-            String itemName = item.getAttributes().getDisplayName();
-            softly.assertThat(itemName).isNotNull()
-                    .as("There must be items with name, corresponding to query, in the search result")
-                    .containsIgnoringCase(queryText.toLowerCase());
-        }
         softly.assertAll();
+
+        apiSteps.checkSearchResultsContainQuery(yankeesItems, queryText);
     }
 
     @DisplayName("Search all items by name using invalid path and check status code")
@@ -73,9 +70,7 @@ public class SearchTests {
     void getItemsByNameUsingInvalidPath(){
         int expectedStatusCode = 404;
 
-        int actualStatusCode = searchController.getItemsByNameUsingInvalidPath(NEW_YORK_YANKEES_QUERY).statusCode();
-
-        assertThat(actualStatusCode)
+        assertThat(searchController.getItemsByNameUsingInvalidPath(NEW_YORK_YANKEES_QUERY).statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, SEARCH_QUERY_SHOULD_NOT_HAVE_BEEN_EXECUTED).isEqualTo(expectedStatusCode);
     }
 
@@ -85,9 +80,7 @@ public class SearchTests {
     void getItemsUsingEmptyQuery(){
         int expectedStatusCode = 400;
 
-        int actualStatusCode = searchController.getItemsWithEmptyName().statusCode();
-
-        assertThat(actualStatusCode)
+        assertThat(searchController.getItemsWithEmptyName().statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, SEARCH_QUERY_SHOULD_NOT_HAVE_BEEN_EXECUTED).isEqualTo(expectedStatusCode);
     }
 }

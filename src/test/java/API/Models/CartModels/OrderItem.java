@@ -1,16 +1,15 @@
-package API.Models.BasketModels;
+package API.Models.CartModels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-public class OrderRequest {
-    private List<OrderItem> items;
+@Builder
+public class OrderItem {
+    private String skuId;
+    private int quantity;
 }

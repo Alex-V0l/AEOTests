@@ -1,6 +1,6 @@
 package API.Controllers;
 
-import API.Models.AuthResponse;
+import API.Models.AuthResponseModel;
 import io.qameta.allure.Step;
 import io.qameta.allure.restassured.AllureRestAssured;
 import io.restassured.RestAssured;
@@ -42,7 +42,7 @@ public class AuthorizationController {
                 .post(TOKEN_ENDPOINT)
                 .andReturn();
 
-        this.accessToken = response.as(AuthResponse.class).getAccessToken();
+        this.accessToken = response.as(AuthResponseModel.class).getAccessToken();
     }
 
 

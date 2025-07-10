@@ -1,8 +1,8 @@
 package API.TestData;
 
-import API.Models.AuthResponse;
-import API.Models.BasketModels.OrderItem;
-import API.Models.BasketModels.OrderRequest;
+import API.Models.AuthResponseModel;
+import API.Models.CartModels.OrderItem;
+import API.Models.CartModels.OrderRequest;
 
 import java.util.List;
 
@@ -110,7 +110,7 @@ public class TestData {
                             .build()
             ))
             .build();
-    public static final AuthResponse VALID_TOKEN_RESPONSE = AuthResponse.builder()
+    public static final AuthResponseModel VALID_TOKEN_RESPONSE = AuthResponseModel.builder()
             .expiresIn(1800)
             .refreshExpiresIn(0)
             .tokenType("Bearer")

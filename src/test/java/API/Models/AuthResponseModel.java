@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AuthResponse {
+public class AuthResponseModel {
     @JsonProperty("access_token")
     private String accessToken;
     @JsonProperty("expires_in")

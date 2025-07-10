@@ -1,7 +1,7 @@
 package API.Tests;
 
 import API.Controllers.AuthorizationController;
-import API.Models.AuthResponse;
+import API.Models.AuthResponseModel;
 import io.restassured.response.Response;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
@@ -25,9 +25,7 @@ public class AuthorizationTests {
     void postForValidGuestToken(){
         int expectedStatusCode = 200;
 
-        int actualStatusCode = authController.getGuestTokenWithAuthHeaderValue(VALID_AUTH_HEADER_VALUE).statusCode();
-
-        assertThat(actualStatusCode)
+        assertThat(authController.getGuestTokenWithAuthHeaderValue(VALID_AUTH_HEADER_VALUE).statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, TOKEN_SHOULD_HAVE_BEEN_RECEIVED).isEqualTo(expectedStatusCode);
     }
 
@@ -38,9 +36,7 @@ public class AuthorizationTests {
     void postGuestTokenWithInvalidAuthValue(){
         int expectedStatusCode = 401;
 
-        int actualStatusCode = authController.getGuestTokenWithAuthHeaderValue(INVALID_AUTH_HEADER_VALUE).statusCode();
-
-        assertThat(actualStatusCode)
+        assertThat(authController.getGuestTokenWithAuthHeaderValue(INVALID_AUTH_HEADER_VALUE).statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, "Request should not have been executed").isEqualTo(expectedStatusCode);
     }
 
@@ -51,11 +47,10 @@ public class AuthorizationTests {
         int expectedStatusCode = 200;
 
         Response tokenResponse = authController.getGuestTokenWithAuthHeaderValue(VALID_AUTH_HEADER_VALUE);
-        int actualStatusCode = tokenResponse.statusCode();
-        AuthResponse actualResponse = tokenResponse.as(AuthResponse.class);
+        AuthResponseModel actualResponse = tokenResponse.as(AuthResponseModel.class);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(actualStatusCode)
+        softly.assertThat(tokenResponse.statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, TOKEN_SHOULD_HAVE_BEEN_RECEIVED).isEqualTo(expectedStatusCode);
         softly.assertThat(actualResponse)
                 .usingRecursiveComparison()
@@ -71,13 +66,12 @@ public class AuthorizationTests {
         String expectedMessage = "You don't have permission to access";
 
         Response actualResponse = authController.getGuestTokenWithContentTypeValue(INVALID_GRANT_TYPE_VALUE);
-        int actualStatusCode = actualResponse.statusCode();
-        String actualMessage = actualResponse.asPrettyString();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(actualStatusCode)
+        softly.assertThat(actualResponse.statusCode())
                 .as(VALUES_HAVE_TO_BE_EQUAL, "Access must have been forbidden").isEqualTo(expectedStatusCode);
-        softly.assertThat(actualMessage).as("Message should represent an error").contains(expectedMessage);
+        softly.assertThat(actualResponse.asPrettyString()).as("Message should represent an error")
+                .contains(expectedMessage);
         softly.assertAll();
     }
 }

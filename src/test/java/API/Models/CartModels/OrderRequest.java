@@ -1,4 +1,4 @@
-package API.Models.BasketModels;
+package API.Models.CartModels;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class ItemsForPatchRequest {
-    private List<ItemForPatch> items;
+@Data
+public class OrderRequest {
+    private List<OrderItem> items;
 }
