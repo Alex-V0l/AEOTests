@@ -80,7 +80,7 @@ public class HomePageSearchTests extends BaseTest{
     @Test
     void searchAndPickSuggestion() {
         String textToFind = "new york";
-        String queryText = utils.formatSearchQueryForUrl(textToFind) + "+yankee";
+        String queryText = utils.formatSearchQueryForUrl(textToFind);
         String expectedUrl = BASE_URL_UI + "s/" + queryText;
 
         uiSteps.openSearchAndType(textToFind);
