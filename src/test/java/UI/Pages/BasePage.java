@@ -57,4 +57,17 @@ public class BasePage {
             System.err.println("Unexpected error while trying to close modal: " + e.getMessage());
         }
     }
+
+    @Step("close cookies banner, if visible")
+    public void closeCookieBannerIfVisible() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement cookieBannerOkButton = wait.until(ExpectedConditions.elementToBeClickable(
+                    By.xpath("//div[@role='dialog' and contains(@aria-label,'Clarip Cookie Consent Banner')]//button[text()='OK']")
+            ));
+            cookieBannerOkButton.click();
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".cc-window.cc-banner")));
+        } catch (TimeoutException e) {
+        }
+    }
 }
