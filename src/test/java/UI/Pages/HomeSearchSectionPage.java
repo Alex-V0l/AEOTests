@@ -93,6 +93,10 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("click on the last suggestion after dropdown has appeared")
     public void clickOnSuitableSuggestion(){
+        WebElement suggestionAfterYankeesType = driver.findElement
+                (By.xpath("//ul[@data-test-suggestions]//button[contains(@aria-label, 'search for new york instead')]"));
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until
+                (ExpectedConditions.elementToBeClickable(suggestionAfterYankeesType));
         suggestionAfterYankeesType.click();
     }
 

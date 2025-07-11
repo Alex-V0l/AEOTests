@@ -51,6 +51,8 @@ public class SingInPage extends BasePage{
 
     @Step("get text from 'Sign In' modal header")
     public String getSignInModalsHeaderText(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.textToBePresentInElement(signInModalHeader, "Sign In"));
         return signInModalHeader.getText();
     }
 
