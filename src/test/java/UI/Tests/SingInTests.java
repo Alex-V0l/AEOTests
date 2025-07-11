@@ -65,7 +65,7 @@ public class SingInTests extends BaseTest{
         String expectedAlertsText = "Hold up, there's a problem.";
 
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
-        uIsteps.fillInNecessarySignInFieldsAndClick(invalidLogin, config.getPasswordForSignIn());
+        uIsteps.fillInNecessarySignInFieldsClickAndWait(invalidLogin, config.getPasswordForSignIn());
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(SIPage.getAlertsHeaderText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedAlertsText);
@@ -83,7 +83,7 @@ public class SingInTests extends BaseTest{
                 "Please enter a password that contains 8-25 characters with at least one letter and one number.";
 
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
-        uIsteps.fillInNecessarySignInFieldsAndClick(config.getLoginForSignIn(), PasswordOfSevenDigits);
+        uIsteps.fillInNecessarySignInFieldsClickAndWait(config.getLoginForSignIn(), PasswordOfSevenDigits);
 
         assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
     }

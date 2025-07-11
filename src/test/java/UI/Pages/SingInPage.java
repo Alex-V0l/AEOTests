@@ -1,8 +1,11 @@
 package UI.Pages;
 
 import io.qameta.allure.Step;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -58,7 +61,9 @@ public class SingInPage extends BasePage{
 
     @Step("type into 'Login' field")
     public void typeIntoEmail(String login){
-        loginField.sendKeys(login);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript
+                ("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", loginField, login);
     }
 
     @Step("type into 'Password' field")
@@ -109,8 +114,9 @@ public class SingInPage extends BasePage{
 
     @Step("wait for error message")
     public void waitForError(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.visibilityOf(clueElement));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[contains (@class, 'qa-error-help-block')]")));
     }
 
     @Step("click in 'Forgot Password' basic button")
