@@ -274,10 +274,10 @@ public class CartAndCheckoutPage extends BasePage{
         return editItemModal.isDisplayed();
     }
 
-    @Step("click on increase amount (+) button")
+    @Step("scroll and click on increase amount (+) button")
     public void scrollAndClickIncreaseAmountButton(){
         WebElement increaseAmountButton = driver.findElement(By.xpath("//button[@aria-label='increase']"));
-        new WebDriverWait(driver, Duration.ofSeconds(5)).
+        new WebDriverWait(driver, Duration.ofSeconds(10)).
                 until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@aria-label='increase']")));
         Actions actions = new Actions(driver);
         actions.scrollToElement(increaseAmountButton)
