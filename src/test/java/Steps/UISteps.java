@@ -233,7 +233,6 @@ public class UISteps {
         cPage.clickUpdateBagButton();
         cPage.waitForQuantity();
         cPage.waitForSpinnerToDisappear();
-        cPage.waitForQuantityChange(oldQuantity);
         return changedAmountOfItems;
     }
 
