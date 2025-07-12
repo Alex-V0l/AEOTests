@@ -140,6 +140,7 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.pickSizeAddItemAndGoToCart();
         CartInfo itemFromCartInfo = uiSteps.getInfoFromCart();
+        String initQuantity = String.valueOf(utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity()));
         cPage.scrollAndClickEditButton();
 
         SoftAssertions softly =  new SoftAssertions();
@@ -148,7 +149,7 @@ public class CartAndCheckoutTests extends BaseTest{
         softly.assertAll();
 
         String quantityFromEditItem =
-                uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges(itemFromCartInfo.getAddedItemsQuantity());
+                uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges(initQuantity);
         ItemData updatedItemInfo = uiSteps.getItemDataFromCartPage();
         double parsedFirstSalePrice = utils.parseToDouble(itemFromCartInfo.getAddedItemsSalePrice());
         int parsedFirstAmount = utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity());

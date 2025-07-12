@@ -93,7 +93,14 @@ public class CreateAnAccountPage extends BasePage {
     public void scrollAndTypeIntoFirstNameField(String firstName) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", firstNameField);
-        firstNameField.sendKeys(firstName);
+        js.executeScript(
+                "arguments[0].value = arguments[1];" +
+                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
+                firstNameField, firstName
+        );
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(d ->
+                firstName.equals(firstNameField.getDomProperty("value"))
+        );
     }
 
     @Step("scroll and type into 'Last name' field")
