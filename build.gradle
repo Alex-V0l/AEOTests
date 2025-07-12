@@ -44,3 +44,7 @@ test {
     useJUnitPlatform()
     systemProperties(System.getProperties())
 }
+
+tasks.named('processTestResources') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
