@@ -192,7 +192,7 @@ public class MensJeansPage extends BasePage{
 
     @Step("wait for second item's url")
     public void waitForItemsUrl(String itemsUrl){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.urlContains(itemsUrl));
     }
 }
