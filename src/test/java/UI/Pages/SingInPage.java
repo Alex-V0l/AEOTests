@@ -73,7 +73,12 @@ public class SingInPage extends BasePage{
 
     @Step("type into 'Password' field")
     public void typeIntoPassword(String password){
-        passwordField.sendKeys(password);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript
+                ("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", passwordField, password);
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver ->
+                password.equals(loginField.getDomProperty("value"))
+        );
     }
 
     @Step("click on 'Sign In' button")

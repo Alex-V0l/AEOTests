@@ -45,16 +45,16 @@ public class UISteps {
     }
 
     @Step("type first name and last name and click 'Sigh in' button")
-    public void fillInNecessarySignInFieldsAndClick(String firstname, String lastname) {
-        SIPage.typeIntoEmail(firstname);
-        SIPage.typeIntoPassword(lastname);
+    public void fillInNecessarySignInFieldsAndClick(String login, String password) {
+        SIPage.typeIntoEmail(login);
+        SIPage.typeIntoPassword(password);
         SIPage.clickSignIn();
     }
 
     @Step("type first name and last name, click 'Sign in' button and wait for error")
-    public void fillInNecessarySignInFieldsClickAndWait(String firstname, String lastname) {
-        SIPage.typeIntoEmail(firstname);
-        SIPage.typeIntoPassword(lastname);
+    public void fillInNecessarySignInFieldsClickAndWait(String login, String password) {
+        SIPage.typeIntoEmail(login);
+        SIPage.typeIntoPassword(password);
         SIPage.clickSignIn();
         SIPage.waitForError();
     }
