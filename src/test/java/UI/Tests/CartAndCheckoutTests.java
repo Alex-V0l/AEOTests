@@ -38,6 +38,7 @@ public class CartAndCheckoutTests extends BaseTest{
         jIPage = new JeansItemsPage(driver);
         uiSteps = new UISteps(driver);
         cPage.openHomePage();
+        hssPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("Click on bag button, check text of page's header and url")

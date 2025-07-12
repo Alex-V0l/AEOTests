@@ -26,6 +26,7 @@ public class MensJeansTests extends BaseTest{
         mJPage = new MensJeansPage(driver);
         uiSteps = new UISteps(driver);
         hssPage.openHomePage();
+        hssPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("Move cursor to Men's section, click on Jeans link, check url and subtitle")

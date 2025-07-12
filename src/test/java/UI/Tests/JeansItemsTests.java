@@ -28,6 +28,7 @@ public class JeansItemsTests extends BaseTest{
         jIPage = new JeansItemsPage(driver);
         uiSteps = new UISteps(driver);
         hssPage.openHomePage();
+        hssPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("On current item's page find selected color radio," +

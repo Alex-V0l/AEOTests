@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id("io.qameta.allure") version "2.12.0"
+    id("io.qameta.allure") version "2.11.2"
 }
 
 group = 'Vln'
@@ -30,6 +30,14 @@ dependencies {
     testImplementation 'org.aeonbits.owner:owner:1.0.12'
     implementation 'org.seleniumhq.selenium:selenium-java:4.28.1'
     testImplementation 'net.datafaker:datafaker:2.0.2'
+}
+
+sourceSets {
+    test {
+        resources {
+            srcDir 'src/test/resources'
+        }
+    }
 }
 
 test {
