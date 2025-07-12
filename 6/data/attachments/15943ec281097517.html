@@ -1,0 +1,42 @@
+<div>PATCH to https://www.ae.com/ugp-api/bag/v1/items</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;items&quot;: [
+        {
+            &quot;skuId&quot;: &quot;0043656941&quot;,
+            &quot;quantity&quot;: 3,
+            &quot;itemId&quot;: &quot;91ab5a37-b153-4a07-a96e-c3efc4e1851c&quot;
+        }
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>aesite: AEO_US</div>
+            <div>Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTIzMjM0NzcsImlhdCI6MTc1MjMyMTY3NywianRpIjoiYjU0MmY1MzUtNzhhMy00NDMyLWJmODItMGJhNGQzYjg1YWFlIiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyI2NGU5YTZhOC00MzI2LTQzMjItOTBiMC1hYTkwMzhlMmFkMmMiXSwicHJvZmlsZUlkIjpbIjhjMjI3MmM5LWI2MTYtNGExNC04MmU4LTNlMWYyODgzNGZkZCJdLCJzY29wZSI6Imd1ZXN0In0.uHb56fOZe_y7gPms5PW95wVtKgb3xl71Yir_GL9munhjtGkNxXzJzN0GwE6yRZvfq826nzBseg3MZBon03rAt2u1gOB0lncAKhz53ElNlD5lK5VbGoRInHCYmxJ6xeTbZ9nsVvhG4xqb0f3s7FJOyNEWuCkJpUTixTuStXi7d1Yuy9bH7Erif7bfM-VM8HO-fdgqziZk9FvSIahbhySdbf3p79yvzAA9xm148I5J75BcuHtRHBscGESVfRTuoyzjvRLapABWBUlSm8IlHkKhff11tlpQ67NNsUd7UIYZPGZvSes-F2JsOCx8qZoau-54ac1sBd8i1D2lcn6Ky2A2xw</div>
+            <div>Accept: */*</div>
+            <div>aelang: en_US</div>
+            <div>aecountry: US</div>
+            <div>x-access-token: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTIzMjM0NzcsImlhdCI6MTc1MjMyMTY3NywianRpIjoiYjU0MmY1MzUtNzhhMy00NDMyLWJmODItMGJhNGQzYjg1YWFlIiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyI2NGU5YTZhOC00MzI2LTQzMjItOTBiMC1hYTkwMzhlMmFkMmMiXSwicHJvZmlsZUlkIjpbIjhjMjI3MmM5LWI2MTYtNGExNC04MmU4LTNlMWYyODgzNGZkZCJdLCJzY29wZSI6Imd1ZXN0In0.uHb56fOZe_y7gPms5PW95wVtKgb3xl71Yir_GL9munhjtGkNxXzJzN0GwE6yRZvfq826nzBseg3MZBon03rAt2u1gOB0lncAKhz53ElNlD5lK5VbGoRInHCYmxJ6xeTbZ9nsVvhG4xqb0f3s7FJOyNEWuCkJpUTixTuStXi7d1Yuy9bH7Erif7bfM-VM8HO-fdgqziZk9FvSIahbhySdbf3p79yvzAA9xm148I5J75BcuHtRHBscGESVfRTuoyzjvRLapABWBUlSm8IlHkKhff11tlpQ67NNsUd7UIYZPGZvSes-F2JsOCx8qZoau-54ac1sBd8i1D2lcn6Ky2A2xw</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X PATCH &#39;https://www.ae.com/ugp-api/bag/v1/items&#39; -H &#39;aesite: AEO_US&#39; -H &#39;Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTIzMjM0NzcsImlhdCI6MTc1MjMyMTY3NywianRpIjoiYjU0MmY1MzUtNzhhMy00NDMyLWJmODItMGJhNGQzYjg1YWFlIiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyI2NGU5YTZhOC00MzI2LTQzMjItOTBiMC1hYTkwMzhlMmFkMmMiXSwicHJvZmlsZUlkIjpbIjhjMjI3MmM5LWI2MTYtNGExNC04MmU4LTNlMWYyODgzNGZkZCJdLCJzY29wZSI6Imd1ZXN0In0.uHb56fOZe_y7gPms5PW95wVtKgb3xl71Yir_GL9munhjtGkNxXzJzN0GwE6yRZvfq826nzBseg3MZBon03rAt2u1gOB0lncAKhz53ElNlD5lK5VbGoRInHCYmxJ6xeTbZ9nsVvhG4xqb0f3s7FJOyNEWuCkJpUTixTuStXi7d1Yuy9bH7Erif7bfM-VM8HO-fdgqziZk9FvSIahbhySdbf3p79yvzAA9xm148I5J75BcuHtRHBscGESVfRTuoyzjvRLapABWBUlSm8IlHkKhff11tlpQ67NNsUd7UIYZPGZvSes-F2JsOCx8qZoau-54ac1sBd8i1D2lcn6Ky2A2xw&#39; -H &#39;Accept: */*&#39; -H &#39;aelang: en_US&#39; -H &#39;aecountry: US&#39; -H &#39;x-access-token: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTIzMjM0NzcsImlhdCI6MTc1MjMyMTY3NywianRpIjoiYjU0MmY1MzUtNzhhMy00NDMyLWJmODItMGJhNGQzYjg1YWFlIiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyI2NGU5YTZhOC00MzI2LTQzMjItOTBiMC1hYTkwMzhlMmFkMmMiXSwicHJvZmlsZUlkIjpbIjhjMjI3MmM5LWI2MTYtNGExNC04MmU4LTNlMWYyODgzNGZkZCJdLCJzY29wZSI6Imd1ZXN0In0.uHb56fOZe_y7gPms5PW95wVtKgb3xl71Yir_GL9munhjtGkNxXzJzN0GwE6yRZvfq826nzBseg3MZBon03rAt2u1gOB0lncAKhz53ElNlD5lK5VbGoRInHCYmxJ6xeTbZ9nsVvhG4xqb0f3s7FJOyNEWuCkJpUTixTuStXi7d1Yuy9bH7Erif7bfM-VM8HO-fdgqziZk9FvSIahbhySdbf3p79yvzAA9xm148I5J75BcuHtRHBscGESVfRTuoyzjvRLapABWBUlSm8IlHkKhff11tlpQ67NNsUd7UIYZPGZvSes-F2JsOCx8qZoau-54ac1sBd8i1D2lcn6Ky2A2xw&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;items&quot;: [
+        {
+            &quot;skuId&quot;: &quot;0043656941&quot;,
+            &quot;quantity&quot;: 3,
+            &quot;itemId&quot;: &quot;91ab5a37-b153-4a07-a96e-c3efc4e1851c&quot;
+        }
+    ]
+}&#39;
+    </div>
+
