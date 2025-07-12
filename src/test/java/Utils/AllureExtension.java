@@ -10,6 +10,9 @@ public class AllureExtension implements AfterTestExecutionCallback {
 
     @Override
     public void afterTestExecution(ExtensionContext context) throws Exception {
-        if (context.getExecutionException().isPresent()) allureSteps.captureScreenshotSpoiler();
+        if (context.getExecutionException().isPresent()) {
+            allureSteps.captureScreenshotSpoiler();
+            allureSteps.attachPageSourceForAllure("HTML on failure");
+        }
     }
 }

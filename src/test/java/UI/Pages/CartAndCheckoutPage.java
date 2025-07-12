@@ -199,18 +199,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollToSizeAndClick(){
-        By sizeButtonLocator =
-                By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
-        WebElement refreshedSizeButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.refreshed(
-                        ExpectedConditions.elementToBeClickable(sizeButtonLocator)
-                ));
-        new Actions(driver)
-                .scrollToElement(refreshedSizeButton)
-                .moveToElement(refreshedSizeButton)
-                .pause(Duration.ofSeconds(1))
-                .click()
-                .perform();
+        By sizeButtonLocator = By.xpath
+                ("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement sizeButton = wait.until(ExpectedConditions.presenceOfElementLocated(sizeButtonLocator));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
+        js.executeScript("arguments[0].click();", sizeButton);
     }
 
     @Step("click on first size option inside 'Size' dropdown")
@@ -276,12 +271,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll and click on increase amount (+) button")
     public void scrollAndClickIncreaseAmountButton(){
-        WebElement increaseAmountButton = driver.findElement(By.xpath("//button[@aria-label='increase']"));
-        new WebDriverWait(driver, Duration.ofSeconds(10)).
-                until(ExpectedConditions.presenceOfElementLocated(By.xpath("//button[@aria-label='increase']")));
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(increaseAmountButton)
-                .moveToElement(increaseAmountButton).pause(Duration.ofSeconds(2)).click().perform();
+        By buttonLocator = By.xpath("//button[@aria-label='increase']");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.presenceOfElementLocated(buttonLocator));
+        WebElement increaseAmountButton = driver.findElement(buttonLocator);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", increaseAmountButton);
+        js.executeScript("arguments[0].click();", increaseAmountButton);
     }
 
     @Step("click on 'Update Bag' button")

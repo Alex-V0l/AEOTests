@@ -66,6 +66,9 @@ public class SingInPage extends BasePage{
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript
                 ("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", loginField, login);
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until(driver ->
+                login.equals(loginField.getAttribute("value"))
+        );
     }
 
     @Step("type into 'Password' field")

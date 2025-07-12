@@ -1,7 +1,9 @@
 package UI.Tests;
 
+import Utils.AllureExtension;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -13,6 +15,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
+@ExtendWith(AllureExtension.class)
 public class BaseTest {
     WebDriver driver;
 

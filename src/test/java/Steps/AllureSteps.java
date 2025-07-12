@@ -15,4 +15,12 @@ public class AllureSteps {
         Allure.addAttachment("Screenshot", new ByteArrayInputStream(((TakesScreenshot) BasePage.getDriver())
                 .getScreenshotAs(OutputType.BYTES)));
     }
+
+    @Step("save HTML in report")
+    public void attachPageSourceForAllure(String name) {
+        String pageSource = BasePage.getDriver().getPageSource();
+        Allure.addAttachment(name, "text/html", pageSource, ".html");
+    }
+
+
 }

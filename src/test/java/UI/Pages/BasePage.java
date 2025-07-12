@@ -6,6 +6,11 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 
 import static Utils.Constants.BASE_URL_UI;
@@ -63,11 +68,26 @@ public class BasePage {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             WebElement cookieBannerOkButton = wait.until(ExpectedConditions.elementToBeClickable(
-                    By.xpath("//div[@role='dialog' and contains(@aria-label,'Clarip Cookie Consent Banner')]//button[text()='OK']")
+                    By.xpath("//div[@role='dialog' and contains(@aria-label,'Clarip Cookie Consent Banner')]//btn[text()='OK']")
             ));
             cookieBannerOkButton.click();
             wait.until(ExpectedConditions.invisibilityOfElementLocated(By.cssSelector(".cc-window.cc-banner")));
         } catch (TimeoutException e) {
         }
     }
+
+    @Step("get HTML")
+    public void savePageSourceToFile(String fileName) {
+        try {
+            String pageSource = driver.getPageSource();
+            Path path = Paths.get("build/reports/" + fileName); // путь внутри билда
+            Files.createDirectories(path.getParent());
+            Files.write(path, pageSource.getBytes(StandardCharsets.UTF_8));
+            System.out.println("Saved page source to " + path.toAbsolutePath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

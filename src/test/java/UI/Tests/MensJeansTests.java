@@ -27,9 +27,6 @@ public class MensJeansTests extends BaseTest{
         mJPage = new MensJeansPage(driver);
         uiSteps = new UISteps(driver);
         hssPage.openHomePage();
-        driver.findElement(By.cssSelector("div[aria-label^='Clarip Cookie Consent']")).click();
-        System.out.println(driver.getPageSource());
-        mJPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("Move cursor to Men's section, click on Jeans link, check url and subtitle")
