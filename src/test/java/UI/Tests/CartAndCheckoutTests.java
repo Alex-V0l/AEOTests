@@ -147,7 +147,8 @@ public class CartAndCheckoutTests extends BaseTest{
         softly.assertThat(cPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedModalTitleText);
         softly.assertAll();
 
-        String quantityFromEditItem = uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges();
+        String quantityFromEditItem =
+                uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges(itemFromCartInfo.getAddedItemsQuantity());
         ItemData updatedItemInfo = uiSteps.getItemDataFromCartPage();
         double parsedFirstSalePrice = utils.parseToDouble(itemFromCartInfo.getAddedItemsSalePrice());
         int parsedFirstAmount = utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity());

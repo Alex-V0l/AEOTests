@@ -55,7 +55,7 @@ public class MensJeansTests extends BaseTest{
 
         uiSteps.goToMensJeansAndClickSize();
 
-        assertThat(mJPage.isSizeAreaVisible()).as("'Size' area with different size checkboxes should vahe appeared")
+        assertThat(mJPage.isSizeAreaVisible()).as("'Size' area with different size checkboxes should have appeared")
                 .isTrue();
 
         uiSteps.selectSizeCheckboxAndCloseAdvertsIfAppears();

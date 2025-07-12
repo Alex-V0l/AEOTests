@@ -53,9 +53,11 @@ public class MensJeansPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollAndClickSize(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(sizeFilterButton).moveToElement(sizeFilterButton)
-                .pause(Duration.ofSeconds(2)).click().perform();
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeFilterButton);
+        new WebDriverWait(driver, Duration.ofSeconds(5)).until
+                (ExpectedConditions.elementToBeClickable(sizeFilterButton));
+        js.executeScript("arguments[0].click();", sizeFilterButton);
     }
 
     @Step("Check if 'Size' area is visible after clicking the size button")

@@ -199,12 +199,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollToSizeAndClick(){
-        By sizeButtonLocator = By.xpath
-                ("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
+        By sizeButtonLocator =
+                By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement sizeButton = wait.until(ExpectedConditions.presenceOfElementLocated(sizeButtonLocator));
+        WebElement sizeButton = wait.until(ExpectedConditions.elementToBeClickable(sizeButtonLocator));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
+        sizeButton = wait.until(ExpectedConditions.elementToBeClickable(sizeButtonLocator));
         js.executeScript("arguments[0].click();", sizeButton);
     }
 
@@ -349,6 +350,14 @@ public class CartAndCheckoutPage extends BasePage{
     public void scrollAndClickOnState() {
         Actions actions = new Actions(driver);
         actions.scrollToElement(stateButton).moveToElement(stateButton).pause(2).click().perform();
+    }
+
+    @Step("wait for quantity to change")
+    public void waitForQuantityChange(String oldQuantity) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.not(
+                ExpectedConditions.textToBePresentInElement(addedToCartItemsQuantity, oldQuantity)
+        ));
     }
 
     @Step("pick Illinois option from 'States'")

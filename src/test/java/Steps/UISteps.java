@@ -226,12 +226,14 @@ public class UISteps {
     }
 
     @Step("increase amount of item, get new quantity, update item and wait for changes")
-    public String increaseQuantityGetNewQuantityAndWaitForChanges(){
+    public String increaseQuantityGetNewQuantityAndWaitForChanges(String oldQuantity){
         cPage.scrollAndClickIncreaseAmountButton();
+        cPage.waitForQuantityChange(oldQuantity);
         String changedAmountOfItems = cPage.getAmountOfItems();
         cPage.clickUpdateBagButton();
         cPage.waitForQuantity();
         cPage.waitForSpinnerToDisappear();
+        cPage.waitForQuantityChange(oldQuantity);
         return changedAmountOfItems;
     }
 
