@@ -7,7 +7,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
 import Utils.AllureExtension;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.openqa.selenium.By;
 
 import static Utils.Constants.MENS_JEANS_URL;
 import static Utils.Constants.VALUES_HAVE_TO_BE_EQUAL;
