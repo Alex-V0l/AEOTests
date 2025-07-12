@@ -211,7 +211,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("click on first size option inside 'Size' dropdown")
     public void clickFirstAvailableSize(){
-        firstAvailableSizeInsideDropdown.click();
+        WebElement firstOptionLocator =
+                driver.findElement(By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement firstOption = wait.until(ExpectedConditions.visibilityOf(firstOptionLocator));
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", firstOption);
+        js.executeScript("arguments[0].click();", firstOption);
     }
 
     @Step("click on 'Add to Bag' button")
@@ -354,9 +360,12 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("wait for quantity to change")
     public void waitForQuantityChange(String oldQuantity) {
+        By qtyLocator = By.xpath("//span[@data-test-value]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement element = driver.findElement(qtyLocator);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         wait.until(ExpectedConditions.not(
-                ExpectedConditions.textToBePresentInElement(amountOfItemsValue, oldQuantity)
+                ExpectedConditions.textToBePresentInElementLocated(qtyLocator, oldQuantity)
         ));
     }
 
