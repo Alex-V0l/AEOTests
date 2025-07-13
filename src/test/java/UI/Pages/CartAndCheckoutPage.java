@@ -214,7 +214,8 @@ public class CartAndCheckoutPage extends BasePage{
         WebElement firstOptionLocator =
                 driver.findElement(By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement firstOption = wait.until(ExpectedConditions.visibilityOf(firstOptionLocator));
+        WebElement firstOption = wait.until(ExpectedConditions.presenceOfElementLocated
+                (By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", firstOption);
         js.executeScript("arguments[0].click();", firstOption);
