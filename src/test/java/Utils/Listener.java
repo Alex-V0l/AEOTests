@@ -1,14 +1,26 @@
 package Utils;
 
 import io.qameta.allure.listener.StepLifecycleListener;
+import io.qameta.allure.model.Parameter;
 import io.qameta.allure.model.StepResult;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Listener implements StepLifecycleListener {
 
     @Override
     public void beforeStepStart(StepResult result) {
-        if (result.getName().toLowerCase().contains("password") || result.getName().toLowerCase().contains("login")) {
-            result.getParameters().clear();
-        }
+        List<Parameter> maskedParams = result.getParameters().stream()
+                .map(param -> {
+                    String paramName = param.getName().toLowerCase();
+                    if (paramName.contains("password") || paramName.contains("login")) {
+                        return new Parameter().setName(param.getName()).setValue("***");
+                    }
+                    return param;
+                })
+                .collect(Collectors.toList());
+
+        result.setParameters(maskedParams);
     }
 }
