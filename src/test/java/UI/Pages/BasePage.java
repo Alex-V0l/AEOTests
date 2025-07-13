@@ -62,9 +62,9 @@ public class BasePage {
     public void closeCookieBannerIfVisible() {
         try {
             By bannerTextLocator = By.id("cookieconsent:desc");
-            By dismissButtonLocator = By.cssSelector(".cc-link[role='button']");
+            By dismissButtonLocator = By.xpath("//button[@aria-label='dismiss cookie message']");
 
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement banner = wait.until(ExpectedConditions.presenceOfElementLocated(bannerTextLocator));
 
             if (banner.isDisplayed()) {

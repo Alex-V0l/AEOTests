@@ -70,7 +70,7 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("wait until 'Search' modal becomes visible")
     public void waitForSearchModal(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(searchModal));
     }
 
