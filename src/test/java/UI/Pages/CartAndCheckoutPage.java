@@ -357,7 +357,7 @@ public class CartAndCheckoutPage extends BasePage{
     public void waitForQuantityChange(String oldQuantity) {
         By qtyLocator = By.xpath("//span[@data-test-value]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = driver.findElement(qtyLocator);
+        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(qtyLocator));
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         wait.until(ExpectedConditions.not(
                 ExpectedConditions.textToBePresentInElementLocated(qtyLocator, oldQuantity)
