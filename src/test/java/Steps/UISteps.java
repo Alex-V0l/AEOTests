@@ -231,8 +231,8 @@ public class UISteps {
         cPage.waitForQuantityChange(oldQuantity);
         String changedAmountOfItems = cPage.getAmountOfItems();
         cPage.clickUpdateBagButton();
-        cPage.waitForQuantity();
         cPage.waitForSpinnerToDisappear();
+        cPage.waitForQuantity();
         return changedAmountOfItems;
     }
 

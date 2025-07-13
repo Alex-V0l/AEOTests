@@ -294,7 +294,7 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("wait for quantity to be visible after changes")
     public void waitForQuantity(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(addedToCartItemsQuantity));
     }
 
