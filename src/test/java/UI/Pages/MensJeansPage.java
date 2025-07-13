@@ -71,7 +71,7 @@ public class MensJeansPage extends BasePage{
     }
 
     @Step("check if checkbox  '28x30' is visible")
-    public boolean isCheckboxVisible(){
+    public boolean isCheckbox28x30Visible(){
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
             return wait.until(ExpectedConditions.visibilityOf(checkboxSize28x30)).isEnabled();
@@ -99,7 +99,7 @@ public class MensJeansPage extends BasePage{
     }
 
     @Step("scroll to 'Size' filter are and check that filter '28x30' disappeared")
-    public boolean isFilterDisappeared(){
+    public boolean isFilter28x30Disappeared(){
         Actions actions = new Actions(driver);
         actions.scrollToElement(sizeFilterButton).moveToElement(sizeFilterButton)
                 .pause(Duration.ofSeconds(2)).perform();
@@ -172,7 +172,7 @@ public class MensJeansPage extends BasePage{
         actions.scrollToElement(SortFromLowToHighRadio).moveToElement(SortFromLowToHighRadio).click().perform();
     }
 
-    @Step ("get text of second item from 'Men's Jeans' page")
+    @Step ("get url of second item from 'Men's Jeans' page")
     public String getSecondsItemsUrl(){
         String href = urlOfSecondJeansItem.getDomAttribute("href");
         if (!href.startsWith("http")) {

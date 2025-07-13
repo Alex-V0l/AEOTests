@@ -26,8 +26,6 @@ public class HomeSearchSectionPage extends BasePage{
     private WebElement subtitleAfterSearch;
     @FindBy(xpath = "//ul[@data-test-suggestions]")
     private WebElement suggestionsDropdown;
-    @FindBy(xpath = "//ul[@data-test-suggestions]//button[contains(@aria-label, 'search for new york instead')]")
-    private WebElement suggestionAfterYankeesType;
     @FindBy(xpath = "//button[@aria-label='search for raincoat instead']")
     private WebElement theOnlySuggestionAfterRainciatType;
     @FindBy(xpath = "//h1[@class='qa-search-match-error _search-match-error_10fauf']")

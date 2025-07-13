@@ -76,7 +76,7 @@ public class UISteps {
     @Step("Select size checkbox and close adverts modal, if appears")
     public void selectSizeCheckboxAndCloseAdvertsIfAppears() {
         hssPage.closeModalAdverts();
-        mJPage.isCheckboxVisible();
+        mJPage.isCheckbox28x30Visible();
         mJPage.clickOnCheckbox28x30();
         hssPage.closeModalAdverts();
     }
@@ -152,7 +152,7 @@ public class UISteps {
     public void sortByHighToLowPriceAndPickFirstItem() {
         cPage.scrollAndClickSort();
         cPage.scrollAndClickPriceHighToLow();
-        cPage.scrollToFirstItemForBag();
+        cPage.scrollToSecondItemForBag();
     }
 
     @Step("Get item info from Cart page shortly (only name and prices)")

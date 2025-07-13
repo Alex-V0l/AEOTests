@@ -52,7 +52,7 @@ public class JeansItemsPage extends BasePage{
         PageFactory.initElements(driver, this);
     }
 
-    @Step("check if radio is selected")
+    @Step("check if color radio is selected")
     public boolean isColorRadioSelected(WebElement radio){
         return radio.getDomAttribute("class").contains("swatch-active");
     }
@@ -69,7 +69,7 @@ public class JeansItemsPage extends BasePage{
        return sizeDropdown.isDisplayed();
     }
 
-    @Step("scroll to first size option inside dropdown and pick it")
+    @Step("scroll to first available size option inside dropdown and pick it")
     public void scrollToFirstAvailableSizeAndPick(){
         Actions actions = new Actions(driver);
         actions.scrollToElement(firstSizeAvailableOption).moveToElement(firstSizeAvailableOption)

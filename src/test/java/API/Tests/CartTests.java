@@ -2,7 +2,6 @@ package API.Tests;
 
 import API.Controllers.AuthorizationController;
 import API.Controllers.CartController;
-import API.Controllers.SearchController;
 import API.Models.CartModels.*;
 import Steps.APISteps;
 import io.restassured.response.Response;
@@ -18,16 +17,14 @@ public class CartTests {
 
     static CartController cartController;
     static AuthorizationController auth;
-    static SearchController searchController;
     static APISteps apiSteps;
 
     @BeforeAll
     public static void setup() {
         auth = new AuthorizationController();
         String token = auth.getAccessToken();
-        searchController = new SearchController(token);
         cartController = new CartController(token);
-        apiSteps = new APISteps(searchController, auth, cartController);
+        apiSteps = new APISteps(cartController);
     }
 
     @DisplayName("Add item to the cart and check status code")

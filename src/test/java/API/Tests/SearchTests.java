@@ -30,7 +30,7 @@ public class SearchTests {
         String token = authController.getAccessToken();
         searchController = new SearchController(token);
         cartController = new CartController(token);
-        apiSteps = new APISteps(searchController, authController, cartController);
+        apiSteps = new APISteps(cartController);
     }
 
     @DisplayName("Search all items by name and check status code")

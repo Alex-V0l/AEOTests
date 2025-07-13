@@ -62,7 +62,7 @@ public class HomePageSearchTests extends BaseTest{
         softly.assertAll();
     }
 
-    @DisplayName("type name of the item in the 'Search' field and check that dropdown is visible")
+    @DisplayName("Type name of the item in the 'Search' field and check that dropdown is visible")
     @Tags({@Tag("P1"), @Tag("smoke")})
     @Test
     void searchAndWaitSuggestions(){
@@ -100,7 +100,7 @@ public class HomePageSearchTests extends BaseTest{
     }
 
     @DisplayName("Type the name of the item in the search field and make mistake in one letter - " +
-            "check that item with correct name has appeared in dropdown")
+            "check that simial type of items with correct name has appeared in dropdown")
     @Tags({@Tag("P1"), @Tag("extended")})
     @Test
     void typeWithMistakeAndCheckSuggestion(){

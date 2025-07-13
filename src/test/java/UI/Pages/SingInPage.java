@@ -61,7 +61,7 @@ public class SingInPage extends BasePage{
         return singInModal.isDisplayed();
     }
 
-    @Step("type into 'Login' field")
+    @Step("type into 'Email' field")
     public void typeIntoEmail(String login){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript
@@ -117,7 +117,7 @@ public class SingInPage extends BasePage{
         return alertHeader.getText();
     }
 
-    @Step("get text from clue under 'Email' field inside 'Sign In' modal")
+    @Step("get text from clue under 'Email' or 'Password' fields inside 'Sign In' modal")
     public String getCluesText(){
         return clueElement.getText();
     }

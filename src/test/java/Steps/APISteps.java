@@ -1,8 +1,6 @@
 package Steps;
 
-import API.Controllers.AuthorizationController;
 import API.Controllers.CartController;
-import API.Controllers.SearchController;
 import API.Models.CartModels.*;
 import API.Models.SearchModels.ItemAfterSearch;
 import io.qameta.allure.Step;
@@ -16,14 +14,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class APISteps {
 
-    private SearchController searchController;
-    private AuthorizationController authController;
     private CartController cartController;
 
-    public APISteps(SearchController searchController, AuthorizationController authController, CartController cartController) {
-        this.authController = authController;
-        String token = authController.getAccessToken();
-        this.searchController = searchController;
+    public APISteps(CartController cartController) {
         this.cartController = cartController;
     }
 

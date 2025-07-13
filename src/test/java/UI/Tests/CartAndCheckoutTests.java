@@ -96,7 +96,7 @@ public class CartAndCheckoutTests extends BaseTest{
 
     @DisplayName("Add item to the bag from section of items in current item's page, which price is less than 75$," +
             " check that items name and price from section page and bag are identical" +
-            " and check status and value of shipping progress bar")
+            " and check status, value of shipping progress bar and prices")
     @Tags({@Tag("P1"), @Tag("extended")})
     @Test
     void addItemFromPageAddToBagCheckItemAndShipping(){
@@ -166,7 +166,7 @@ public class CartAndCheckoutTests extends BaseTest{
         softlyAgain.assertAll();
     }
 
-    @DisplayName("Add item to the bag, remove it and check that that bag is empty")
+    @DisplayName("Add item to the bag, remove it and check that bag is empty")
     @Tags({@Tag("P0"), @Tag("smoke")})
     @Test
     void addItemRemoveItAndCheck(){

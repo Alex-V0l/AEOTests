@@ -30,7 +30,7 @@ public class CartAndCheckoutPage extends BasePage{
     @FindBy (xpath = "//h1[contains(@class, 'page-header')]")
     private WebElement pagesHeader;
     @FindBy (xpath = "(//div[contains(@class, 'qa-search-results-list')]//div[contains (@class, 'product-tile')])[3]")
-    private WebElement firstItemAfterSearch;
+    private WebElement secondItemAfterSearch;
     @FindBy (xpath = "(//div[contains(@class, 'product-tile')])[3]//h3[contains(@class, 'product-name')]")
     private WebElement itemsNameToAddBySearch;
     @FindBy (xpath = "(//div[contains(@class, 'product-tile')])[3]//div[@data-testid='sale-price']")
@@ -41,8 +41,6 @@ public class CartAndCheckoutPage extends BasePage{
     private WebElement quickShopModal;
     @FindBy (className ="modal-title")
     private WebElement modalsTitle;
-    @FindBy(xpath = "//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")
-    private WebElement firstAvailableSizeInsideDropdown;
     @FindBy(name = "addToBag")
     private WebElement addToBagButton;
     @FindBy(name = "add-to-bag")
@@ -61,8 +59,6 @@ public class CartAndCheckoutPage extends BasePage{
     private WebElement editButton;
     @FindBy (xpath = "//div[@data-id='modalSidetrayQuickview']")
     private WebElement editItemModal;
-    @FindBy(xpath = "//button[@aria-label='increase']")
-    private WebElement increaseAmountButton;
     @FindBy (xpath = "//button[contains(@class, 'btn-primary') and text()='Update Bag']")
     private WebElement updateBagButton;
     @FindBy(xpath = "//span[@data-test-value]")
@@ -157,10 +153,10 @@ public class CartAndCheckoutPage extends BasePage{
         return pagesHeader.getText();
     }
 
-    @Step("scroll to first that was found via search")
-    public void scrollToFirstItemForBag(){
+    @Step("scroll to first item that was found via search")
+    public void scrollToSecondItemForBag(){
         Actions actions = new Actions(driver);
-        actions.scrollToElement(firstItemAfterSearch).moveToElement(firstItemAfterSearch).pause(2).perform();
+        actions.scrollToElement(secondItemAfterSearch).moveToElement(secondItemAfterSearch).pause(2).perform();
     }
 
     @Step("get item's name that was found via search for adding to bag")
@@ -211,8 +207,6 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("click on first size option inside 'Size' dropdown")
     public void clickFirstAvailableSize(){
-        WebElement firstOptionLocator =
-                driver.findElement(By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement firstOption = wait.until(ExpectedConditions.presenceOfElementLocated
                 (By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")));
@@ -359,7 +353,7 @@ public class CartAndCheckoutPage extends BasePage{
         actions.scrollToElement(stateButton).moveToElement(stateButton).pause(2).click().perform();
     }
 
-    @Step("wait for quantity to change")
+    @Step("wait for 'Quantity' to change")
     public void waitForQuantityChange(String oldQuantity) {
         By qtyLocator = By.xpath("//span[@data-test-value]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -370,7 +364,7 @@ public class CartAndCheckoutPage extends BasePage{
         ));
     }
 
-    @Step("pick Illinois option from 'States'")
+    @Step("pick 'Illinois' option from 'States'")
     public void pickIllinois(){
         illinoisOption.click();
     }

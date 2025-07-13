@@ -91,7 +91,7 @@ public class MensJeansTests extends BaseTest{
 
         mJPage.closeChosenFilter();
 
-        assertThat(mJPage.isFilterDisappeared()).as("Filter should have been disabled").isTrue();
+        assertThat(mJPage.isFilter28x30Disappeared()).as("Filter should have been disabled").isTrue();
     }
 
     @DisplayName("On 'Men's Jeans' page click on 'Online Exclusives' radio and check its state")
