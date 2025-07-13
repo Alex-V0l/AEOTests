@@ -353,11 +353,11 @@ public class CartAndCheckoutPage extends BasePage{
         actions.scrollToElement(stateButton).moveToElement(stateButton).pause(2).click().perform();
     }
 
-    @Step("wait for 'Quantity' to change")
+    @Step("wait for 'Quantity to change")
     public void waitForQuantityChange(String oldQuantity) {
         By qtyLocator = By.xpath("//span[@data-test-value]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(qtyLocator));
+        WebElement element = driver.findElement(qtyLocator);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
         wait.until(ExpectedConditions.not(
                 ExpectedConditions.textToBePresentInElementLocated(qtyLocator, oldQuantity)
@@ -426,9 +426,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("click on radio 'Price: High to Low' inside search result page")
     public void scrollAndClickPriceHighToLow(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(highToLowRadio).moveToElement(highToLowRadio).pause(Duration.ofSeconds(2))
-                .click().perform();
+        WebElement highToLowRadioLocator = driver.findElement(By.xpath("//label[@data-test-accordion='price: high to low']"));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(ExpectedConditions.elementToBeClickable(highToLowRadioLocator));
+        ((JavascriptExecutor) driver).executeScript(
+                "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});", highToLowRadioLocator);
+        wait.until(ExpectedConditions.visibilityOf(highToLowRadioLocator));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", highToLowRadioLocator);
     }
 
     @Step("click on filter 'Sort' inside search result page")
