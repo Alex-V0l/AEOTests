@@ -275,7 +275,7 @@ public class CartAndCheckoutPage extends BasePage{
     public void scrollAndClickIncreaseAmountButton(){
         By buttonLocator = By.xpath("//button[@aria-label='increase']");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfElementLocated(buttonLocator));
+        wait.until(ExpectedConditions.elementToBeClickable(buttonLocator));
         WebElement increaseAmountButton = driver.findElement(buttonLocator);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", increaseAmountButton);
@@ -294,8 +294,9 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("wait for quantity to be visible after changes")
     public void waitForQuantity(){
+        WebElement quantityFieldInCart = driver.findElement(By.xpath("//div[@data-test-cart-item-quantity]"));
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(addedToCartItemsQuantity));
+        wait.until(ExpectedConditions.visibilityOf(quantityFieldInCart));
     }
 
     @Step("scroll to 'Remove' button and click it")
