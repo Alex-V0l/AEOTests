@@ -195,14 +195,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollToSizeAndClick(){
-        WebElement sizeButton = driver.findElement
-                (By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]"));
+        By sizeLocator = By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
+        WebElement sizeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(sizeLocator));
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
-        wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
-        js.executeScript("arguments[0].click();", sizeButton);
+        WebElement clickable = wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
+        js.executeScript("arguments[0].click();", clickable);
     }
 
     @Step("click on first size option inside 'Size' dropdown")
