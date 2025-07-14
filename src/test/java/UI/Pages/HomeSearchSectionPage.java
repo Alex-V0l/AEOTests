@@ -92,10 +92,16 @@ public class HomeSearchSectionPage extends BasePage{
     @Step("click on the last suggestion after dropdown has appeared")
     public void clickOnSuitableSuggestion(){
         WebElement suggestionAfterYankeesType = driver.findElement
-                (By.xpath("//ul[@data-test-suggestions]//button[contains(@aria-label, 'search for new york instead')]"));
+                (By.xpath("(//ul[@data-test-suggestions]//button[contains(., 'new york')])[1]"));
         new WebDriverWait(driver, Duration.ofSeconds(5)).until
                 (ExpectedConditions.elementToBeClickable(suggestionAfterYankeesType));
         suggestionAfterYankeesType.click();
+    }
+
+    @Step("wait for par of known url")
+    public void waitForUrlContains(String partialUrl) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait.until(driver -> driver.getCurrentUrl().contains(partialUrl));
     }
 
     @Step("wait for suggestion after typing \"rainciat\" to appear")

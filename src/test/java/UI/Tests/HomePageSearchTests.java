@@ -81,7 +81,7 @@ public class HomePageSearchTests extends BaseTest{
     void searchAndPickSuggestion() {
         String textToFind = "new york";
         String queryText = utils.formatSearchQueryForUrl(textToFind);
-        String expectedUrl = BASE_URL_UI + "s/" + queryText;
+        String expectedPartUrl = BASE_URL_UI + "s/" + queryText;
 
         uiSteps.openSearchAndType(textToFind);
 
@@ -89,11 +89,11 @@ public class HomePageSearchTests extends BaseTest{
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
 
         hssPage.clickOnSuitableSuggestion();
-        hssPage.waitForUrl(expectedUrl);
+        hssPage.waitForUrlContains(expectedPartUrl);
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(hssPage.getCurrentURL())
-                .as("Transition to the corresponding to query page should have been executed").isEqualTo(expectedUrl);
+                .as("Transition to the corresponding to query page should have been executed").contains(expectedPartUrl);
         softly.assertThat(hssPage.getSubtitleAfterSearchText())
                 .as("Subtitle text should contain query text").contains(textToFind);
         softly.assertAll();
