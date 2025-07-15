@@ -22,7 +22,7 @@ public class BaseTest {
     @ExtendWith(AllureExtension.class)
     void setUp() {
         initDriver();
-        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
@@ -36,8 +36,8 @@ public class BaseTest {
         String remoteUrl = System.getenv("SELENIUM_REMOTE_URL");
         if (remoteUrl != null && !remoteUrl.isEmpty()) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--headless");
             options.addArguments("--window-size=1920,1080");
+            options.addArguments("--headless");
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
