@@ -1,0 +1,40 @@
+<div>POST to https://www.ae.com/ugp-api/bag/v1/items</div>
+
+    <h4>Body</h4>
+    <div>
+    <pre class="preformated-text">
+{
+    &quot;items&quot;: [
+        {
+            &quot;skuId&quot;: &quot;0043656941&quot;,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}    </pre>
+    </div>
+
+    <h4>Headers</h4>
+    <div>
+            <div>aesite: AEO_US</div>
+            <div>Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTI2MTc1OTEsImlhdCI6MTc1MjYxNTc5MSwianRpIjoiZDQxYTY5NDktZTg4Zi00Yjg3LThmMWYtYzNlNWUxNDMwNmU0IiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyJkODNkNGIxZC1hMjcyLTQ5MzUtYjYwOC0xOTBmNDE3NjZiZWIiXSwicHJvZmlsZUlkIjpbImRhNjJlNWIyLTdmNGQtNDEzNi04NjkyLTAxYTM5NDBiNjZhZCJdLCJzY29wZSI6Imd1ZXN0In0.xX5XREn-q2yedPkwXxnMU3TbKlnXt6WlBgvx3dagS03jRNiqRNUMq-eLXei-piXKGDy-L-_aNdLdcb02K7n8bX3wbjMQmHann2xN7oul0BlJEpwCunV1l0jpTBvg3H5AquAg3GlVj26uOIXx688wo7gjTKC2jWUPa3aoXhSq0gOJ962f6iGvHVkNjL7Ai-tDORZ4c6ZqITCcKhtX9kXDHeTTJqhMJFnnv55TzgObPzSgqcWt-42-ckOgjtaYwWoF7nvab_c_wGBbZauwicub6kXg0naIt2SbMZEi6S2sLFcYzxnvcEoeJsCB5-miE5KWQ5XPOJQ-qyNzY5zpX2I4jA</div>
+            <div>Accept: */*</div>
+            <div>aelang: en_US</div>
+            <div>aecountry: US</div>
+            <div>x-access-token: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTI2MTc1OTEsImlhdCI6MTc1MjYxNTc5MSwianRpIjoiZDQxYTY5NDktZTg4Zi00Yjg3LThmMWYtYzNlNWUxNDMwNmU0IiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyJkODNkNGIxZC1hMjcyLTQ5MzUtYjYwOC0xOTBmNDE3NjZiZWIiXSwicHJvZmlsZUlkIjpbImRhNjJlNWIyLTdmNGQtNDEzNi04NjkyLTAxYTM5NDBiNjZhZCJdLCJzY29wZSI6Imd1ZXN0In0.xX5XREn-q2yedPkwXxnMU3TbKlnXt6WlBgvx3dagS03jRNiqRNUMq-eLXei-piXKGDy-L-_aNdLdcb02K7n8bX3wbjMQmHann2xN7oul0BlJEpwCunV1l0jpTBvg3H5AquAg3GlVj26uOIXx688wo7gjTKC2jWUPa3aoXhSq0gOJ962f6iGvHVkNjL7Ai-tDORZ4c6ZqITCcKhtX9kXDHeTTJqhMJFnnv55TzgObPzSgqcWt-42-ckOgjtaYwWoF7nvab_c_wGBbZauwicub6kXg0naIt2SbMZEi6S2sLFcYzxnvcEoeJsCB5-miE5KWQ5XPOJQ-qyNzY5zpX2I4jA</div>
+            <div>Content-Type: application/json</div>
+    </div>
+
+
+
+    <h4>Curl</h4>
+    <div>
+        curl -v -X POST &#39;https://www.ae.com/ugp-api/bag/v1/items&#39; -H &#39;aesite: AEO_US&#39; -H &#39;Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTI2MTc1OTEsImlhdCI6MTc1MjYxNTc5MSwianRpIjoiZDQxYTY5NDktZTg4Zi00Yjg3LThmMWYtYzNlNWUxNDMwNmU0IiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyJkODNkNGIxZC1hMjcyLTQ5MzUtYjYwOC0xOTBmNDE3NjZiZWIiXSwicHJvZmlsZUlkIjpbImRhNjJlNWIyLTdmNGQtNDEzNi04NjkyLTAxYTM5NDBiNjZhZCJdLCJzY29wZSI6Imd1ZXN0In0.xX5XREn-q2yedPkwXxnMU3TbKlnXt6WlBgvx3dagS03jRNiqRNUMq-eLXei-piXKGDy-L-_aNdLdcb02K7n8bX3wbjMQmHann2xN7oul0BlJEpwCunV1l0jpTBvg3H5AquAg3GlVj26uOIXx688wo7gjTKC2jWUPa3aoXhSq0gOJ962f6iGvHVkNjL7Ai-tDORZ4c6ZqITCcKhtX9kXDHeTTJqhMJFnnv55TzgObPzSgqcWt-42-ckOgjtaYwWoF7nvab_c_wGBbZauwicub6kXg0naIt2SbMZEi6S2sLFcYzxnvcEoeJsCB5-miE5KWQ5XPOJQ-qyNzY5zpX2I4jA&#39; -H &#39;Accept: */*&#39; -H &#39;aelang: en_US&#39; -H &#39;aecountry: US&#39; -H &#39;x-access-token: eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ1MW01N0RmbXRjNXd5b1FHX1Y2bWdEaFdVWVVFcW40bUtCa29zWWxtR25NIn0.eyJleHAiOjE3NTI2MTc1OTEsImlhdCI6MTc1MjYxNTc5MSwianRpIjoiZDQxYTY5NDktZTg4Zi00Yjg3LThmMWYtYzNlNWUxNDMwNmU0IiwiaXNzIjoiaHR0cHM6Ly9rZXNzZWwuaW50LXByLmFlLWdjcC5pby9yZWFsbXMvQUdXQSIsInN1YiI6IjU1NzZlMzdjLTZhN2YtNGM1Yy04ZDkyLTc5MDNhNWE5NzkzNyIsInR5cCI6IkJlYXJlciIsImF6cCI6IjIwZTQyNjkwLTg5M2EtNDgwMy04OWU3LTg5YmZiNGViZjJmZSIsInNjb3BlIjoiIiwib3JkZXJJZCI6WyJkODNkNGIxZC1hMjcyLTQ5MzUtYjYwOC0xOTBmNDE3NjZiZWIiXSwicHJvZmlsZUlkIjpbImRhNjJlNWIyLTdmNGQtNDEzNi04NjkyLTAxYTM5NDBiNjZhZCJdLCJzY29wZSI6Imd1ZXN0In0.xX5XREn-q2yedPkwXxnMU3TbKlnXt6WlBgvx3dagS03jRNiqRNUMq-eLXei-piXKGDy-L-_aNdLdcb02K7n8bX3wbjMQmHann2xN7oul0BlJEpwCunV1l0jpTBvg3H5AquAg3GlVj26uOIXx688wo7gjTKC2jWUPa3aoXhSq0gOJ962f6iGvHVkNjL7Ai-tDORZ4c6ZqITCcKhtX9kXDHeTTJqhMJFnnv55TzgObPzSgqcWt-42-ckOgjtaYwWoF7nvab_c_wGBbZauwicub6kXg0naIt2SbMZEi6S2sLFcYzxnvcEoeJsCB5-miE5KWQ5XPOJQ-qyNzY5zpX2I4jA&#39; -H &#39;Content-Type: application/json&#39; -d &#39;{
+    &quot;items&quot;: [
+        {
+            &quot;skuId&quot;: &quot;0043656941&quot;,
+            &quot;quantity&quot;: 1
+        }
+    ]
+}&#39;
+    </div>
+
