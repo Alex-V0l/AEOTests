@@ -22,7 +22,7 @@ public class BaseTest {
     @ExtendWith(AllureExtension.class)
     void setUp() {
         initDriver();
-        driver.manage().window().maximize();
+        driver.manage().window().fullscreen();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
     }
 
@@ -37,7 +37,7 @@ public class BaseTest {
         if (remoteUrl != null && !remoteUrl.isEmpty()) {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless");
-            options.addArguments("--start-maximized");
+            options.addArguments("--window-size=1920,1080");
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
