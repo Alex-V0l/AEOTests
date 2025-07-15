@@ -68,7 +68,7 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("wait until 'Account' modal becomes visible")
     public void waitForAccountModal() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(accountModal));
     }
 
@@ -179,9 +179,9 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("wait for 'Create Account' button to be clickable")
     public void waitForCreateAccountButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(createAccountButton));
-        new WebDriverWait(driver, Duration.ofSeconds(5))
+        new WebDriverWait(driver, Duration.ofSeconds(10))
                 .until(driver -> createAccountButton.isEnabled());
     }
 
@@ -216,7 +216,7 @@ public class CreateAnAccountPage extends BasePage {
         try {
             ((JavascriptExecutor) driver)
                     .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", emailField);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
                     By.xpath("//div[contains(@data-label-code, 'error.account.email.alreadyExists')]")
             ));

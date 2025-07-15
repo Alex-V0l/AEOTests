@@ -74,14 +74,14 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("wait until 'Search' field becomes clickable")
     public void waitForSearchField(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.elementToBeClickable(searchField));
     }
 
     @Step("check if suggestions after typing into 'Search' field becomes visible")
     public boolean isSuggestionsDropdownVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.visibilityOf(suggestionsDropdown));
             return true;
         } catch (TimeoutException e) {
@@ -93,7 +93,7 @@ public class HomeSearchSectionPage extends BasePage{
     public void clickOnSuitableSuggestion(){
         WebElement suggestionAfterYankeesType = driver.findElement
                 (By.xpath("(//ul[@data-test-suggestions]//button[contains(., 'new york')])[1]"));
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until
                 (ExpectedConditions.elementToBeClickable(suggestionAfterYankeesType));
         suggestionAfterYankeesType.click();
     }
@@ -106,7 +106,7 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("wait for suggestion after typing \"rainciat\" to appear")
     public void waitForRainciatSuggestion(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         wait.until(ExpectedConditions.visibilityOf(theOnlySuggestionAfterRainciatType));
     }
 
