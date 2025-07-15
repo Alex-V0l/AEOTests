@@ -19,6 +19,6 @@ public class Constants {
     public static final String CART_URL = BASE_URL_UI + "cart";
     public static final String CHECKOUT_URL = BASE_URL_UI + "checkout";
     public static final String CREATE_AN_ACCOUNT_URL = BASE_URL_UI + "myaccount/create-account";
-    public static final String MENS_JEANS_URL = BASE_URL_UI + "c/men/bottoms/jeans/cat6430041?pagetype=plp";
+    public static final String MENS_JEANS_URL = BASE_URL_UI + "c/ae/men/bottoms/jeans/cat6430041?pagetype=plp";
     public static final String SUCCESSFUL_CREATION_OF_ACCOUNT_URL = "https://www.ae.com/us/en/myaccount/real-rewards/account-summary";
 }

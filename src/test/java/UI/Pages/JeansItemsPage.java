@@ -108,6 +108,8 @@ public class JeansItemsPage extends BasePage{
 
     @Step("get detailed info about 'Added to Bag' item")
     public String getModalsTitleAddedToBagText(){
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> !modalsTitle.getText().trim().isEmpty());
         return modalsTitle.getText();
     }
 
@@ -118,17 +120,23 @@ public class JeansItemsPage extends BasePage{
 
     @Step("get item's name from modal 'Added to bag' section")
     public String getItemsNameText (){
-        return itemsNameSection.getText();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> !itemsNameSection.getText().trim().isEmpty());
+        return itemsNameSection.getText().trim();
     }
 
     @Step("get item's 'Sale Price' from modal 'Added to bag' section")
     public String getItemsSalePriceText(){
-        return itemsSalePriceSection.getText();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> !itemsSalePriceSection.getText().trim().isEmpty());
+        return itemsSalePriceSection.getText().trim();
     }
 
     @Step("get item's 'Regular Price' from modal 'Added to bag' section")
     public String getItemsRegularPriceText(){
-        return itemsRegularPriceSection.getText();
+        new WebDriverWait(driver, Duration.ofSeconds(10))
+                .until(driver -> !itemsRegularPriceSection.getText().trim().isEmpty());
+        return itemsRegularPriceSection.getText().trim();
     }
 
     @Step("get item's 'Color' from modal 'Added to bag' section")

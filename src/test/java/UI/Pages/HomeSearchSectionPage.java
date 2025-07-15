@@ -30,7 +30,7 @@ public class HomeSearchSectionPage extends BasePage{
     private WebElement theOnlySuggestionAfterRainciatType;
     @FindBy(xpath = "//h1[@class='qa-search-match-error _search-match-error_10fauf']")
     private WebElement failedSearchMessage;
-    @FindBy (xpath = "//a[@data-text='Men']")
+    @FindBy (xpath = "//a[text()='Men']")
     private WebElement mensMenuAbove;
     @FindBy (xpath = "//a[contains(@class, 'bag-button')]")
     private WebElement bagButton;
@@ -128,7 +128,8 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("click on 'Jeans' inside 'Men's' section with waiting for presence ofd element")
     public void clickOnJeansInsideMens() {
-        By jeansLinkLocator = By.xpath("//a[@href='/us/en/c/men/bottoms/jeans/cat6430041?pagetype=plp']");
+        By jeansLinkLocator = By.xpath
+                ("//div[h6[text()='Categories']]//a[@href='/us/en/c/ae/men/bottoms/jeans/cat6430041?pagetype=plp']");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement jeansLink = wait.until(ExpectedConditions.presenceOfElementLocated(jeansLinkLocator));
         jeansLink.click();
