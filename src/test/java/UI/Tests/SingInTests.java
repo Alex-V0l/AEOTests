@@ -3,18 +3,15 @@ package UI.Tests;
 import Steps.UISteps;
 import UI.Pages.HomeSearchSectionPage;
 import UI.Pages.SingInPage;
-import Utils.AllureExtension;
 import Utils.TestPropertiesConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.api.extension.ExtendWith;
 
 import static Utils.Constants.VALUES_HAVE_TO_BE_EQUAL;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Tag("UI Tests")
-@ExtendWith(AllureExtension.class)
 public class SingInTests extends BaseTest{
 
     private SingInPage signInPage;

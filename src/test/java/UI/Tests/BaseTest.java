@@ -15,11 +15,11 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Map;
 
-@ExtendWith(AllureExtension.class)
 public class BaseTest {
     WebDriver driver;
 
     @BeforeEach
+    @ExtendWith(AllureExtension.class)
     void setUp() {
         initDriver();
         driver.manage().window().setSize(new Dimension(1920, 1080));
@@ -27,6 +27,7 @@ public class BaseTest {
     }
 
     @AfterEach
+    @ExtendWith(AllureExtension.class)
     void tearDown() {
         driver.quit();
     }

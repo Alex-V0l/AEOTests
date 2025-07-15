@@ -16,14 +16,12 @@ import static Utils.Constants.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @Tag("UI tests")
-@ExtendWith(AllureExtension.class)
 public class CreateAnAccountTests extends BaseTest{
 
     private HomeSearchSectionPage homeSearchPage;
     private CreateAnAccountPage createAccountPage;
     TestPropertiesConfig config;
     private UISteps uiSteps;
-
 
     @BeforeEach
     void setup(){
@@ -36,6 +34,7 @@ public class CreateAnAccountTests extends BaseTest{
 
     @DisplayName("Go to 'Create an Account' page and check url and page's header text")
     @Tags({@Tag("P0"), @Tag("smoke"), @Tag("defect")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void transitionToCreateAnAccountPage(){
         String expectedCreateAnAccountHeaderText = "Create an Account";
@@ -53,6 +52,7 @@ public class CreateAnAccountTests extends BaseTest{
     @DisplayName("Successful creation of an account test " +
             "(fill all necessary field with valid fields pick birth date and agree with policies)")
     @Tags({@Tag("P0"), @Tag("smoke")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void successfulCreation() {
         String expectedMessage = "Account created";
@@ -81,6 +81,7 @@ public class CreateAnAccountTests extends BaseTest{
     @DisplayName("Type valid email, first name, last name, invalid password, confirm invalid password," +
             " pick birth date, click 'I accept' checkbox and check message and 'Create Account' button status")
     @Tags({@Tag("P0"), @Tag("negative")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void CreationWithTooBigPassword() {
         String passwordOf26Characters = "qwe123rty456yui789iop0asd2";
@@ -105,6 +106,7 @@ public class CreateAnAccountTests extends BaseTest{
     @DisplayName("Type invalid email, valid first name, valid last name, password, confirm password," +
             " pick birth date, click 'I accept' checkbox and check message and 'Create Account' button status")
     @Tags({@Tag("P0"), @Tag("negative")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void CreationWithInvalidEmail() {
         TestUser user = CredentialsGenerator.generateTestUser();
@@ -129,6 +131,7 @@ public class CreateAnAccountTests extends BaseTest{
     @DisplayName("Type valid email, first name, last name, password, confirm password," +
             " pick birth date and check message and 'Create Account' button status")
     @Tags({@Tag("P0"), @Tag("negative")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void CreationWithoutBirthDate() {
         TestUser user = CredentialsGenerator.generateTestUser();
@@ -145,6 +148,7 @@ public class CreateAnAccountTests extends BaseTest{
     @DisplayName("Type valid email, first name, last name, valid password, confirm password incorrectly," +
             " pick birth date, click 'I accept checkbox' and check message and 'Create Account' button status")
     @Tags({@Tag("P0"), @Tag("negative")})
+    @ExtendWith(AllureExtension.class)
     @Test
     void CreationWithWrongConfirmPassword() {
         TestUser user = CredentialsGenerator.generateTestUser();
