@@ -36,8 +36,8 @@ public class BaseTest {
         String remoteUrl = System.getenv("SELENIUM_REMOTE_URL");
         if (remoteUrl != null && !remoteUrl.isEmpty()) {
             ChromeOptions options = new ChromeOptions();
-            options.addArguments("--window-size=1920,1080");
             options.addArguments("--headless");
+            options.addArguments("--start-maximized");
             options.addArguments("--disable-gpu");
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
