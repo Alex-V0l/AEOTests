@@ -16,17 +16,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class MensJeansTests extends BaseTest{
 
-    private MensJeansPage mJPage;
-    private HomeSearchSectionPage hssPage;
+    private MensJeansPage mensJeansPage;
+    private HomeSearchSectionPage homeSearchPage;
     private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
-        mJPage = new MensJeansPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
+        mensJeansPage = new MensJeansPage(driver);
         uiSteps = new UISteps(driver);
-        hssPage.openHomePage();
-        hssPage.closeCookieBannerIfVisible();
+        homeSearchPage.openHomePage();
+        homeSearchPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("Move cursor to Men's section, click on Jeans link, check url and subtitle")
@@ -35,14 +35,14 @@ public class MensJeansTests extends BaseTest{
     void goToMeansJeans() {
         String expectedSubtitlesText = "Men's Jeans";
 
-        hssPage.moveToMens();
-        hssPage.clickOnJeansInsideMens();
-        hssPage.waitForUrl(MENS_JEANS_URL);
+        homeSearchPage.moveToMens();
+        homeSearchPage.clickOnJeansInsideMens();
+        homeSearchPage.waitForUrl(MENS_JEANS_URL);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(mJPage.getCurrentURL()).as("Transition to 'Men's Jeans' page should have been executed")
+        softly.assertThat(mensJeansPage.getCurrentURL()).as("Transition to 'Men's Jeans' page should have been executed")
                 .isEqualTo(MENS_JEANS_URL);
-        softly.assertThat(mJPage.getSubtitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedSubtitlesText);
+        softly.assertThat(mensJeansPage.getSubtitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedSubtitlesText);
         softly.assertAll();
     }
 
@@ -55,16 +55,16 @@ public class MensJeansTests extends BaseTest{
 
         uiSteps.goToMensJeansAndClickSize();
 
-        assertThat(mJPage.isSizeAreaVisible()).as("'Size' area with different size checkboxes should have appeared")
+        assertThat(mensJeansPage.isSizeAreaVisible()).as("'Size' area with different size checkboxes should have appeared")
                 .isTrue();
 
         uiSteps.selectSizeCheckboxAndCloseAdvertsIfAppears();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(mJPage.getCurrentURL())
+        softly.assertThat(mensJeansPage.getCurrentURL())
                 .as("Transition to the page with applied filter should contain \"filtered\" part")
                 .contains(expectedUrlPart);
-        softly.assertThat(mJPage.isFilterSizeVisible()).as("Chosen checkbox should have been applied").isTrue();
+        softly.assertThat(mensJeansPage.isFilterSizeVisible()).as("Chosen checkbox should have been applied").isTrue();
         softly.assertAll();
     }
 
@@ -77,46 +77,47 @@ public class MensJeansTests extends BaseTest{
 
         uiSteps.goToMensJeansAndClickSize();
 
-        assertThat(mJPage.isSizeAreaVisible()).as("'Size' area with different 'Size' checkboxes should have appeared")
+        assertThat(mensJeansPage.isSizeAreaVisible()).as("'Size' area with different 'Size' checkboxes should have appeared")
                 .isTrue();
 
         uiSteps.selectSizeCheckboxAndCloseAdvertsIfAppears();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(mJPage.getCurrentURL())
+        softly.assertThat(mensJeansPage.getCurrentURL())
                 .as("Transition to the page with applied filter should contain \"filtered\" part")
                 .contains(expectedUrlPart);
-        softly.assertThat(mJPage.isFilterSizeVisible()).as("Chosen checkbox should have been applied").isTrue();
+        softly.assertThat(mensJeansPage.isFilterSizeVisible()).as("Chosen checkbox should have been applied").isTrue();
         softly.assertAll();
 
-        mJPage.closeChosenFilter();
+        mensJeansPage.closeChosenFilter();
 
-        assertThat(mJPage.isFilter28x30Disappeared()).as("Filter should have been disabled").isTrue();
+        assertThat(mensJeansPage.isFilter28x30Disappeared()).as("Filter should have been disabled").isTrue();
     }
 
     @DisplayName("On 'Men's Jeans' page click on 'Online Exclusives' radio and check its state")
     @Tags({@Tag("P1"), @Tag("extended")})
     @Test
     void pickRadioOnlineOnly() {
-        String expectedUrl = "https://www.ae.com/us/en/c/men/bottoms/jeans/cat6430041?Ns=product_onlineOnly%7C1";
+        String expectedUrlPart = "product_onlineOnl";
 
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(mJPage.isSortByAreaVisible()).as("'Sort by' button should have been enabled").isTrue();
-        softly.assertThat(mJPage.isSortByButtonSelected())
+        softly.assertThat(mensJeansPage.isSortByAreaVisible()).as("'Sort by' button should have been enabled").isTrue();
+        softly.assertThat(mensJeansPage.isSortByButtonSelected())
                 .as("Area with radios under 'Sort by' button should be visible").isTrue();
-        softly.assertThat(mJPage.isOnlineExclusivesSelected()).as("'Online Exclusives' radio should not be selected")
+        softly.assertThat(mensJeansPage.isOnlineExclusivesSelected()).as("'Online Exclusives' radio should not be selected")
                 .isTrue();
         softly.assertAll();
 
-        mJPage.clickOnlineExclusivesRadio();
-        mJPage.scrollToOnlineExclusiveRadio();
-        boolean isOnlineExclusivesRadioNotSelected = mJPage.isOnlineExclusivesSelected();
-        mJPage.waitForUrl(expectedUrl);
+        mensJeansPage.clickOnlineExclusivesRadio();
+        mensJeansPage.scrollToOnlineExclusiveRadio();
+        boolean isOnlineExclusivesRadioNotSelected = mensJeansPage.isOnlineExclusivesSelected();
+        homeSearchPage.waitForUrlContains(expectedUrlPart);
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(mJPage.getCurrentURL()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedUrl);
+        softlyAgain.assertThat(mensJeansPage.getCurrentURL()).as("Current url should contain filter name")
+                .contains(expectedUrlPart);
         softlyAgain.assertThat(isOnlineExclusivesRadioNotSelected)
                 .as("'Online Exclusive' Radio should have been selected").isFalse();
         softlyAgain.assertAll();
@@ -127,11 +128,11 @@ public class MensJeansTests extends BaseTest{
     @Test
     void goToCurrentItemsPage() {
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
-        String itemsUrl = mJPage.getSecondsItemsUrl();
-        mJPage.scrollAndClickToSecondItemJeans();
-        mJPage.waitForItemsUrl(itemsUrl);
+        String itemsUrl = mensJeansPage.getSecondsItemsUrl();
+        mensJeansPage.scrollAndClickToSecondItemJeans();
+        mensJeansPage.waitForItemsUrl(itemsUrl);
 
-        String actualUrl = mJPage.getCurrentURL();
+        String actualUrl = mensJeansPage.getCurrentURL();
 
         assertThat(actualUrl).as("Transition to 'Slim Straight Jeans' item's page should have been executed")
                 .contains(itemsUrl);

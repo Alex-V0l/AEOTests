@@ -15,16 +15,16 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class HomePageSearchTests extends BaseTest{
 
-    private HomeSearchSectionPage hssPage;
+    private HomeSearchSectionPage homeSearchPage;
     private Utils utils;
     private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
         utils = new Utils(driver);
         uiSteps = new UISteps(driver);
-        hssPage.openHomePage();
+        homeSearchPage.openHomePage();
     }
 
     @DisplayName("Click on Loupe-like button and switch to a modal window with Search")
@@ -33,7 +33,7 @@ public class HomePageSearchTests extends BaseTest{
     void clickSearchAndCheckModal(){
         uiSteps.openSearch();
 
-        assertThat(hssPage.isSearchModalVisible())
+        assertThat(homeSearchPage.isSearchModalVisible())
                 .as("Modal should be visible after click on Loupe-like button").isTrue();
     }
 
@@ -47,17 +47,17 @@ public class HomePageSearchTests extends BaseTest{
 
         uiSteps.openSearch();
 
-        assertThat(hssPage.isSearchModalVisible())
+        assertThat(homeSearchPage.isSearchModalVisible())
                 .as("Modal should be visible after click on Loupe-like button").isTrue();
 
-        hssPage.waitForSearchField();
-        hssPage.typeIntoSearchField(textToFind);
+        homeSearchPage.waitForSearchField();
+        homeSearchPage.typeIntoSearchField(textToFind);
         uiSteps.submitAndWait(expectedUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(hssPage.getCurrentURL())
+        softly.assertThat(homeSearchPage.getCurrentURL())
                 .as("Transition to the corresponding to query page should have been executed").isEqualTo(expectedUrl);
-        softly.assertThat(hssPage.getSubtitleAfterSearchText())
+        softly.assertThat(homeSearchPage.getSubtitleAfterSearchText())
                 .as("Subtitle text should contain query text").contains(textToFind);
         softly.assertAll();
     }
@@ -70,7 +70,7 @@ public class HomePageSearchTests extends BaseTest{
 
         uiSteps.openSearchAndType(textToFind);
 
-        assertThat(hssPage.isSuggestionsDropdownVisible())
+        assertThat(homeSearchPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
     }
 
@@ -85,16 +85,16 @@ public class HomePageSearchTests extends BaseTest{
 
         uiSteps.openSearchAndType(textToFind);
 
-        assertThat(hssPage.isSuggestionsDropdownVisible())
+        assertThat(homeSearchPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
 
-        hssPage.clickOnSuitableSuggestion();
-        hssPage.waitForUrlContains(expectedPartUrl);
+        homeSearchPage.clickOnSuitableSuggestion();
+        homeSearchPage.waitForUrlContains(expectedPartUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(hssPage.getCurrentURL())
+        softly.assertThat(homeSearchPage.getCurrentURL())
                 .as("Transition to the corresponding to query page should have been executed").contains(expectedPartUrl);
-        softly.assertThat(hssPage.getSubtitleAfterSearchText())
+        softly.assertThat(homeSearchPage.getSubtitleAfterSearchText())
                 .as("Subtitle text should contain query text").contains(textToFind);
         softly.assertAll();
     }
@@ -109,12 +109,12 @@ public class HomePageSearchTests extends BaseTest{
 
         uiSteps.openSearchAndType(textToFind);
 
-        assertThat(hssPage.isSuggestionsDropdownVisible())
+        assertThat(homeSearchPage.isSuggestionsDropdownVisible())
                 .as("After typing part of the item's name suggestions should have appeared").isTrue();
 
-        hssPage.waitForRainciatSuggestion();
+        homeSearchPage.waitForRainciatSuggestion();
 
-        assertThat(hssPage.getSuggestionRainciatText())
+        assertThat(homeSearchPage.getSuggestionRainciatText())
                 .as("System should recognize the mistake and make a right suggestion")
                 .isEqualTo(expectedSuggestionText);
     }
@@ -131,9 +131,9 @@ public class HomePageSearchTests extends BaseTest{
         uiSteps.submitAndWait(expectedUrl);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(hssPage.getTextOfErrorSearchMessage()).as("Error message should contain query")
+        softly.assertThat(homeSearchPage.getTextOfErrorSearchMessage()).as("Error message should contain query")
                 .isEqualTo(expectedErrorText);
-        softly.assertThat(hssPage.getCurrentURL()).as("url should contain query").isEqualTo(expectedUrl);
+        softly.assertThat(homeSearchPage.getCurrentURL()).as("url should contain query").isEqualTo(expectedUrl);
         softly.assertAll();
     }
 }

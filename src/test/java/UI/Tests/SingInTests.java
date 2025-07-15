@@ -17,18 +17,18 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class SingInTests extends BaseTest{
 
-    private SingInPage SIPage;
-    private HomeSearchSectionPage hssPage;
+    private SingInPage signInPage;
+    private HomeSearchSectionPage homeSearchPage;
     TestPropertiesConfig config;
     private UISteps uIsteps;
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
-        SIPage = new SingInPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
+        signInPage = new SingInPage(driver);
         uIsteps = new UISteps(driver);
         config = ConfigFactory.create(TestPropertiesConfig.class, System.getProperties());
-        hssPage.openHomePage();
+        homeSearchPage.openHomePage();
     }
 
     @DisplayName("Go to 'Sign In' modal inside 'Account' modal, type valid firstname, lastname," +
@@ -40,18 +40,18 @@ public class SingInTests extends BaseTest{
 
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
         uIsteps.fillInNecessarySignInFieldsAndClick(config.getLoginForSignIn(), config.getPasswordForSignIn());
-        SIPage.waitForUserNameInAccountsHeader(usersName);
+        signInPage.waitForUserNameInAccountsHeader(usersName);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(SIPage.isAccountsModalVisible()).as("Modal of authorized user should be visible")
+        softly.assertThat(signInPage.isAccountsModalVisible()).as("Modal of authorized user should be visible")
                 .isTrue();
-        softly.assertThat(SIPage.getAccountsHeaderText()).as("Header should contain user's name")
+        softly.assertThat(signInPage.getAccountsHeaderText()).as("Header should contain user's name")
                 .contains(usersName);
         softly.assertAll();
 
-        SIPage.clickSignOut();
+        signInPage.clickSignOut();
 
-        assertThat(SIPage.isAccountsModalVisible()).as("Account's modal should not be visible after signing out")
+        assertThat(signInPage.isAccountsModalVisible()).as("Account's modal should not be visible after signing out")
                 .isFalse();
     }
 
@@ -68,8 +68,8 @@ public class SingInTests extends BaseTest{
         uIsteps.fillInNecessarySignInFieldsClickAndWait(invalidLogin, config.getPasswordForSignIn());
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(SIPage.getAlertsHeaderText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedAlertsText);
-        softly.assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
+        softly.assertThat(signInPage.getAlertsHeaderText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedAlertsText);
+        softly.assertThat(signInPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
         softly.assertAll();
     }
 
@@ -85,7 +85,7 @@ public class SingInTests extends BaseTest{
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
         uIsteps.fillInNecessarySignInFieldsClickAndWait(config.getLoginForSignIn(), PasswordOfSevenDigits);
 
-        assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
+        assertThat(signInPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
     }
 
     @DisplayName("Go to 'Sign In' modal inside 'Account' modal, type valid firstname," +
@@ -99,7 +99,7 @@ public class SingInTests extends BaseTest{
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
         uIsteps.fillInNecessarySignInFieldsClickAndWait(config.getLoginForSignIn(), PasswordOfSevenCharacters);
 
-        assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
+        assertThat(signInPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
     }
 
     @DisplayName("Go to 'Sign In' modal inside 'Account' modal, type valid firstname," +
@@ -114,7 +114,7 @@ public class SingInTests extends BaseTest{
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
         uIsteps.fillInNecessarySignInFieldsClickAndWait(config.getLoginForSignIn(), PasswordOf26Characters);
 
-        assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
+        assertThat(signInPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedClueText);
     }
 
     @DisplayName("Go to 'Sign In' modal inside 'Account' modal, type valid firstname," +
@@ -128,13 +128,13 @@ public class SingInTests extends BaseTest{
                 "Email sent! Check " + login + " for a link to reset your password. It may take up to 15 minutes.";
 
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
-        SIPage.typeIntoEmail(login);
-        SIPage.clickForgotPassword();
-        SIPage.waitForAlertMessage(expectedHeadersText);
+        signInPage.typeIntoEmail(login);
+        signInPage.clickForgotPassword();
+        signInPage.waitForAlertMessage(expectedHeadersText);
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(SIPage.getAlertsHeaderText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
-        softlyAgain.assertThat(SIPage.getForgotPasswordText()).as(VALUES_HAVE_TO_BE_EQUAL)
+        softlyAgain.assertThat(signInPage.getAlertsHeaderText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
+        softlyAgain.assertThat(signInPage.getForgotPasswordText()).as(VALUES_HAVE_TO_BE_EQUAL)
                 .isEqualTo(expectedForgotPasswordMessage);
         softlyAgain.assertAll();
     }
@@ -147,10 +147,10 @@ public class SingInTests extends BaseTest{
         String expectedCluesText = "Please enter your email address.";
 
         uIsteps.openSignInModalCheckItsVisibilityAndSignInHeaderText();
-        SIPage.typeIntoPassword(config.getPasswordForSignIn());
-        SIPage.clickForgotPassword();
-        SIPage.waitForError();
+        signInPage.typeIntoPassword(config.getPasswordForSignIn());
+        signInPage.clickForgotPassword();
+        signInPage.waitForError();
 
-        assertThat(SIPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedCluesText);
+        assertThat(signInPage.getCluesText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedCluesText);
     }
 }

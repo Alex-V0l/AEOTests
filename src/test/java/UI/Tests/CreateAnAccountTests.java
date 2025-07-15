@@ -19,19 +19,19 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class CreateAnAccountTests extends BaseTest{
 
-    private HomeSearchSectionPage hssPage;
-    private CreateAnAccountPage CAPage;
+    private HomeSearchSectionPage homeSearchPage;
+    private CreateAnAccountPage createAccountPage;
     TestPropertiesConfig config;
     private UISteps uiSteps;
 
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
-        CAPage = new CreateAnAccountPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
+        createAccountPage = new CreateAnAccountPage(driver);
         config = ConfigFactory.create(TestPropertiesConfig.class, System.getProperties());
         uiSteps = new UISteps(driver);
-        hssPage.openHomePage();
+        homeSearchPage.openHomePage();
     }
 
     @DisplayName("Go to 'Create an Account' page and check url and page's header text")
@@ -43,9 +43,9 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.goToCreateAnAccount();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(CAPage.getCurrentURL())
+        softly.assertThat(createAccountPage.getCurrentURL())
                 .as("Transition to 'Create an Account' page should have been executed").isEqualTo(CREATE_AN_ACCOUNT_URL);
-        softly.assertThat(CAPage.getPagesHeaderText())
+        softly.assertThat(createAccountPage.getPagesHeaderText())
                 .as("Page's header 'Create an Account' should be visible").isEqualTo(expectedCreateAnAccountHeaderText);
         softly.assertAll();
     }
@@ -67,12 +67,12 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.waitForSuccessfulUrlAndMessage();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(CAPage.getCurrentURL())
+        softly.assertThat(createAccountPage.getCurrentURL())
                 .as("Transition to account's page should have been executed")
                 .isEqualTo(SUCCESSFUL_CREATION_OF_ACCOUNT_URL);
-        softly.assertThat(CAPage.getSuccessfulMessagesAfterCreatingText())
+        softly.assertThat(createAccountPage.getSuccessfulMessagesAfterCreatingText())
                 .as("User should have received message about successful creation").isEqualTo(expectedMessage);
-        softly.assertThat(CAPage.getMenuHeadersAfterCreationText())
+        softly.assertThat(createAccountPage.getMenuHeadersAfterCreationText())
                 .as("Header's text should contain user's name after successful creation of an account")
                 .contains(firstName);
         softly.assertAll();
@@ -92,12 +92,12 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.goToCreateAnAccount();
         uiSteps.fillInRegistrationFormWithoutFinalClick
                 (user, user.getEmail(), passwordOf26Characters, passwordOf26Characters, dayToSelect);
-        String errorPasswordMessage = CAPage.getErrorsPasswordText();
+        String errorPasswordMessage = createAccountPage.getErrorsPasswordText();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(errorPasswordMessage)
                 .as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedErrorMessage);
-        softly.assertThat(CAPage.isCreateAccountEnabled())
+        softly.assertThat(createAccountPage.isCreateAccountEnabled())
                 .as("'Create Account' button should not be enabled until valid password would be used").isFalse();
         softly.assertAll();
     }
@@ -116,12 +116,12 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.goToCreateAnAccount();
         uiSteps.fillInRegistrationFormWithoutFinalClick
                 (user, invalidLogin, password, password, dayToSelect);
-        String emailErrorText = CAPage.getErrorEmailText();
+        String emailErrorText = createAccountPage.getErrorEmailText();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(emailErrorText)
                 .as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedErrorMessage);
-        softly.assertThat(CAPage.isCreateAccountEnabled())
+        softly.assertThat(createAccountPage.isCreateAccountEnabled())
                 .as("'Create Account' button should not be enabled until valid email would be used").isFalse();
         softly.assertAll();
     }
@@ -138,7 +138,7 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.fillInRegistrationFormWithoutFinalClickAndBirthDate
                 (user, password);
 
-       assertThat(CAPage.isCreateAccountEnabled())
+       assertThat(createAccountPage.isCreateAccountEnabled())
                 .as("'Create Account' button should not be enabled until birth date would be picked").isFalse();
     }
 
@@ -157,12 +157,12 @@ public class CreateAnAccountTests extends BaseTest{
         uiSteps.goToCreateAnAccount();
         uiSteps.fillInRegistrationFormWithoutFinalClick
                 (user, user.getEmail(), password, incorrectPassword, dayToSelect);
-        String errorConfirmPasswordMessage = CAPage.getErrorsConfirmPasswordText();
+        String errorConfirmPasswordMessage = createAccountPage.getErrorsConfirmPasswordText();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(errorConfirmPasswordMessage)
                 .as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedErrorMessage);
-        softly.assertThat(CAPage.isCreateAccountEnabled())
+        softly.assertThat(createAccountPage.isCreateAccountEnabled())
                 .as("'Create Account' button should not be enabled " +
                         "until 'Password' and 'Confirm Password' fields values would be equal").isFalse();
         softly.assertAll();
@@ -185,9 +185,9 @@ public class CreateAnAccountTests extends BaseTest{
                 (user, alreadyUsedLogin, password, password, dayToSelect);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(CAPage.getErrorAlreadyUsedEmailText())
+        softly.assertThat(createAccountPage.getErrorAlreadyUsedEmailText())
                 .as("Error message should contain warning").contains(expectedErrorMessage);
-        softly.assertThat(CAPage.isCreateAccountEnabled())
+        softly.assertThat(createAccountPage.isCreateAccountEnabled())
                 .as("'Create Account' button should not be enabled until valid email would be used").isFalse();
         softly.assertAll();
     }

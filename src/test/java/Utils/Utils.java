@@ -1,7 +1,6 @@
 package Utils;
 
 import UI.Pages.BasePage;
-import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 
@@ -12,12 +11,10 @@ public class Utils extends BasePage {
         PageFactory.initElements(driver, this);
     }
 
-    @Step("parse string that contains money value into double")
     public double parseToDouble (String valueToParse){
         return Double.parseDouble(valueToParse.replaceAll("[^\\d.]", ""));
     }
 
-    @Step("parse string that contains digits into int")
     public int parseToInt(String valueToParse){
         return Integer.parseInt(valueToParse.replaceAll("\\D", ""));
     }

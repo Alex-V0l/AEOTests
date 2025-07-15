@@ -18,17 +18,17 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class JeansItemsTests extends BaseTest{
 
-    private HomeSearchSectionPage hssPage;
-    private JeansItemsPage jIPage;
+    private HomeSearchSectionPage homeSearchPage;
+    private JeansItemsPage jeansItemsPage;
     private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
-        jIPage = new JeansItemsPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
+        jeansItemsPage = new JeansItemsPage(driver);
         uiSteps = new UISteps(driver);
-        hssPage.openHomePage();
-        hssPage.closeCookieBannerIfVisible();
+        homeSearchPage.openHomePage();
+        homeSearchPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("On current item's page find selected color radio," +
@@ -38,13 +38,13 @@ public class JeansItemsTests extends BaseTest{
     void changeRadioColorAndChekStateAndPhotos() {
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
-        WebElement initSelectedRadio = jIPage.getSelectedColorRadio();
+        WebElement initSelectedRadio = jeansItemsPage.getSelectedColorRadio();
 
-        assertThat(jIPage.isColorRadioSelected(initSelectedRadio)).as("Found radio should have been selected").isTrue();
+        assertThat(jeansItemsPage.isColorRadioSelected(initSelectedRadio)).as("Found radio should have been selected").isTrue();
 
-        jIPage.clickOnFirstAvailableColorRadioAndWaitForChanges(initSelectedRadio);
+        jeansItemsPage.clickOnFirstAvailableColorRadioAndWaitForChanges(initSelectedRadio);
 
-        assertThat(jIPage.isColorRadioSelected(initSelectedRadio)).as("Radio should not have been selected").isFalse();
+        assertThat(jeansItemsPage.isColorRadioSelected(initSelectedRadio)).as("Radio should not have been selected").isFalse();
     }
 
     @DisplayName("On current item's page click 'Size' button, check that dropdown is visible, scroll to first size," +
@@ -56,13 +56,13 @@ public class JeansItemsTests extends BaseTest{
 
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
-        jIPage.moveToSizeButtonAndClick();
+        jeansItemsPage.moveToSizeButtonAndClick();
 
-        assertThat(jIPage.isSizeDropdownIsVisible())
+        assertThat(jeansItemsPage.isSizeDropdownIsVisible())
                 .as("Dropdown should have appeared after click on size button").isTrue();
 
-        jIPage.scrollToFirstAvailableSizeAndPick();
-        String sizeText = jIPage.getSelectedSizeText();
+        jeansItemsPage.scrollToFirstAvailableSizeAndPick();
+        String sizeText = jeansItemsPage.getSelectedSizeText();
 
         SoftAssertions softly = new SoftAssertions();
         softly.assertThat(sizeText).as("After picking a size you should see what you've chosen").isNotNull();
@@ -75,22 +75,24 @@ public class JeansItemsTests extends BaseTest{
     @Tags({@Tag("P0"), @Tag("extended")})
     @Test
     void checkAndChangeAmount(){
+        String initQuantity = "1";
+
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
-        String initQuantity = jIPage.getAmountOfItems();
+        String currentQuantity = jeansItemsPage.getAmountOfItems();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(initQuantity).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo("1");
-        softly.assertThat(jIPage.isIncreaseAmountButtonDisabled()).as("Button have to be disabled").isTrue();
+        softly.assertThat(currentQuantity).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(initQuantity);
+        softly.assertThat(jeansItemsPage.isIncreaseAmountButtonDisabled()).as("Button have to be disabled").isTrue();
         softly.assertAll();
 
         uiSteps.moveToSizeAndPickFirst();
-        jIPage.clickIncreaseAmountButton();
+        jeansItemsPage.clickIncreaseAmountButton();
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(jIPage.getAmountOfItems()).as("Item's quantity should have increased")
-                .isGreaterThan(initQuantity);
-        softlyAgain.assertThat(jIPage.isIncreaseAmountButtonDisabled()).as("Button have to be enabled").isFalse();
+        softlyAgain.assertThat(jeansItemsPage.getAmountOfItems()).as("Item's quantity should have increased")
+                .isGreaterThan(currentQuantity);
+        softlyAgain.assertThat(jeansItemsPage.isIncreaseAmountButtonDisabled()).as("Button have to be enabled").isFalse();
         softlyAgain.assertAll();
     }
 
@@ -103,11 +105,11 @@ public class JeansItemsTests extends BaseTest{
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.moveToSizeAndPickFirst();
-        jIPage.clickAddToBag();
+        jeansItemsPage.clickAddToBag();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(jIPage.isAddedToBagModalVisible()).as("Modal 'Added to Bag' should be visible").isTrue();
-        softly.assertThat(jIPage.getModalsTitleAddedToBagText()).as(VALUES_HAVE_TO_BE_EQUAL)
+        softly.assertThat(jeansItemsPage.isAddedToBagModalVisible()).as("Modal 'Added to Bag' should be visible").isTrue();
+        softly.assertThat(jeansItemsPage.getModalsTitleAddedToBagText()).as(VALUES_HAVE_TO_BE_EQUAL)
                 .isEqualTo(expectedTitlesText);
         softly.assertAll();
     }
@@ -120,17 +122,17 @@ public class JeansItemsTests extends BaseTest{
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.moveToSizeAndPickFirst();
-        jIPage.clickAddToBag();
+        jeansItemsPage.clickAddToBag();
 
-        assertThat(jIPage.isAddedToBagModalVisible()).as("Modal 'Added to bag' should be visible").isTrue();
+        assertThat(jeansItemsPage.isAddedToBagModalVisible()).as("Modal 'Added to bag' should be visible").isTrue();
 
         ItemData itemInAddedToBag = uiSteps.getItemDataFromAddedToBagModal();
-        jIPage.clickViewBagButton();
-        jIPage.waitForUrl(CART_URL);
+        jeansItemsPage.clickViewBagButton();
+        jeansItemsPage.waitForUrl(CART_URL);
         ItemData itemInCart = uiSteps.getItemDataFromCartPage();
 
         SoftAssertions softlyAgain = new SoftAssertions();
-        softlyAgain.assertThat(jIPage.getCurrentURL())
+        softlyAgain.assertThat(jeansItemsPage.getCurrentURL())
                     .as("Transition to the 'Cart' page should have been executed").isEqualTo(CART_URL);
         softlyAgain.assertThat(itemInAddedToBag)
                 .as("Items have to be equal, but sale's price may differ because of extra discount")

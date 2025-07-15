@@ -24,21 +24,21 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 @ExtendWith(AllureExtension.class)
 public class CartAndCheckoutTests extends BaseTest{
 
-    private HomeSearchSectionPage hssPage;
+    private HomeSearchSectionPage homeSearchPage;
     private Utils utils;
-    private CartAndCheckoutPage cPage;
-    private JeansItemsPage jIPage;
+    private CartAndCheckoutPage cartCheckoutPage;
+    private JeansItemsPage jeansItemsPage;
     private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
-        hssPage = new HomeSearchSectionPage(driver);
+        homeSearchPage = new HomeSearchSectionPage(driver);
         utils = new Utils(driver);
-        cPage = new CartAndCheckoutPage(driver);
-        jIPage = new JeansItemsPage(driver);
+        cartCheckoutPage = new CartAndCheckoutPage(driver);
+        jeansItemsPage = new JeansItemsPage(driver);
         uiSteps = new UISteps(driver);
-        cPage.openHomePage();
-        hssPage.closeCookieBannerIfVisible();
+        cartCheckoutPage.openHomePage();
+        homeSearchPage.closeCookieBannerIfVisible();
     }
 
     @DisplayName("Click on bag button, check text of page's header and url")
@@ -47,13 +47,13 @@ public class CartAndCheckoutTests extends BaseTest{
     void goToBagCheckHeaderAndUrl(){
         String expectedHeadersText = "Shopping Bag";
 
-        hssPage.clickOnBagButton();
-        cPage.waitForUrl(CART_URL);
+        homeSearchPage.clickOnBagButton();
+        cartCheckoutPage.waitForUrl(CART_URL);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(cPage.getCurrentURL())
+        softly.assertThat(cartCheckoutPage.getCurrentURL())
                 .as("Transition to the bag page should have been executed").isEqualTo(CART_URL);
-        softly.assertThat(cPage.getPageHeadersText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
+        softly.assertThat(cartCheckoutPage.getPageHeadersText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedHeadersText);
         softly.assertAll();
     }
 
@@ -72,11 +72,11 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.searchActionsPath(searchQuery, expectedUrlAfterSearch);
         uiSteps.sortByHighToLowPriceAndPickFirstItem();
         ItemData itemInfoFromQuickShop  = uiSteps.getItemDataFromQuickShop();
-        cPage.moveWaitAndClickOnQuickShopButton();
+        cartCheckoutPage.moveWaitAndClickOnQuickShopButton();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(cPage.isQuickShopVisible()).as("'Quick Shop' modal should be visible").isTrue();
-        softly.assertThat(cPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedQuickShopTitleText);
+        softly.assertThat(cartCheckoutPage.isQuickShopVisible()).as("'Quick Shop' modal should be visible").isTrue();
+        softly.assertThat(cartCheckoutPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedQuickShopTitleText);
         softly.assertAll();
 
         uiSteps.pickSizeAddItemInQuickShopAndGoToCart();
@@ -84,11 +84,11 @@ public class CartAndCheckoutTests extends BaseTest{
 
         SoftAssertions softlyAgain = new SoftAssertions();
         softlyAgain.assertThat(itemInfoFromCartShorten).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(itemInfoFromQuickShop);
-        softlyAgain.assertThat(cPage.getTextOfShippingMessage()).as(VALUES_HAVE_TO_BE_EQUAL)
+        softlyAgain.assertThat(cartCheckoutPage.getTextOfShippingMessage()).as(VALUES_HAVE_TO_BE_EQUAL)
                 .isEqualTo(expectedShippingProgressMessage);
-        softlyAgain.assertThat(cPage.getShippingProgressStatus()).as("Shipping progress bar have to be full")
+        softlyAgain.assertThat(cartCheckoutPage.getShippingProgressStatus()).as("Shipping progress bar have to be full")
                 .isEqualTo(expectedShippingProgressBarStatus);
-        softlyAgain.assertThat(cPage.getSubTotalText())
+        softlyAgain.assertThat(cartCheckoutPage.getSubTotalText())
                 .as("Price of the item should be equal to sub total value because shipping is free")
                 .isEqualTo(itemInfoFromCartShorten.getSalePrice());
         softlyAgain.assertAll();
@@ -105,7 +105,7 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickFirstCheapestJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.moveToSizeAndPickFirstAndAddToBag();
-        String itemNameText = jIPage.getItemsNameText();
+        String itemNameText = jeansItemsPage.getItemsNameText();
         uiSteps.viewBagAndWaitForCart();
         CartInfo infoFromCart = uiSteps.getInfoFromCart();
         double parsedShippingPrice = utils.parseToDouble(infoFromCart.getShippingPrice());
@@ -142,11 +142,11 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.pickSizeAddItemAndGoToCart();
         CartInfo itemFromCartInfo = uiSteps.getInfoFromCart();
         String initQuantity = String.valueOf(utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity()));
-        cPage.scrollAndClickEditButton();
+        cartCheckoutPage.scrollAndClickEditButton();
 
         SoftAssertions softly =  new SoftAssertions();
-        softly.assertThat(cPage.isEditItemModalIsVisible()).as("'Edit Item' modal should be visible").isTrue();
-        softly.assertThat(cPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedModalTitleText);
+        softly.assertThat(cartCheckoutPage.isEditItemModalIsVisible()).as("'Edit Item' modal should be visible").isTrue();
+        softly.assertThat(cartCheckoutPage.getModalsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedModalTitleText);
         softly.assertAll();
 
         String quantityFromEditItem =
@@ -175,9 +175,9 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.pickSizeAddItemAndGoToCart();
-        cPage.scrollAndClickOnRemove();
-        cPage.waitForEmptyBag();
-        String messageForEmptyBag = cPage.getEmptyBagText();
+        cartCheckoutPage.scrollAndClickOnRemove();
+        cartCheckoutPage.waitForEmptyBag();
+        String messageForEmptyBag = cartCheckoutPage.getEmptyBagText();
 
         assertThat(messageForEmptyBag).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedMessage);
     }
@@ -194,9 +194,9 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(cPage.getCurrentURL())
+        softly.assertThat(cartCheckoutPage.getCurrentURL())
                 .as("Transitions to 'Checkout' page should nave been executed").isEqualTo(CHECKOUT_URL);
-        softly.assertThat(cPage.getCheckoutsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedTitleText);
+        softly.assertThat(cartCheckoutPage.getCheckoutsTitleText()).as(VALUES_HAVE_TO_BE_EQUAL).isEqualTo(expectedTitleText);
         softly.assertAll();
     }
 
@@ -208,11 +208,11 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.goToMensJeansAndCloseAdvertsIfAppears();
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.pickSizeAddItemAndGoToCart();
-        String priceInBag = cPage.getSubTotalText();
+        String priceInBag = cartCheckoutPage.getSubTotalText();
         uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
-        cPage.scrollToOrderTotalAndClick();
+        cartCheckoutPage.scrollToOrderTotalAndClick();
 
-        assertThat(cPage.getTotalPriceText())
+        assertThat(cartCheckoutPage.getTotalPriceText())
                 .as("Price should not have changed before address and shipping method wouldn't have been chosen")
                 .isEqualTo(priceInBag);
     }
@@ -234,7 +234,7 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.pickSizeAddItemAndGoToCart();
         uiSteps.scrollToLetsCheckOutClickAndWaitForCheckOutPage();
         uiSteps.goToOrderTotalAndFillInCheckOutForm(firstName, lastName, streetAddress, city, zipCode);
-        boolean isStandardRadioSelected = cPage.isStandardRadioSelected();
+        boolean isStandardRadioSelected = cartCheckoutPage.isStandardRadioSelected();
         PricesCheckoutInfo pricesCheckoutInfo = uiSteps.getPricesInCheckout();
 
         SoftAssertions softly = new SoftAssertions();

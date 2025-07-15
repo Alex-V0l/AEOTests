@@ -38,7 +38,7 @@ public class BasePage {
         wait.until(ExpectedConditions.urlToBe(expectedUrl));
     }
 
-    @Step("check if there is a modal layer with shadow root and close it")
+    @Step("close modal with adverts, if appears")
     public void closeModalAdverts() {
         try {
             WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
@@ -58,7 +58,7 @@ public class BasePage {
         }
     }
 
-    @Step("Close cookie consent banner if visible")
+    @Step("Close cookie consent banner, if visible")
     public void closeCookieBannerIfVisible() {
         try {
             By bannerTextLocator = By.id("cookieconsent:desc");
