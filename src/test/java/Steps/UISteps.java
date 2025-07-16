@@ -15,7 +15,6 @@ import static Utils.Constants.*;
 public class UISteps {
 
     private HomeSearchSectionPage homeSearchPage;
-    private Utils utils;
     private CartAndCheckoutPage cartCheckoutPage;
     private MensJeansPage mensJeansPage;
     private JeansItemsPage jeansItemsPage;
@@ -24,7 +23,6 @@ public class UISteps {
 
     public UISteps(WebDriver driver) {
         this.homeSearchPage = new HomeSearchSectionPage(driver);
-        this.utils = new Utils(driver);
         this.cartCheckoutPage = new CartAndCheckoutPage(driver);
         this.mensJeansPage = new MensJeansPage(driver);
         this.jeansItemsPage = new JeansItemsPage(driver);
@@ -279,11 +277,11 @@ public class UISteps {
     public ParsedToDoublePricesCheckoutInfo getAsDoubleValuesOfPrices(PricesCheckoutInfo checkoutInfo){
 
         return ParsedToDoublePricesCheckoutInfo.builder()
-                .standardShippingPrice(utils.parseToDouble(checkoutInfo.getStandardShippingPriceText()))
-                .currentShippingCost(utils.parseToDouble(checkoutInfo.getCurrentShippingCost()))
-                .currentOrderTotal(utils.parseToDouble(checkoutInfo.getCurrentOrderTotal()))
-                .twoDayShippingCost(utils.parseToDouble(checkoutInfo.getTwoDayShippingCost()))
-                .currentTaxValue(utils.parseToDouble(checkoutInfo.getCurrentTaxValue()))
+                .standardShippingPrice(Utils.parseToDouble(checkoutInfo.getStandardShippingPriceText()))
+                .currentShippingCost(Utils.parseToDouble(checkoutInfo.getCurrentShippingCost()))
+                .currentOrderTotal(Utils.parseToDouble(checkoutInfo.getCurrentOrderTotal()))
+                .twoDayShippingCost(Utils.parseToDouble(checkoutInfo.getTwoDayShippingCost()))
+                .currentTaxValue(Utils.parseToDouble(checkoutInfo.getCurrentTaxValue()))
                 .build();
     }
 

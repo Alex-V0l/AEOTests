@@ -2,16 +2,12 @@ package UI.Pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import Utils.Utils;
 
 public class SingInPage extends BasePage{
 
@@ -51,8 +47,7 @@ public class SingInPage extends BasePage{
 
     @Step("get text from 'Sign In' modal header")
     public String getSignInModalsHeaderText(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.textToBePresentInElement(signInModalHeader, "Sign In"));
+        Utils.waitForCondition(driver, ExpectedConditions.textToBePresentInElement(signInModalHeader, "Sign In"));
         return signInModalHeader.getText();
     }
 
@@ -63,22 +58,14 @@ public class SingInPage extends BasePage{
 
     @Step("type into 'Email' field")
     public void typeIntoEmail(String login){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript
-                ("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", loginField, login);
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver ->
-                login.equals(loginField.getDomProperty("value"))
-        );
+        Utils.setValueViaJS(driver, loginField, login);
+        Utils.waitForCondition(driver, driver -> login.equals(loginField.getDomProperty("value")));
     }
 
     @Step("type into 'Password' field")
     public void typeIntoPassword(String password){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript
-                ("arguments[0].value = arguments[1]; arguments[0].dispatchEvent(new Event('input', { bubbles: true }));", passwordField, password);
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(driver ->
-                password.equals(passwordField.getDomProperty("value"))
-        );
+        Utils.setValueViaJS(driver, passwordField, password);
+        Utils.waitForCondition(driver, driver -> password.equals(passwordField.getDomProperty("value")));
     }
 
     @Step("click on 'Sign In' button")
@@ -108,8 +95,7 @@ public class SingInPage extends BasePage{
 
     @Step("wait for 'Account' modal's header to contain user's name")
     public void waitForUserNameInAccountsHeader(String userName) {
-        new WebDriverWait(driver, Duration.ofSeconds(7))
-                .until(ExpectedConditions.textToBePresentInElement(accountsHeader, userName));
+        Utils.waitForCondition(driver, ExpectedConditions.textToBePresentInElement(accountsHeader, userName));
     }
 
     @Step("get text from alert in 'Sign In' modal header")
@@ -124,8 +110,7 @@ public class SingInPage extends BasePage{
 
     @Step("wait for error message")
     public void waitForError(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOfElementLocated
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//div[contains (@class, 'qa-error-help-block')]")));
     }
 
@@ -141,7 +126,6 @@ public class SingInPage extends BasePage{
 
     @Step("wait for alert message")
     public void waitForAlertMessage(String expectedText){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.textToBePresentInElement(alertHeader, expectedText));
+        Utils.waitForCondition(driver, ExpectedConditions.textToBePresentInElement(alertHeader, expectedText));
     }
 }

@@ -2,13 +2,10 @@ package UI.Pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import Utils.Utils;
 
 public class CartAndCheckoutPage extends BasePage{
 
@@ -114,8 +111,7 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to item's info section")
     public void scrollToAddedItemsInfoSection(){
-        Actions actions = new Actions(driver);
-        actions.moveToElement(addedItemsInfoSection).pause(2).perform();
+        Utils.moveWithActions(driver, addedItemsInfoSection);
     }
 
     @Step("get added to cart item's name")
@@ -155,8 +151,7 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to first item that was found via search")
     public void scrollToSecondItemForBag(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(secondItemAfterSearch).moveToElement(secondItemAfterSearch).pause(2).perform();
+        Utils.scrollWithActions(driver, secondItemAfterSearch);
     }
 
     @Step("get item's name that was found via search for adding to bag")
@@ -176,11 +171,9 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("move to 'Quick Shop' button, wait for it and click")
     public void moveWaitAndClickOnQuickShopButton(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement quickShopButton = wait.until(ExpectedConditions.presenceOfElementLocated(
-                By.xpath("(//div[contains(@class, 'product-tile')])[3]//a[contains(@class, 'quickshop-product-btn')]")
-        ));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", quickShopButton);
+        WebElement quickShopButton = Utils.waitForCondition(driver, ExpectedConditions.presenceOfElementLocated
+                (By.xpath("(//div[contains(@class, 'product-tile')])[3]//a[contains(@class, 'quickshop-product-btn')]")));
+        Utils.clickWithJs(driver, quickShopButton);
     }
 
     @Step("check that 'Quick Shop' modal is visible")
@@ -196,17 +189,14 @@ public class CartAndCheckoutPage extends BasePage{
     @Step("scroll to 'Size' button and click on it with retry")
     public void scrollToSizeAndClick() {
         By sizeLocator = By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-
         int attempts = 0;
         int maxAttempts = 3;
         while (attempts < maxAttempts) {
             try {
-                WebElement sizeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(sizeLocator));
-                js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
-                WebElement clickable = wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
-                js.executeScript("arguments[0].click();", clickable);
+                WebElement sizeButton = Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated(sizeLocator));
+                Utils.scrollIntoViewJs(driver, sizeButton);
+                WebElement clickable = Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(sizeButton));
+                Utils.clickWithJs(driver, clickable);
                 break;
             } catch (StaleElementReferenceException e) {
                 attempts++;
@@ -221,12 +211,10 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("click on first size option inside 'Size' dropdown")
     public void clickFirstAvailableSize(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement firstOption = wait.until(ExpectedConditions.presenceOfElementLocated
+        WebElement firstOption = Utils.waitForCondition(driver, ExpectedConditions.presenceOfElementLocated
                 (By.xpath("//ul[contains(@class, 'dropdown-menu')]//li[not(contains(@class, 'visually-disabled'))][1]/a")));
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", firstOption);
-        js.executeScript("arguments[0].click();", firstOption);
+        Utils.scrollIntoViewJs(driver, firstOption);
+        Utils.clickWithJs(driver, firstOption);
     }
 
     @Step("click on 'Add to Bag' button")
@@ -276,8 +264,7 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Edit' button and click on it")
     public void scrollAndClickEditButton(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(editButton).moveToElement(editButton).pause(2).click().perform();
+        Utils.scrollToAndClickWithActions(driver, editButton);
     }
 
     @Step("check that 'Edit Item' modal is visible")
@@ -288,12 +275,10 @@ public class CartAndCheckoutPage extends BasePage{
     @Step("scroll and click on increase amount (+) button")
     public void scrollAndClickIncreaseAmountButton(){
         By buttonLocator = By.xpath("//button[@aria-label='increase']");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(buttonLocator));
+        Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(buttonLocator));
         WebElement increaseAmountButton = driver.findElement(buttonLocator);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", increaseAmountButton);
-        js.executeScript("arguments[0].click();", increaseAmountButton);
+        Utils.scrollIntoViewJs(driver, increaseAmountButton);
+        Utils.clickWithJs(driver, increaseAmountButton);
     }
 
     @Step("click on 'Update Bag' button")
@@ -309,14 +294,12 @@ public class CartAndCheckoutPage extends BasePage{
     @Step("wait for quantity to be visible after changes")
     public void waitForQuantity(){
         WebElement quantityFieldInCart = driver.findElement(By.xpath("//div[@data-test-cart-item-quantity]"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(quantityFieldInCart));
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOf(quantityFieldInCart));
     }
 
     @Step("scroll to 'Remove' button and click it")
     public void scrollAndClickOnRemove() {
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(removeButton).moveToElement(removeButton).pause(2).click().perform();
+        Utils.scrollToAndClickWithActions(driver, removeButton);
     }
 
     @Step("get text from 'Empty Bag' message")
@@ -326,15 +309,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("wait for 'Empty Bag' field to be visible")
     public void waitForEmptyBag(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions
-                .presenceOfElementLocated(By.xpath("//div[contains(@class, 'qa-empty-cart-container')]")));
+        Utils.waitForCondition(driver, ExpectedConditions
+                        .presenceOfElementLocated(By.xpath("//div[contains(@class, 'qa-empty-cart-container')]")));
     }
 
     @Step("scroll to 'Let's Check Out' button and click it")
     public void scrollAndClickOnCheckOut() {
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(checkoutButton).moveToElement(checkoutButton).pause(2).click().perform();
+        Utils.scrollToAndClickWithActions(driver, checkoutButton);
     }
 
     @Step("get checkout title's text")
@@ -364,19 +345,16 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'State' button and click it")
     public void scrollAndClickOnState() {
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(stateButton).moveToElement(stateButton).pause(2).click().perform();
+        Utils.scrollToAndClickWithActions(driver, stateButton);
     }
 
     @Step("wait for 'Quantity to change")
     public void waitForQuantityChange(String oldQuantity) {
         By qtyLocator = By.xpath("//span[@data-test-value]");
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement element = driver.findElement(qtyLocator);
-        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
-        wait.until(ExpectedConditions.not(
-                ExpectedConditions.textToBePresentInElementLocated(qtyLocator, oldQuantity)
-        ));
+        WebElement QuantityElement = driver.findElement(qtyLocator);
+        Utils.scrollIntoViewJs(driver, QuantityElement);
+        Utils.waitForCondition(driver, ExpectedConditions.not(
+                        ExpectedConditions.textToBePresentInElementLocated(qtyLocator, oldQuantity)));
     }
 
     @Step("pick 'Illinois' option from 'States'")
@@ -396,15 +374,13 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to '2 Day' radio and click")
     public void scrollToTwoDayAndClick() {
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(twoDayRadio).moveToElement(twoDayRadio).pause(Duration.ofSeconds(2)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, twoDayRadio);
     }
 
     @Step("wait for spinner to disappear")
     public void waitForSpinnerToDisappear() {
-        By spinnerOverlay = By.xpath("//div[contains(@class, 'progress-inner-wrapper')]");
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.invisibilityOfElementLocated(spinnerOverlay));
+        Utils.waitForCondition(driver, ExpectedConditions.invisibilityOfElementLocated
+                (By.xpath("//div[contains(@class, 'progress-inner-wrapper')]")));
     }
 
     @Step("get 'Standard' shipping price text")
@@ -424,14 +400,12 @@ public class CartAndCheckoutPage extends BasePage{
 
     @Step("scroll to 'Order total' section")
     public void scrollToOrderTotalAndClick(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(totalPrice).moveToElement(totalPrice).pause(Duration.ofSeconds(5)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, totalPrice);
     }
 
     @Step("scroll to 'First Name' field")
     public void scrollToFirstName(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(firstnameField).moveToElement(firstnameField).pause(2).perform();
+        Utils.scrollWithActions(driver, firstnameField);
     }
 
     @Step("get 'Tax' value text")
@@ -442,19 +416,15 @@ public class CartAndCheckoutPage extends BasePage{
     @Step("click on radio 'Price: High to Low' inside search result page")
     public void scrollAndClickPriceHighToLow(){
         WebElement highToLowRadioLocator = driver.findElement(By.xpath("//label[@data-test-accordion='price: high to low']"));
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(highToLowRadioLocator));
-        ((JavascriptExecutor) driver).executeScript(
-                "arguments[0].scrollIntoView({block: 'center', behavior: 'instant'});", highToLowRadioLocator);
-        wait.until(ExpectedConditions.visibilityOf(highToLowRadioLocator));
-        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", highToLowRadioLocator);
+        Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(highToLowRadioLocator));
+        Utils.scrollIntoViewJs(driver, highToLowRadioLocator);
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOf(highToLowRadioLocator));
+        Utils.clickWithJs(driver, highToLowRadioLocator);
     }
 
     @Step("click on filter 'Sort' inside search result page")
     public void scrollAndClickSort(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(sortFilter).moveToElement(sortFilter).pause(Duration.ofSeconds(2))
-                .click().perform();
+        Utils.scrollToAndClickWithActions(driver, sortFilter);
     }
 
     @Step("get text of max value cost for free shipping")

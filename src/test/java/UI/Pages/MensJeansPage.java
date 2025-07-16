@@ -2,11 +2,11 @@ package UI.Pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import Utils.Utils;
 
 import java.time.Duration;
 
@@ -53,18 +53,15 @@ public class MensJeansPage extends BasePage{
 
     @Step("scroll to 'Size' button and click on it")
     public void scrollAndClickSize(){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeFilterButton);
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until
-                (ExpectedConditions.elementToBeClickable(sizeFilterButton));
-        js.executeScript("arguments[0].click();", sizeFilterButton);
+        Utils.scrollIntoViewJs(driver, sizeFilterButton);
+        Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(sizeFilterButton));
+        Utils.clickWithJs(driver, sizeFilterButton);
     }
 
     @Step("Check if 'Size' area is visible after clicking the size button")
     public boolean isSizeAreaVisible() {
         try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            return wait.until(ExpectedConditions.visibilityOf(sizeMenuArea)).isDisplayed();
+            return Utils.waitForCondition(driver, ExpectedConditions.visibilityOf(sizeMenuArea)).isDisplayed();
         } catch (TimeoutException e) {
             return false;
         }
@@ -87,9 +84,7 @@ public class MensJeansPage extends BasePage{
 
     @Step("scroll to filter '28x30' and check if it was applied and visible")
     public boolean isFilterSizeVisible(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(enabledFilterSize28x30).moveToElement(enabledFilterSize28x30)
-                .pause(Duration.ofSeconds(2)).perform();
+        Utils.scrollWithActions(driver, enabledFilterSize28x30);
         return enabledFilterSize28x30.isDisplayed();
     }
 
@@ -100,17 +95,13 @@ public class MensJeansPage extends BasePage{
 
     @Step("scroll to 'Size' filter are and check that filter '28x30' disappeared")
     public boolean isFilter28x30Disappeared(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(sizeFilterButton).moveToElement(sizeFilterButton)
-                .pause(Duration.ofSeconds(2)).perform();
+        Utils.scrollWithActions(driver, sizeFilterButton);
         return driver.findElements(By.xpath("//button[@data-test-toggle-filter='28 X 30']")).isEmpty();
     }
 
     @Step("scroll to 'Sort by' button and check if 'Sort by' radio is selected")
     public boolean isSortByButtonSelected(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(sortByButton).moveToElement(sortByButton)
-                .pause(Duration.ofSeconds(2)).perform();
+        Utils.scrollWithActions(driver, sortByButton);
         return sortByButton.getDomAttribute("aria-expanded").equals("true");
     }
 
@@ -124,20 +115,17 @@ public class MensJeansPage extends BasePage{
         return !onlineExclusivesRadio.isSelected();
     }
 
-    @Step("scroll to 'Online Exclusive' radio")
+    @Step("scroll to 'Online Exclusive' radio with retry")
     public void scrollToOnlineExclusiveRadio(){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.presenceOfElementLocated
-                        (By.xpath("//label[@data-test-accordion='Online Exclusives']")));
+        Utils.waitForCondition(driver, ExpectedConditions.presenceOfElementLocated
+                (By.xpath("//label[@data-test-accordion='Online Exclusives']")));
         WebElement onlineExclusive = driver.findElement(By.xpath("//label[@data-test-accordion='Online Exclusives']"));
 
         try {
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", onlineExclusive);
+            Utils.scrollWithActions(driver, onlineExclusive);
         } catch (StaleElementReferenceException e) {
             onlineExclusive = driver.findElement(By.xpath("//label[@data-test-accordion='Online Exclusives']"));
-            ((JavascriptExecutor) driver).executeScript(
-                    "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", onlineExclusive);
+            Utils.scrollWithActions(driver, onlineExclusive);
         }
     }
 
@@ -148,51 +136,35 @@ public class MensJeansPage extends BasePage{
 
     @Step("scroll to second item, move cursor to it and click")
     public void scrollAndClickToSecondItemJeans(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(secondJeansItem)
-                .moveToElement(secondJeansItem).pause(Duration.ofSeconds(2)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, secondJeansItem);
     }
 
     @Step("scroll to first item from cheapest, move cursor to it and click")
     public void scrollAndClickToFirstCheapestItemJeans(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.presenceOfElementLocated
+        Utils.waitForCondition(driver, ExpectedConditions.presenceOfElementLocated
                 (By.xpath("(//div[@class='results-list qa-results-list']//div[contains (@class, 'product-tile')])[1]")));
         WebElement firstCheapestJeansItem = driver.findElement
                 (By.xpath("(//div[@class='results-list qa-results-list']//div[contains (@class, 'product-tile')])[1]"));
-
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(firstCheapestJeansItem)
-                .moveToElement(firstCheapestJeansItem).pause(Duration.ofSeconds(2)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, firstCheapestJeansItem);
     }
 
     @Step("scroll to 'Low to High' radio an click")
     public void scrollAndClickLowToHigh(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(SortFromLowToHighRadio).moveToElement(SortFromLowToHighRadio).click().perform();
+        Utils.scrollToAndClickWithActions(driver,SortFromLowToHighRadio);
     }
 
     @Step ("get url of second item from 'Men's Jeans' page")
     public String getSecondsItemsUrl(){
-        String href = urlOfSecondJeansItem.getDomAttribute("href");
-        if (!href.startsWith("http")) {
-            href = "https://www.ae.com" + href;
-        }
-        return href.split("\\?")[0];
+        return Utils.extractNormalizedUrl(urlOfSecondJeansItem);
     }
 
     @Step ("get text of first cheapest item from 'Men's Jeans' page after sorting")
     public String getFirstCheapestItemsUrl(){
-        String href = urlOfFirstCheapestJeansItem.getDomAttribute("href");
-        if (!href.startsWith("http")) {
-            href = "https://www.ae.com" + href;
-        }
-        return href.split("\\?")[0];
+        return Utils.extractNormalizedUrl(urlOfFirstCheapestJeansItem);
     }
 
-    @Step("wait for second item's url")
+    @Step("wait for item's url")
     public void waitForItemsUrl(String itemsUrl){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.urlContains(itemsUrl));
+        Utils.waitForCondition(driver, ExpectedConditions.urlContains(itemsUrl));
     }
 }

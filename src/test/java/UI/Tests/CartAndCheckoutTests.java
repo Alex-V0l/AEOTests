@@ -25,7 +25,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CartAndCheckoutTests extends BaseTest{
 
     private HomeSearchSectionPage homeSearchPage;
-    private Utils utils;
     private CartAndCheckoutPage cartCheckoutPage;
     private JeansItemsPage jeansItemsPage;
     private UISteps uiSteps;
@@ -33,7 +32,6 @@ public class CartAndCheckoutTests extends BaseTest{
     @BeforeEach
     void setup(){
         homeSearchPage = new HomeSearchSectionPage(driver);
-        utils = new Utils(driver);
         cartCheckoutPage = new CartAndCheckoutPage(driver);
         jeansItemsPage = new JeansItemsPage(driver);
         uiSteps = new UISteps(driver);
@@ -108,11 +106,11 @@ public class CartAndCheckoutTests extends BaseTest{
         String itemNameText = jeansItemsPage.getItemsNameText();
         uiSteps.viewBagAndWaitForCart();
         CartInfo infoFromCart = uiSteps.getInfoFromCart();
-        double parsedShippingPrice = utils.parseToDouble(infoFromCart.getShippingPrice());
-        double parsedItemsFinalPrice = utils.parseToDouble(infoFromCart.getAddedItemsSalePrice());
-        double parsedShippingSubtotal = utils.parseToDouble(infoFromCart.getSubTotal());
-        double parsedShippingProgressValue = utils.parseToDouble(infoFromCart.getShippingProgressValue());
-        double parsedMaxShippingCostForFree = utils.parseToDouble(infoFromCart.getMaxShippingCostBeforeFree());
+        double parsedShippingPrice = Utils.parseToDouble(infoFromCart.getShippingPrice());
+        double parsedItemsFinalPrice = Utils.parseToDouble(infoFromCart.getAddedItemsSalePrice());
+        double parsedShippingSubtotal = Utils.parseToDouble(infoFromCart.getSubTotal());
+        double parsedShippingProgressValue = Utils.parseToDouble(infoFromCart.getShippingProgressValue());
+        double parsedMaxShippingCostForFree = Utils.parseToDouble(infoFromCart.getMaxShippingCostBeforeFree());
         String expectedShippingMessage =
                 String.format(Locale.US, "Spend $%.2f more to unlock free shipping!", parsedMaxShippingCostForFree - parsedItemsFinalPrice);
 
@@ -141,7 +139,7 @@ public class CartAndCheckoutTests extends BaseTest{
         uiSteps.pickSecondJeansItemAndWaitForUrlAndAdvertsIfAppears();
         uiSteps.pickSizeAddItemAndGoToCart();
         CartInfo itemFromCartInfo = uiSteps.getInfoFromCart();
-        String initQuantity = String.valueOf(utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity()));
+        String initQuantity = String.valueOf(Utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity()));
         cartCheckoutPage.scrollAndClickEditButton();
 
         SoftAssertions softly =  new SoftAssertions();
@@ -152,11 +150,11 @@ public class CartAndCheckoutTests extends BaseTest{
         String quantityFromEditItem =
                 uiSteps.increaseQuantityGetNewQuantityAndWaitForChanges(initQuantity);
         ItemData updatedItemInfo = uiSteps.getItemDataFromCartPage();
-        double parsedFirstSalePrice = utils.parseToDouble(itemFromCartInfo.getAddedItemsSalePrice());
-        int parsedFirstAmount = utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity());
-        int parsedEditedAmount = utils.parseToInt(quantityFromEditItem);
-        int parsedChangedAmount = utils.parseToInt(updatedItemInfo.getQuantity());
-        double parsedChangedSalePrice = utils.parseToDouble(updatedItemInfo.getSalePrice());
+        double parsedFirstSalePrice = Utils.parseToDouble(itemFromCartInfo.getAddedItemsSalePrice());
+        int parsedFirstAmount = Utils.parseToInt(itemFromCartInfo.getAddedItemsQuantity());
+        int parsedEditedAmount = Utils.parseToInt(quantityFromEditItem);
+        int parsedChangedAmount = Utils.parseToInt(updatedItemInfo.getQuantity());
+        double parsedChangedSalePrice = Utils.parseToDouble(updatedItemInfo.getSalePrice());
 
         SoftAssertions softlyAgain = new SoftAssertions();
         softlyAgain.assertThat(parsedFirstAmount).as("Quantity should have increased").isLessThan(parsedChangedAmount);

@@ -1,13 +1,11 @@
 package UI.Pages;
 
+import Utils.Utils;
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.time.Duration;
 import java.util.List;
 
 public class JeansItemsPage extends BasePage{
@@ -59,9 +57,7 @@ public class JeansItemsPage extends BasePage{
 
     @Step("scroll to 'Size' button and click")
     public void moveToSizeButtonAndClick(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(sizeButton).moveToElement(sizeButton)
-                .pause(Duration.ofSeconds(2)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, sizeButton);
     }
 
     @Step("check that dropdown of sizes is visible")
@@ -71,9 +67,7 @@ public class JeansItemsPage extends BasePage{
 
     @Step("scroll to first available size option inside dropdown and pick it")
     public void scrollToFirstAvailableSizeAndPick(){
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(firstSizeAvailableOption).moveToElement(firstSizeAvailableOption)
-                .pause(Duration.ofSeconds(2)).click().perform();
+        Utils.scrollToAndClickWithActions(driver, firstSizeAvailableOption);
     }
 
     @Step("get text of selected size")
@@ -108,8 +102,7 @@ public class JeansItemsPage extends BasePage{
 
     @Step("get detailed info about 'Added to Bag' item")
     public String getModalsTitleAddedToBagText(){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(driver -> !modalsTitle.getText().trim().isEmpty());
+        Utils.waitForCondition(driver, driver -> !modalsTitle.getText().trim().isEmpty());
         return modalsTitle.getText();
     }
 
@@ -120,22 +113,19 @@ public class JeansItemsPage extends BasePage{
 
     @Step("get item's name from modal 'Added to bag' section")
     public String getItemsNameText (){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(driver -> !itemsNameSection.getText().trim().isEmpty());
+        Utils.waitForCondition(driver, driver -> !itemsNameSection.getText().trim().isEmpty());
         return itemsNameSection.getText().trim();
     }
 
     @Step("get item's 'Sale Price' from modal 'Added to bag' section")
     public String getItemsSalePriceText(){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(driver -> !itemsSalePriceSection.getText().trim().isEmpty());
+        Utils.waitForCondition(driver, driver -> !itemsSalePriceSection.getText().trim().isEmpty());
         return itemsSalePriceSection.getText().trim();
     }
 
     @Step("get item's 'Regular Price' from modal 'Added to bag' section")
     public String getItemsRegularPriceText(){
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(driver -> !itemsRegularPriceSection.getText().trim().isEmpty());
+        Utils.waitForCondition(driver, driver -> !itemsRegularPriceSection.getText().trim().isEmpty());
         return itemsRegularPriceSection.getText().trim();
     }
 
@@ -165,12 +155,12 @@ public class JeansItemsPage extends BasePage{
                 (By.xpath("//div[@data-test-color-swatches]//div[@role='button']"));
         for (WebElement radio : allRadios) {
             if (!radio.getDomAttribute("class").contains("swatch-active")) {
-                ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", radio);
+                Utils.scrollIntoViewJs(driver, radio);
                 radio.click();
                 break;
             }
         }
-        new WebDriverWait(driver, Duration.ofSeconds(5)).until(driver -> {
+        Utils.waitForCondition(driver, driver -> {
             String classAttr = previousSelected.getDomAttribute("class");
             return classAttr == null || !classAttr.contains("swatch-active");
         });

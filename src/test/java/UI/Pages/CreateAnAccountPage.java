@@ -2,22 +2,17 @@ package UI.Pages;
 
 import io.qameta.allure.Step;
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
+import Utils.Utils;
 
 public class CreateAnAccountPage extends BasePage {
 
     //locators
     @FindBy(xpath = "//a[@class='clickable qa-show-sidetray-account sidetray-account']")
     private WebElement accountButton;
-    @FindBy(xpath = "//div[normalize-space(@class) = 'modal-content']")
-    private WebElement accountModal;
     @FindBy(xpath = "//a[@data-test='register-button']")
     private WebElement createAnAccountButton;
     @FindBy(xpath = "//h1[@class='page-header qa-page-header _page-header_190u4w']")
@@ -68,9 +63,8 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("wait until 'Account' modal becomes visible")
     public void waitForAccountModal() {
-        By accountModalLocator = By.xpath("//div[normalize-space(@class) = 'modal-content']");
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until
-                (ExpectedConditions.visibilityOfElementLocated(accountModalLocator));
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//div[normalize-space(@class) = 'modal-content']")));
     }
 
     @Step("click on 'Create an Account' link")
@@ -85,87 +79,68 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("scroll and type into 'Email' field")
     public void scrollAndTypeIntoEmailField(String email) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", emailField);
+        Utils.scrollIntoViewJs(driver, emailField);
         emailField.sendKeys(email);
     }
 
     @Step("scroll and type into 'First name' field")
     public void scrollAndTypeIntoFirstNameField(String firstName) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", firstNameField);
-        js.executeScript(
-                "arguments[0].value = arguments[1];" +
-                        "arguments[0].dispatchEvent(new Event('input', { bubbles: true }));",
-                firstNameField, firstName
-        );
-        new WebDriverWait(driver, Duration.ofSeconds(10)).until(d ->
-                firstName.equals(firstNameField.getDomProperty("value"))
-        );
+        Utils.scrollIntoViewJs(driver, firstNameField);
+        Utils.setValueViaJS(driver, firstNameField, firstName);
+        Utils.waitForCondition(driver, d -> firstName.equals(firstNameField.getDomProperty("value")));
     }
 
     @Step("scroll and type into 'Last name' field")
     public void scrollAndTypeIntoLastNameField(String lastName) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", lastNameField);
+        Utils.scrollIntoViewJs(driver, lastNameField);
         lastNameField.sendKeys(lastName);
     }
 
     @Step("scroll and type into 'Password' field")
     public void scrollAndTypeIntoPasswordField(String password) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", passwordField);
+        Utils.scrollIntoViewJs(driver, passwordField);
         passwordField.sendKeys(password);
     }
 
     @Step("scroll and type into 'Confirm password' field")
     public void scrollAndTypeIntoConfirmPasswordField(String password) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", confirmPasswordField);
+        Utils.scrollIntoViewJs(driver, confirmPasswordField);
         confirmPasswordField.sendKeys(password);
     }
 
     @Step("scroll and type into 'Postal code' field")
     public void scrollAndTypeIntoPostalCodeField(String code) {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", postalCodeField);
+        Utils.scrollIntoViewJs(driver, postalCodeField);
         postalCodeField.sendKeys(code);
     }
 
     @Step("click on 'Month' selector button")
     public void scrollAndClickOnMonthSelector() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", monthSelectorButton);
+        Utils.scrollIntoViewJs(driver, monthSelectorButton);
         monthSelectorButton.click();
     }
 
     @Step("click on 'November' from month selector")
     public void scrollAndClickOnNovember() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", novemberOptionFromMonthSelector);
+        Utils.scrollIntoViewJs(driver, novemberOptionFromMonthSelector);
         novemberOptionFromMonthSelector.click();
     }
 
     @Step("click on 'Day' selector")
     public void clickOnDaySelector(String day) {
-        Select select = new Select(daySelectorButton);
-        select.selectByValue(day);
+        new Select(daySelectorButton).selectByValue(day);
     }
 
     @Step("click on 'I accept' checkbox")
     public void scrollAndClickIAcceptCheckbox() {
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({block: 'center'});", iAcceptCheckbox);
-        js.executeScript("arguments[0].click();", iAcceptCheckbox);
+        Utils.scrollIntoViewJs(driver, iAcceptCheckbox);
+        Utils.clickWithJs(driver, iAcceptCheckbox);
     }
 
     @Step("click on 'Create Account' button")
     public void scrollAndClickOnCreateAccountButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(createAccountButton));
-        Actions actions = new Actions(driver);
-        actions.scrollToElement(createAccountButton).moveToElement(createAccountButton)
-                .pause(Duration.ofSeconds(2)).click().perform();
+        Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(createAccountButton));
+        Utils.scrollToAndClickWithActions(driver, createAccountButton);
     }
 
     @Step("get successful message's text after creating a new account")
@@ -180,16 +155,13 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("wait for 'Create Account' button to be clickable")
     public void waitForCreateAccountButton() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.elementToBeClickable(createAccountButton));
-        new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(driver -> createAccountButton.isEnabled());
+        Utils.waitForCondition(driver, ExpectedConditions.elementToBeClickable(createAccountButton));
+        Utils.waitForCondition(driver, driver -> createAccountButton.isEnabled());
     }
 
     @Step("wait for successful message's text to be visible")
     public void waitForSuccessfulMessage() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(successfulCreationText));
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOf(successfulCreationText));
     }
 
     @Step("get error's text after using invalid password")
@@ -215,13 +187,10 @@ public class CreateAnAccountPage extends BasePage {
     @Step("get text from error caused by using already used email")
     public String getErrorAlreadyUsedEmailText() {
         try {
-            ((JavascriptExecutor) driver)
-                    .executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", emailField);
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-            WebElement element = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.xpath("//div[contains(@data-label-code, 'error.account.email.alreadyExists')]")
-            ));
-            return element.getText();
+            Utils.scrollIntoViewJs(driver, emailField);
+            WebElement error = Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated
+                    (By.xpath("//div[contains(@data-label-code, 'error.account.email.alreadyExists')]")));
+            return error.getText();
         } catch (TimeoutException e) {
             throw new NoSuchElementException
                     ("Expected error message for already used email did not appear within timeout", e);

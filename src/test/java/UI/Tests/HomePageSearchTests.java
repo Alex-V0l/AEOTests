@@ -16,13 +16,11 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class HomePageSearchTests extends BaseTest{
 
     private HomeSearchSectionPage homeSearchPage;
-    private Utils utils;
     private UISteps uiSteps;
 
     @BeforeEach
     void setup(){
         homeSearchPage = new HomeSearchSectionPage(driver);
-        utils = new Utils(driver);
         uiSteps = new UISteps(driver);
         homeSearchPage.openHomePage();
     }
@@ -42,7 +40,7 @@ public class HomePageSearchTests extends BaseTest{
     @Test
     void searchItemsAndCheckUrlAndSubtitle() {
         String textToFind = "new york yankees";
-        String formattedAsQueryText = utils.formatSearchQueryForUrl(textToFind);
+        String formattedAsQueryText = Utils.formatSearchQueryForUrl(textToFind);
         String expectedUrl = BASE_URL_UI + "s/" + formattedAsQueryText;
 
         uiSteps.openSearch();
@@ -80,7 +78,7 @@ public class HomePageSearchTests extends BaseTest{
     @Test
     void searchAndPickSuggestion() {
         String textToFind = "new york";
-        String queryText = utils.formatSearchQueryForUrl(textToFind);
+        String queryText = Utils.formatSearchQueryForUrl(textToFind);
         String expectedPartUrl = BASE_URL_UI + "s/" + queryText;
 
         uiSteps.openSearchAndType(textToFind);
