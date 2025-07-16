@@ -256,7 +256,7 @@ public class UISteps {
 
     @Step("get info about prices on 'Checkout' page")
     public PricesCheckoutInfo getPricesInCheckout(){
-
+        cartCheckoutPage.waitForSpinnerToDisappear();
         return PricesCheckoutInfo.builder()
                 .standardShippingPriceText(cartCheckoutPage.getStandardPriceText())
                 .currentShippingCost(cartCheckoutPage.getShippingPrice())
