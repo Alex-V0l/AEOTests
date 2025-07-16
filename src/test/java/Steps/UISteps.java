@@ -251,6 +251,7 @@ public class UISteps {
         cartCheckoutPage.scrollAndClickOnState();
         cartCheckoutPage.pickIllinois();
         cartCheckoutPage.typeIntoZipCodeField(zipCode);
+        cartCheckoutPage.waitForSpinnerToDisappear();
     }
 
     @Step("get info about prices on 'Checkout' page")
