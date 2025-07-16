@@ -193,15 +193,30 @@ public class CartAndCheckoutPage extends BasePage{
         return modalsTitle.getText();
     }
 
-    @Step("scroll to 'Size' button and click on it")
-    public void scrollToSizeAndClick(){
+    @Step("scroll to 'Size' button and click on it with retry")
+    public void scrollToSizeAndClick() {
         By sizeLocator = By.xpath("//div[@role='button' and @aria-label='Size' and contains(@class, 'dropdown-toggle')]");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement sizeButton = wait.until(ExpectedConditions.elementToBeClickable(sizeLocator));
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
-        WebElement clickable = wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
-        js.executeScript("arguments[0].click();", clickable);
+
+        int attempts = 0;
+        int maxAttempts = 3;
+        while (attempts < maxAttempts) {
+            try {
+                WebElement sizeButton = wait.until(ExpectedConditions.visibilityOfElementLocated(sizeLocator));
+                js.executeScript("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", sizeButton);
+                WebElement clickable = wait.until(ExpectedConditions.elementToBeClickable(sizeButton));
+                js.executeScript("arguments[0].click();", clickable);
+                break;
+            } catch (StaleElementReferenceException e) {
+                attempts++;
+                if (attempts == maxAttempts) {
+                    throw e;
+                }
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
 
     @Step("click on first size option inside 'Size' dropdown")

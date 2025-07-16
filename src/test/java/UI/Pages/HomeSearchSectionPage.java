@@ -14,8 +14,6 @@ import java.time.Duration;
 public class HomeSearchSectionPage extends BasePage{
 
     //locators
-    @FindBy(xpath = "//button[@data-test-btn='search-cta']")
-    private WebElement searchButton;
     @FindBy(xpath = "//div[@class='modal-content _modal-content_1vao1q']")
     private WebElement searchModal;
     @FindBy(xpath = "//input[@data-test='form-control-input']")
@@ -43,6 +41,9 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("click on 'Search' button")
     public void clickSearch(){
+        By searchButtonLocator = By.xpath("//button[@data-test-btn='search-cta']");
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebElement searchButton = wait.until(ExpectedConditions.elementToBeClickable(searchButtonLocator));
         searchButton.click();
     }
 
@@ -68,8 +69,9 @@ public class HomeSearchSectionPage extends BasePage{
 
     @Step("wait until 'Search' modal becomes visible")
     public void waitForSearchModal(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        wait.until(ExpectedConditions.visibilityOf(searchModal));
+        By searchModalLocator = By.xpath("//div[@class='modal-content _modal-content_1vao1q']");
+        new WebDriverWait(driver, Duration.ofSeconds(10)).until
+                (ExpectedConditions.visibilityOfElementLocated(searchModalLocator));
     }
 
     @Step("wait until 'Search' field becomes clickable")
