@@ -11,8 +11,6 @@ import Utils.Utils;
 public class CreateAnAccountPage extends BasePage {
 
     //locators
-    @FindBy(xpath = "//a[@class='clickable qa-show-sidetray-account sidetray-account']")
-    private WebElement accountButton;
     @FindBy(xpath = "//a[@data-test='register-button']")
     private WebElement createAnAccountButton;
     @FindBy(xpath = "//h1[@class='page-header qa-page-header _page-header_190u4w']")
@@ -58,7 +56,10 @@ public class CreateAnAccountPage extends BasePage {
 
     @Step("click on 'Account' button")
     public void clickAccount() {
-        accountButton.click();
+        WebElement  accountBtn =  Utils.waitForCondition
+                (driver, ExpectedConditions.elementToBeClickable
+                        (By.xpath("//a[@class='clickable qa-show-sidetray-account sidetray-account']")));
+        accountBtn.click();
     }
 
     @Step("wait until 'Account' modal becomes visible")
