@@ -67,6 +67,8 @@ public class HomeSearchSectionPage extends BasePage{
     public void waitForSearchModal(){
         Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated
                 (By.xpath("//div[@class='modal-content _modal-content_1vao1q']")));
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated
+                (By.xpath("//input[@data-test='form-control-input']")));
     }
 
     @Step("wait until 'Search' field becomes clickable")

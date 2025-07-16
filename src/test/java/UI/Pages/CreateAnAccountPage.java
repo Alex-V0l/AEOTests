@@ -65,9 +65,9 @@ public class CreateAnAccountPage extends BasePage {
     @Step("wait until 'Account' modal becomes visible")
     public void waitForAccountModal() {
         By accountsModalLocator = By.xpath("//div[normalize-space(@class) = 'modal-content']");
-        Utils.waitForCondition(driver, ExpectedConditions
-                .and(ExpectedConditions.presenceOfElementLocated(accountsModalLocator),
-                ExpectedConditions.visibilityOfElementLocated(accountsModalLocator)));
+        Utils.waitForCondition
+                (driver, ExpectedConditions.visibilityOfElementLocated(accountsModalLocator));
+        Utils.waitForCondition(driver, ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-test='register-button']")));
     }
 
     @Step("click on 'Create an Account' link")
