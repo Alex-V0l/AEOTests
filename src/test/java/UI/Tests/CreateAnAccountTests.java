@@ -33,7 +33,7 @@ public class CreateAnAccountTests extends BaseTest{
     }
 
     @DisplayName("Go to 'Create an Account' page and check url and page's header text")
-    @Tags({@Tag("P0"), @Tag("smoke"), @Tag("defect")})
+    @Tags({@Tag("P0"), @Tag("smoke")})
     @ExtendWith(AllureExtension.class)
     @Test
     void transitionToCreateAnAccountPage(){
@@ -51,7 +51,7 @@ public class CreateAnAccountTests extends BaseTest{
 
     @DisplayName("Successful creation of an account test " +
             "(fill all necessary field with valid fields pick birth date and agree with policies)")
-    @Tags({@Tag("P0"), @Tag("smoke")})
+    @Tags({@Tag("P0"), @Tag("smoke"), @Tag("defect")})
     @ExtendWith(AllureExtension.class)
     @Test
     void successfulCreation() {

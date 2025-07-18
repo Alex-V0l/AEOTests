@@ -141,10 +141,10 @@ public class CartTests {
     void addItemChangeAmountCheckCart(){
         int expectedPostAndPatchStatusCode = 202;
         int expectedGetStatusCode = 200;
-        String dressesSKU = ITEMS_OF_DRESSES.getItems().get(0).getSkuId();
-        int newQuantity = ITEMS_OF_DRESSES.getItems().get(0).getQuantity() + 2;
+        String dressesSKU = ITEMS_OF_WOMENS_JEANS.getItems().get(0).getSkuId();
+        int newQuantity = ITEMS_OF_WOMENS_JEANS.getItems().get(0).getQuantity() + 2;
 
-        int afterAddingItemsStatusCode = apiSteps.postItemAndGetStatusCode(ITEMS_OF_DRESSES);
+        int afterAddingItemsStatusCode = apiSteps.postItemAndGetStatusCode(ITEMS_OF_WOMENS_JEANS);
         String ItemID = apiSteps.firstItemsIDAfterGettingItems();
         ItemsForPatchRequest patchRequest = apiSteps.buildPatchRequest(ItemID, dressesSKU, newQuantity);
         int statusCodeAfterPatch = apiSteps.patchItemAndGetStatusCode(patchRequest);

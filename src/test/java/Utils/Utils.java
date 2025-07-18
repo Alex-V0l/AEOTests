@@ -85,6 +85,4 @@ public class Utils {
         }
         return href.split("\\?")[0];
     }
-
-
 }

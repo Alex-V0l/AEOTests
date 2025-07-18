@@ -160,7 +160,9 @@ public class MensJeansPage extends BasePage{
 
     @Step ("get text of first cheapest item from 'Men's Jeans' page after sorting")
     public String getFirstCheapestItemsUrl(){
-        return Utils.extractNormalizedUrl(urlOfFirstCheapestJeansItem);
+        WebElement firstCheapestItemsUrl = driver.findElement(By.xpath
+                ("((//div[@class='results-list qa-results-list']//div[contains(@class, 'product-tile')])[1]//a[contains(@href, '/us/en/p/')])[1]"));
+        return Utils.extractNormalizedUrl(firstCheapestItemsUrl);
     }
 
     @Step("wait for item's url")

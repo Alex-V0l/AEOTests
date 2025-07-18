@@ -1,0 +1,65 @@
+name: AEOTests CI (no defects)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-no-defects:
+
+    runs-on: ubuntu-latest
+    environment: PROD_ENVIRONMENT
+    permissions:
+      contents: write
+      pages: write
+
+    services:
+      selenium:
+        image: selenium/standalone-chrome:latest
+        options: --shm-size 2g
+        ports:
+          - 4444:4444
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
+
+      - name: Run only non-defect tests
+        env:
+          SELENIUM_REMOTE_URL: http://localhost:4444/wd/hub
+          LOGINFORSIGNIN: ${{ secrets.LOGINFORSIGNIN }}
+          PASSWORDFORSIGNIN: ${{ secrets.PASSWORDFORSIGNIN }}
+        run: ./gradlew clean testWithoutDefects -Denv="prod" -DloginForSignIn=$LOGINFORSIGNIN -DpasswordForSignIn=$PASSWORDFORSIGNIN
+
+      - name: Copy History
+        uses: actions/checkout@v2
+        if: always()
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Build Allure Report
+        uses: simple-elf/allure-report-action@v1.10
+        if: always()
+        with:
+          allure_results: build/allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Publish Allure Report
+        if: always()
+        uses: peaceiris/actions-gh-pages@v2
+        env:
+          PERSONAL_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PUBLISH_BRANCH: gh-pages
+          PUBLISH_DIR: allure-history

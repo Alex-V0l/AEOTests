@@ -48,3 +48,13 @@ test {
 tasks.named('processTestResources') {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+tasks.register('testWithoutDefects', Test) {
+    useJUnitPlatform {
+        excludeTags 'defect'
+    }
+    systemProperties(System.getProperties())
+    testClassesDirs = sourceSets.test.output.classesDirs
+    classpath = sourceSets.test.runtimeClasspath
+    shouldRunAfter test
+}
