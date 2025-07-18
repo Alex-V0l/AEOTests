@@ -12,7 +12,7 @@ import java.util.function.Function;
 
 public class Utils {
 
-    private static final int DEFAULT_TIMEOUT = 10;
+    private static final int DEFAULT_TIMEOUT = 15;
 
     public static double parseToDouble (String valueToParse){
         return Double.parseDouble(valueToParse.replaceAll("[^\\d.]", ""));
