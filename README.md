@@ -1,6 +1,6 @@
 # 📦 AEO Automated Testing Project
 
-[![CI Status](https://img.shields.io/badge/CI-pending-lightgrey?style=flat-square&logo=github)](https://github.com/Alex-V0l/AEOTests/actions)
+[![CI (No Defects)](https://github.com/Alex-V0l/AEOTests/actions/workflows/aeotests-ci-no-defects.yml/badge.svg)](https://github.com/Alex-V0l/AEOTests/actions/workflows/aeotests-ci-no-defects.yml)
 [![Java](https://img.shields.io/badge/Java-17-007396?style=flat-square&logo=java)](https://www.oracle.com/java/)
 [![Gradle](https://img.shields.io/badge/Gradle-7.x-02303A?style=flat-square&logo=gradle)](https://gradle.org/)
 [![Allure](https://img.shields.io/badge/Allure%20Report-Enabled-purple?style=flat-square&logo=allure)](https://docs.qameta.io/allure/)
@@ -44,7 +44,7 @@ The test suite is structured and developed in stages:
 
 ## 🧪 Covered Test Scenarios
 
-### 🔹 Test Types:
+### 🔬 Test Types:
 - **Smoke tests**
 - **Negative scenarios**
 - **Extended (end-to-end) coverage**
@@ -106,23 +106,33 @@ Therefore, there are **two execution modes**:
 To run 💥 all tests using GitHub Actions:
 
 1. Go to the **[Actions](https://github.com/Alex-V0l/AEOTests/actions)** tab of the repository.
+<p align="center"> <img src="images/screenshots/actions.png" alt="GitHub Actions tab" width="700"/> </p>
 2. Select the workflow named: `AEOTests CI`
+<p align="center"> <img src="images/screenshots/basic_workflow.png" alt="Inside workflow" width="700"/> </p>
 3. Click **Run workflow** (top-right), then confirm.
+<p align="center"> <img src="images/screenshots/run_workflow.png" alt="Run Workflow Button" width="700"/> </p>
 4. Wait for the job to complete and check the status.
+<p align="center"> <img src="images/screenshots/wait_for_run.png" alt="Waiting for Run" width="700"/> </p>
+
+---
 
 To run ✅ only stable tests using GitHub Actions:
 
 1. Go to the **[Actions](https://github.com/Alex-V0l/AEOTests/actions)** tab of the repository.
+<p align="center"> <img src="images/screenshots/actions.png" alt="GitHub Actions tab" width="700"/> </p>
 2. Select the workflow named: `AEOTests CI (no defects)`
+<p align="center"> <img src="images/screenshots/no_defects_run.png" alt="Run no defects workflow" width="700"/> </p>
 3. Click **Run workflow** (top-right), then confirm.
+<p align="center"> <img src="images/screenshots/run_workflow.png" alt="Run Workflow Button" width="700"/> </p>
 4. Wait for the job to complete and check the status.
+<p align="center"> <img src="images/screenshots/wait_for_no_defects_run.png" alt="Wait for no defects run" width="700"/> </p>
 ---
 
 ## 📊 View Allure Report
 
 ### 📍 Locally
 
-To view the report locally, after the execution of tests locally has been completed:
+To view the report, after the execution of tests locally has been completed:
 
 ```bash
   cd ./build/
@@ -136,7 +146,12 @@ To view the report locally, after the execution of tests locally has been comple
 After the CI build completes:
 
 1. Go to the **[Actions](https://github.com/Alex-V0l/AEOTests/actions)** tab.
-2. Open the workflow run for `AEOTests CI`.
-3. Scroll to the `pages-build-deployment` job.
-4. Click on the generated **Deploy link** (you’ll find it in the summary of the job).
+<p align="center"> <img src="images/screenshots/actions.png" alt="GitHub Actions tab" width="700"/> </p>
+2. After the workflow run go to the `pages-build-deployment` job.
+<p align="center"> <img src="images/screenshots/gh_pages.png" alt="GitHub Pages access" width="700"/> </p>
+3. Go inside workflow and wait for deployment to be completed
+<p align="center"> <img src="images/screenshots/inside_gh_pages.png" alt="Inside gh-pages branch" width="700"/> </p>
+4. Click on the generated **Deploy link**.
+<p align="center"> <img src="images/screenshots/report_link.png" alt="Allure report link" width="700"/> </p>
 5. The Allure Report will open in a new browser tab.
+<p align="center"> <img src="images/screenshots/report.png" alt="Allure report preview" width="700"/> </p>
