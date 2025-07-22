@@ -169,10 +169,10 @@ public class CartTests {
     void addItemAndChangeAmountForInvalidValue(){
         int expectedPostAndPatchStatusCode = 202;
         int expectedErrorStatusCode = 403;
-        String colongeSKU = ITEMS_OF_COLONGES.getItems().get(0).getSkuId();
-        int negativeQuantity = ITEMS_OF_COLONGES.getItems().get(0).getQuantity() -2;
+        String colongeSKU = ITEMS_OF_POLO_T_SHIRTS.getItems().get(0).getSkuId();
+        int negativeQuantity = ITEMS_OF_POLO_T_SHIRTS.getItems().get(0).getQuantity() -2;
 
-        int afterAddingItemsStatusCode = apiSteps.postItemAndGetStatusCode(ITEMS_OF_COLONGES);
+        int afterAddingItemsStatusCode = apiSteps.postItemAndGetStatusCode(ITEMS_OF_POLO_T_SHIRTS);
         String ItemID = apiSteps.firstItemsIDAfterGettingItems();
         ItemsForPatchRequest patchRequest = apiSteps.buildPatchRequest(ItemID, colongeSKU, negativeQuantity);
         int actualStatusCode = apiSteps.patchItemAndGetStatusCode(patchRequest);

@@ -70,14 +70,6 @@ public class TestData {
                             .build()
             ))
             .build();
-    public static final OrderRequest ITEMS_OF_COLONGES = OrderRequest.builder()
-            .items(List.of(
-                    OrderItem.builder()
-                            .skuId("0042423806")
-                            .quantity(1)
-                            .build()
-            ))
-            .build();
     public static final OrderRequest ITEMS_OF_T_SHIRTS = OrderRequest.builder()
             .items(List.of(
                     OrderItem.builder()

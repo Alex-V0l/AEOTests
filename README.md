@@ -5,8 +5,8 @@
 [![Gradle](https://img.shields.io/badge/Gradle-7.x-02303A?style=flat-square&logo=gradle)](https://gradle.org/)
 [![Allure](https://img.shields.io/badge/Allure%20Report-Enabled-purple?style=flat-square&logo=allure)](https://docs.qameta.io/allure/)
 
-This is a **graduation project** completed as part of the advanced Java automation testing course by Gennady Chursov.  
-The project focuses on testing the e-commerce website [ae.com](https://www.ae.com/us/en/) which offers a wide range of clothing and accessories.
+This is a **graduation project** completed as part of the advanced Java automation testing course by [Gennady Chursov](https://github.com/topsycreed).  
+The project focuses on testing the e-commerce website [ae.com](https://www.ae.com/us/en/) the official online store of **American Eagle Outfitters (AEO)** - well-known American lifestyle, clothing, and accessories retailer.
 
 The test suite is structured and developed in stages:
 - ✅ API test development (RESTful endpoints)
@@ -71,6 +71,11 @@ The test suite is structured and developed in stages:
 | **Category Page** | Test filters (checkboxes, radio buttons), navigate to product page |
 | **Product Page** | Change color via radio buttons, choose size from dropdown, adjust quantity, add to cart |
 | **Cart Functionality** | Add via search/category, validate product info, update quantity, remove product, proceed to checkout, update shipping method |
+
+📄 For a more detailed overview of the testing logic and structure, please refer to the following resources:
+
+- 🧭 [Test Plan (PDF)](src/test/resources/TestPlan.pdf)
+- 📝 [Test Case Spreadsheet (Google Sheets)](https://docs.google.com/spreadsheets/d/1mDBVcW8GYeTNyTupHtu3_jyOoKpW1UHl7aHtPIcrdRg/edit?usp=sharing)
 
 ---
 
@@ -153,5 +158,7 @@ After the CI build completes:
 <p align="center"> <img src="images/screenshots/inside_gh_pages.png" alt="Inside gh-pages branch" width="700"/> </p>
 4. Click on the generated **Deploy link**.
 <p align="center"> <img src="images/screenshots/report_link.png" alt="Allure report link" width="700"/> </p>
-5. The Allure Report will open in a new browser tab.
+5. The Allure Report will open in a new browser tab, where you can explore request/response body for API tests and screenshots, html for fallen UI tests.
 <p align="center"> <img src="images/screenshots/report.png" alt="Allure report preview" width="700"/> </p>
+<p align="center"> <img src="images/screenshots/allure_request_response_body.png" alt="Request/Response body in Allure" width="700"/> </p>
+<p align="center"> <img src="images/screenshots/allure_screenshots_page_html.png" alt="Screenshots and HTML in Allure" width="700"/> </p>
